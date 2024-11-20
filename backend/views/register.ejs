@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Register</title>
+</head>
+
+<body>
+	<h1>Register</h1>
+	<form id="inputForm">
+		<h1>Required</h1>
+		<label for="firstname">Firstname</label>
+		<input type="text" name="firstname" id="firstname" />
+
+		<label for="lastname">Lastname</label>
+		<input type="text" name="lastname" id="lastname" />
+
+		<label for="middlename">Middlename</label>
+		<input type="text" name="middlename" id="middlename" />
+
+		<label for="suffix">Suffix</label>
+		<input type="text" name="suffix" id="suffix" />
+
+		<label for="email">Email</label>
+		<input type="email" name="email" id="email" />
+
+		<label for="password">Password</label>
+		<input type="password" name="password" id="password" />
+
+		<label for="confirmpassword">Confirm Password</label>
+		<input type="password" name="confirmpassword" id="confirmpassword" />
+
+		<label for="username">Username</label>
+		<input type="text" name="username" id="username" />
+
+		<label for="contact">Contact Number</label>
+		<input type="number" name="contact" id="contact" />
+
+		<h1>Optional (Profile Only)</h1>
+
+		<label for="secondaryemail">Secondary Email</label>
+		<input type="email" name="secondaryemail" id="secondaryemail" />
+
+		<label for="jobtitle">Job/Title</label>
+		<input type="text" name="jobtitle" id="jobtitle" />
+
+		<label for="organization">Organization</label>
+		<input type="text" name="organization" id="organization" />
+
+		<label for="department">Department</label>
+		<input type="text" name="department" id="department" />
+
+		<label for="street">Street</label>
+		<input type="text" name="street" id="street" />
+
+		<label for="city">City</label>
+		<input type="text" name="city" id="city" />
+
+		<label for="state">State</label>
+		<input type="text" name="state" id="state" />
+
+		<label for="postal">Postal</label>
+		<input type="text" name="postal" id="postal" />
+
+		<label for="birthday">Birthday</label>
+		<input type="date" name="birthday" id="birthday" />
+
+		<label for="gender">Gender</label>
+		<select name="gender" id="gender">
+			<option value="" selected="selected" disabled>-- Options --</option>
+			<option value="male">Male</option>
+			<option value="female">Female</option>
+			<option value="others">Others</option>
+		</select>
+
+		<input type="submit" value="register">
+	</form>
+	<script>
+		document.getElementById("inputForm").addEventListener("submit", function (e) {
+			e.preventDefault();
+
+			const formData = new FormData(document.getElementById("inputForm"));
+			const data = {};
+
+			formData.forEach((value, key) => {
+				data[key] = value || null;
+			});
+
+			fetch("/api/register", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			})
+				.then((res) => {
+					if (!res.ok) {
+						throw new Error("Failed to register");
+					}
+					return res.json();
+				})
+				.then((data) => {
+					alert("Registration Successful");
+					console.log("Response:", data);
+				})
+				.catch((err) => {
+					console.error("Error:", err);
+					alert("Registration Failed");
+				});
+		});
+	</script>
+</body>
+
+</html>

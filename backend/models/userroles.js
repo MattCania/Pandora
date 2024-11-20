@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			roleId: {
 				type: DataTypes.INTEGER,
+				primaryKey: true,
 				references: {
 					foreignKey: "Roles",
 					key: "roleId",

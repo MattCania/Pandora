@@ -1,29 +1,16 @@
-const express = require('express');
-const isAuthenticated = require('../middleware/authenticator');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-router.get('/authenticate', isAuthenticated, (req, res) => {
-	if (req.session.user){
-		res.json({ message: "User info retrieved", user: req.session.user });
-	}
-	else{
-		res.status(404).json({ message: "User either logged off or unfound"})
-	}
-});
+router.post('/logout', (req, res) => {
+	
+	req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Failed to log out' });
+        }
+        res.clearCookie('connect.sid'); // Optional: clear the session cookie
+        res.status(200).json({ message: 'Successfully logged out' });
+    });
 
-router.get('/user-info', (req, res) => {
-	if (req.session.user) {
-		res.json({
-			id: req.session.user.user_id,
-			username: req.session.user.username,
-			firstname: req.session.user.firstname, 
-			lastname: req.session.user.lastname,   
-			email: req.session.user.email
-		});
-	}
-	else{
-		res.status(401).json({ message: "Unauthorized"})
-	}
 })
 
-module.exports = router;
+module.exports = router

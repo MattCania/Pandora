@@ -1,64 +1,83 @@
-const dbHandler = require("../models/accounts");
+const { UserAccounts, UserProfile, Admins } = require('../models');
 
+// Thing got zero validations, more on models fix tho
 const handleRegister = async (req, res) => {
-  const { firstname, lastname, middlename, suffix, password, username, email } = req.body;
+  const { 	firstname, lastname,
+			middlename, suffix,
+			email, password,
+			confirmpassword, username,
+			contact, secondaryemail,
+			jobtitle, organization,
+			department, street,
+			city, state,
+			postal, birthday, 
+			gender 
+		} = req.body;
+  
+	if (password !== confirmpassword) return res.status(401).json({message: "Password & Confirm Password Mismatch"})
+	
+	try {
+		await UserAccounts.create({
+			firstName: firstname,
+			lastName: lastname,
+			middleName: middlename || null,
+			suffix: suffix || null,
+			email: email,
+			securedPassword: password,
+			createdAt: null,
+			updatedAt: null
+		})
+	} catch (error) {
+		console.error(error)
+		return res.status(500).json({message: 'Server Error'})
+	}
 
-  const queries = {
-    register:
-      "INSERT INTO Users(First_Name, Last_Name, Number, Username, Email, Secured_Password) VALUES (?, ?, ?, ?, ?, ?)",
-    temporarySave:
-      "INSERT INTO Security_Management(Email, Password) VALUES (?, ?)",
-  };
+	const newAccount = await UserAccounts.findOne({ 
+		where: {
+			email: email
+		}
+	});
 
-  if (!firstname || !lastname || !number || !username || !email || !password)
-    return res.status(404).json({message: "Please Input Required Fields"});
+	try {
+		if (!newAccount) {
+			return res.status(500).json({ message: "Failed to retrieve newly created user." });
+		}
 
-  try {
-    const hashedPassword = await hashPassword(password);
-    await dbHandler.query(queries.register, [
-      firstname,
-      lastname,
-      number,
-      username,
-      email,
-      hashedPassword,
-    ]);
-    await dbHandler.query(queries.temporarySave, [email, password]);
-    return res.status(200).json({message: "Successful Registration"})
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({message: "Server error"});
-  }
-};
+		const newAccountId = newAccount.userId
+	
+		await UserProfile.create({
+			profileId: newAccountId,
+			userName: username,
+			contactNumber: contact,
+			secondaryEmail: secondaryemail || null,
+			jobTitle: jobtitle || null,
+			organization: organization || null,
+			department: department || null,
+			street: street || null,
+			city: city || null,
+			state: state || null,
+			postal: postal || null,
+			birthday: birthday || null,
+			gender: gender || null,
+			createdAt: null,
+			updatedAt: null
+		})
 
-const checkDuplicates = async (req, res) => {
-  const { number, username, email } = req.body;
+		await Admins.create({
+			accountId: newAccountId,
+			email: email,
+			password: password,
+		})
 
-  const queries = {
-    number: "SELECT * FROM Users WHERE Number = ?",
-    email: "SELECT * FROM Users WHERE Email = ?",
-    username: "SELECT * FROM Users WHERE Username = ?",
-  };
+		return res.status(200).json({message : "Successful Registration"})
+	} catch (error) {
+		console.error(error)
+		return res.status(500).json({message: 'Server Error'})
+	}
+	
 
-  try {
-    const numberData = await dbHandler.query(queries.number, [number]);
-    if (numberData.length > 0)
-      return res.status(400).json({ message: "Number already exists" });
-    const emailData = await dbHandler.query(queries.email, [email]);
-    if (emailData.length > 0)
-      return res.status(400).json({ message: "Email already exists" });
-    const usernameData = await dbHandler.query(queries.username, [username]);
-    if (usernameData.length > 0)
-      return res.status(400).json({ message: "Username already exists" });
-    
-    return res.status(200).json({message: "Successful Duplicants Checking"})
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({message: "Server error"});
-  }
 };
 
 module.exports = {
   handleRegister,
-  checkDuplicates,
 };

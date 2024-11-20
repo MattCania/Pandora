@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       })
 
-      UserAccounts.hasOne(models.Admin, {
+      UserAccounts.hasOne(models.Admins, {
         foreignKey: 'accountId',
         as: 'adminDetails',
         onDelete: 'CASCADE'
@@ -83,6 +83,7 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         notEmpty: true,
         isEmail: true,
@@ -95,11 +96,18 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: true,
       },
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     }
   }, {
     sequelize,
     modelName: 'UserAccounts',
-    timestamps: true,
 
     hooks:{
       beforeCreate: async (user) => {

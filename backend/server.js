@@ -4,6 +4,7 @@ require('express-async-errors');
 const session = require("express-session");
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const cors = require("cors");
+const path = require("path");
 const helmet = require("helmet");
 const { sequelize } = require('./models')
 
@@ -13,14 +14,23 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(helmet());
-
 app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
+  helmet({
+    contentSecurityPolicy: false,
   })
 );
+
+app.use(express.static(path.join(__dirname, "public")));
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
 
 app.use(
   session({
@@ -36,7 +46,8 @@ app.use(
 );
 
 sequelize
-	.sync({ alter: true })
+	.sync()
+	// .sync({ alter: true })
 	.then(() => {
 		console.log("Database synchronized successfully!");
 	})
@@ -46,15 +57,21 @@ sequelize
 
 
 app.get('/user-login', (req, res) => {
-  app.render('index.ejs');
+  res.render('login.ejs');
 })
 
+app.get('/user-register', (req, res) => {
+  res.render('register.ejs')
+})
 
 // Routes and Controllers
 const loginRoute = require("./routes/login");
-const { render } = require("ejs");
+const sessionRoute = require("./routes/session")
+const registerRoute = require('./routes/register')
 
 app.use("/api", loginRoute);
+app.use("/api", sessionRoute);
+app.use("/api", registerRoute)
 
 // Localhost port
 const port = 5000;

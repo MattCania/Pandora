@@ -3,14 +3,14 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Admin extends Model {
+  class Admins extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Admin.belongsTo(models.UserAccounts, {
+      Admins.belongsTo(models.UserAccounts, {
         foreignKey: 'accountId',
         targetKey: 'userId',
         as: 'accountInfo',
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       
     }
   }
-  Admin.init({
+  Admins.init({
     accountId: { 
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -46,8 +46,15 @@ module.exports = (sequelize, DataTypes) => {
     } 
   }, {
     sequelize,
-    modelName: 'Admin',
-    timestamps: false
+    modelName: 'Admins',
+    timestamps: false,
+    afterDestroy: async () => {
+      try {
+        await sequelize.query(`ALTER TABLE Admins AUTO_INCREMENT = 1`);
+      } catch (error) {
+        console.error('Error resetting AUTO_INCREMENT:', error);
+      }
+    }
   });
-  return Admin;
+  return Admins;
 };

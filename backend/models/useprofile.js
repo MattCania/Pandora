@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     userName: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         isAlpha: true,
         len: [2, 25]
@@ -117,11 +118,26 @@ module.exports = (sequelize, DataTypes) => {
     gender: {
       type: DataTypes.ENUM('Male', 'Female', 'Other'),
       allowNull: true,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     }
   }, {
     sequelize,
     modelName: 'UserProfile',
-    timestamps: true
+
+    afterDestroy: async () => {
+      try {
+        await sequelize.query(`ALTER TABLE UserProfiles AUTO_INCREMENT = 1`);
+      } catch (error) {
+        console.error('Error resetting AUTO_INCREMENT:', error);
+      }
+    }
   });
   return UserProfile;
 };
