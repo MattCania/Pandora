@@ -1,0 +1,36 @@
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Permissions extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      Permissions.hasMany(models.RecordPermissions, {
+        foreignKey: 'accessId',
+        as: 'accessLevel',
+        onDelete: 'CASCADE'
+      })
+    }
+  }
+  Permissions.init({
+    accessId: { 
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true 
+    },
+    accessType: { 
+      type: DataTypes.ENUM('Admin', 'Owner', 'Editor', 'Viewer'),
+      allowNull: false
+    } 
+  }, {
+    sequelize,
+    modelName: 'Permissions',
+    timestamps: false
+  });
+  return Permissions;
+};
