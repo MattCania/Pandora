@@ -1,8 +1,8 @@
 function isAuthenticated(req, res, next) {
-  if (req.session.user) {
+  if (req.session.userId) {
     next();
   } else {
-    res.status(401).send("Unauthorized");
+    res.redirect('/user-login')
   }
 }
 module.exports = isAuthenticated;

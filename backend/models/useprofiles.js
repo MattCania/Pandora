@@ -4,21 +4,21 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class UserProfile extends Model {
+  class UserProfiles extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      UserProfile.belongsTo(models.UserAccounts, {
+      UserProfiles.belongsTo(models.UserAccounts, {
         foreignKey: 'profileId',
         targetKey: 'userId',
         as: 'accountDetails'
       })
     }
   }
-  UserProfile.init({
+  UserProfiles.init({
     profileId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isAlpha: true,
+        is: /^[a-zA-Z\s]*$/i,
         len: [2, 25]
       }
     },
@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isAlphanumeric: true,
+        is: /^[a-zA-Z0-9\s]*$/i,
         len: [3, 25]
       }
     },
@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isAlphanumeric: true,
+        is: /^[a-zA-Z0-9\s]*$/i,
         len: [2, 50]
       }
     },
@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isAlphanumeric: true,
+        is: /^[a-zA-Z0-9\s]*$/i,
         len: [2, 50]
       }
     },
@@ -80,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isAlphanumeric: true,
+        is: /^[a-zA-Z0-9\s]*$/i,
         len: [2, 50]
       }
     },
@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isAlphanumeric: true,
+        is: /^[a-zA-Z0-9\s]*$/i,
         len: [2, 50]
       }
     },
@@ -96,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isAlphanumeric: true,
+        is: /^[a-zA-Z0-9\s]*$/i,
         len: [2, 50]
       }
     },
@@ -104,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isAlphanumeric: true,
+        is: /^[a-zA-Z0-9\s]*$/i,
         len: [2, 50]
       }
     },
@@ -129,15 +129,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'UserProfile',
+    modelName: 'UserProfiles',
 
     afterDestroy: async () => {
       try {
-        await sequelize.query(`ALTER TABLE UserProfiles AUTO_INCREMENT = 1`);
+        await sequelize.query(`ALTER TABLE UserProfiless AUTO_INCREMENT = 1`);
       } catch (error) {
         console.error('Error resetting AUTO_INCREMENT:', error);
       }
     }
   });
-  return UserProfile;
+  return UserProfiles;
 };

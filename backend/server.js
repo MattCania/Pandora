@@ -56,22 +56,20 @@ sequelize
 	});
 
 
-app.get('/user-login', (req, res) => {
-  res.render('login.ejs');
-})
-
-app.get('/user-register', (req, res) => {
-  res.render('register.ejs')
-})
 
 // Routes and Controllers
+const pageRoute = require('./routes/pages')
+app.use('/', pageRoute)
+
 const loginRoute = require("./routes/login");
 const sessionRoute = require("./routes/session")
 const registerRoute = require('./routes/register')
+const recoveryRoute = require('./routes/recovery')
 
 app.use("/api", loginRoute);
 app.use("/api", sessionRoute);
 app.use("/api", registerRoute)
+app.use("/api", recoveryRoute)
 
 // Localhost port
 const port = 5000;

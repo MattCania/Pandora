@@ -5,25 +5,28 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Log In</title>
+	<title>Change Password</title>
 </head>
 
 <body>
-	<h1>Log In </h1>
 	<form id="inputForm">
-		<label for="email">Email</label>
-		<input type="text" name="email" id="email">
+
+		<h1>Recovering Email: <%= email %></h1>
+
+		<input type="hidden" name="email" id="email" value="<%=email %>">
 
 		<label for="password">Password</label>
 		<input type="password" name="password" id="password">
+		
+		<label for="confirmpassword">Confirm Password</label>
+		<input type="password" name="confirmpassword" id="confirmpassword">
 
 		<input type="submit">
 
 	</form>
 
-	<button id="logout">Logout</button>
 	<a href="/user-register">Register Page</a>
-	<a href="/user/forgot-password">Forgot Password</a>
+	<a href="/user-login">Log In</a>
 
 	<script>
 		document.getElementById("inputForm").addEventListener('submit', function (e) {
@@ -31,52 +34,39 @@
 
 			const email = document.getElementById('email').value;
 			const password = document.getElementById('password').value;
+			const confirmpassword = document.getElementById('confirmpassword').value;
 
-			fetch('/api/login', {
+			if (password !== confirmpassword) {
+				alert("Password Mismatch")
+				return 
+			}
+
+			fetch('/api/recover-email', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
 					email,
-					password
+					password,
+					confirmpassword
 				}),
 			})
 				.then(res => {
 					if (!res.ok){
-						throw new Error("Login Failure")
+						throw new Error("Change Password Failure")
 					}
 					return res.json();
 				})
 				.then(data => {
-					alert("Login Success")
-					window.location.replace("/homepage")
+					alert("Changed Password Successfully")
 					console.log(data)
+					window.history.replaceState(null, '', window.location.pathname);
+					window.location.href = ('/user-login')
 				})
 				.catch((err) => {
 					console.error(err);
-					alert("Login Unsuccessful");
-				})
-		})
-
-		document.getElementById("logout").addEventListener('click', (e) => {
-			e.preventDefault()
-
-			fetch('/api/logout', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
-				.then(response => {
-					if (!response.ok) throw new Error("Logout Failure")
-					return response.json()
-				})
-				.then(data => {
-					console.log(data);
-				})
-				.catch((err) => {
-					console.error('There was a problem with the fetch operation:', error);
+					alert("Change Password Failure");
 				})
 		})
 

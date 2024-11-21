@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      UserAccounts.hasOne(models.UserProfile,  {
+      UserAccounts.hasOne(models.UserProfiles,  {
         foreignKey: 'profileId',
         as: 'profileDetails',
         onDelete: 'CASCADE'

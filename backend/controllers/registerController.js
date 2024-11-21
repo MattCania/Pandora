@@ -1,4 +1,6 @@
-const { UserAccounts, UserProfile, Admins } = require('../models');
+const { where } = require('sequelize');
+const { UserAccounts, UserProfiles, Admins } = require('../models');
+const e = require('express');
 
 // Thing got zero validations, more on models fix tho
 const handleRegister = async (req, res) => {
@@ -45,7 +47,7 @@ const handleRegister = async (req, res) => {
 
 		const newAccountId = newAccount.userId
 	
-		await UserProfile.create({
+		await UserProfiles.create({
 			profileId: newAccountId,
 			userName: username,
 			contactNumber: contact,
@@ -75,8 +77,8 @@ const handleRegister = async (req, res) => {
 		return res.status(500).json({message: 'Server Error'})
 	}
 	
-
 };
+
 
 module.exports = {
   handleRegister,

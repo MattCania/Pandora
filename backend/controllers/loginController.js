@@ -1,47 +1,52 @@
-const bcrypt = require('bcrypt');
-const { UserAccounts } = require('../models');
+const bcrypt = require("bcrypt");
+const { UserAccounts, UserProfiles } = require("../models");
 
 // Default Login mechanism, validates email, then compare password
 const handleLogin = async (req, res) => {
-  const { email, password } = req.body;
-  
-  try{
-    const user = await UserAccounts.findOne({
-      where: email
-    })
-    if (!user){
-      req.session.destroy()
-      return res.status(401).json( { message: "Invalid Credentials"})
-    }
-  }
-  catch (err){
-    req.session.destroy()
-    console.log(err)
-    return res.status(401).json( { message: "Invalid Credentials"})
-  }
-  
-  
-  const hashedPassword = user.securedPassword
+	const { email, password } = req.body;
 
-  try{
-    const isMatch = await bcrypt.compare(password, hashedPassword)
-    if (!isMatch){
-      return res.status(401).json({ message: 'Invalid Password' })
-    }
-    
-    req.session.userId = user.userId
-    req.session.email = user.email
-    return res.status(200).json({message: 'Successful Log In'})
-  }
-  catch (err){
-    return res.status(500).json({error: err.message})
-  }
+	try {
+		const user = await UserAccounts.findOne({
+			where: {
+				email: email,
+			},
+		});
+
+		if (!user) {
+			req.session.destroy();
+			throw new Error("Invalid Credentials");
+		}
+		
+		const userId = user.userId
+		const hashedPassword = user.securedPassword;
+
+		const isMatch = await bcrypt.compare(password, hashedPassword);
+		
+    	if (!isMatch) {
+			throw new Error("Invalid Credentials");
+		}
+
+		const profile = await UserProfiles.findOne({
+			where:{
+				profileId: userId
+			}
+		})
 
 
+		if (!profile) throw new Error("Error Email Profile")
 
+		req.session.userId = user.userId;
+		req.session.email = user.email;
+		req.session.username = profile.userName;
 
+		return res.status(200).json({ message: "Successful Log In" });
+	} catch (err) {
+		req.session.destroy();
+		return res.status(500).json({ error: err.message });
+	}
 };
 
+
 module.exports = {
-  handleLogin,
+	handleLogin,
 };
