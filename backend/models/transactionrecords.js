@@ -12,17 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       TransactionRecords.hasMany(models.RecordPermissions, {
         foreignKey: 'recordId',
-        as: 'recordPermissions'
+        as: 'recordPermissions',
+        onDelete: 'CASCADE'
       })
 
       TransactionRecords.hasMany(models.Expenses, {
-        foreignKey: 'recordId',
+        foreignKey: 'expenseId',
         as: 'expenseRecord',
         onDelete: 'CASCADE'
       })
 
       TransactionRecords.hasMany(models.Purchases, {
-        foreignKey: 'recordId',
+        foreignKey: 'purchaseId',
         as: 'purchaseRecord',
         onDelete: 'CASCADE'
       })
@@ -41,14 +42,15 @@ module.exports = (sequelize, DataTypes) => {
     recordId: { 
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true
     },
     creatorId: { 
       type: DataTypes.INTEGER,
       references: {
         model: 'UserAccounts',
         key: 'userId',
-        onDelete: 'CASCADE'
-      }
+      },
+      onDelete: 'CASCADE'
     },
     recordType: { 
       type: DataTypes.ENUM('Expenses', 'Purchases'),
@@ -60,10 +62,27 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [2, 100]
       } 
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     }
   }, {
     sequelize,
     modelName: 'TransactionRecords',
+    hooks:{
+      afterDestroy: async () => {
+        try {
+          await sequelize.query(`ALTER TABLE TransactionRecords AUTO_INCREMENT = 1`);
+        } catch (error) {
+          console.error('Error resetting AUTO_INCREMENT:', error);
+        }
+        }
+    }
   });
   return TransactionRecords;
 };

@@ -11,18 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Purchases.belongsTo(models.TransactionRecords, {
-        foreignKey: 'recordId',
-        as: 'transactionId'
+        foreignKey: 'purchaseId',
+        targetKey: 'recordId',
+        as: 'purchaseTransaction',
+				onDelete: "CASCADE",
       })
     }
   }
   Purchases.init({
-    purchaseId: { 
+    transactionId: { 
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    recordId: { 
+    purchaseId: { 
       type: DataTypes.INTEGER,
       references: {
         model: 'TransactionRecords',
@@ -128,11 +130,28 @@ module.exports = (sequelize, DataTypes) => {
         min: 0.00,
         max: 9999999
       }
+   },
+   createdAt: {
+     type: DataTypes.DATE,
+     defaultValue: DataTypes.NOW
+   },
+   updatedAt: {
+     type: DataTypes.DATE,
+     defaultValue: DataTypes.NOW
    }
   }, {
     sequelize,
     modelName: 'Purchases',
-    timestamps: true
+    timestamps: true,
+    hooks:{
+      afterDestroy: async () => {
+        try {
+          await sequelize.query(`ALTER TABLE Purchases AUTO_INCREMENT = 1`);
+        } catch (error) {
+          console.error('Error resetting AUTO_INCREMENT:', error);
+        }
+        }
+    }
   });
   return Purchases;
 };

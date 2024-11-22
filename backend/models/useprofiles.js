@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       UserProfiles.belongsTo(models.UserAccounts, {
         foreignKey: 'profileId',
         targetKey: 'userId',
-        as: 'accountDetails'
+        as: 'accountDetails',
+        onDelete: 'CASCADE'
       })
     }
   }
@@ -131,12 +132,14 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'UserProfiles',
 
-    afterDestroy: async () => {
-      try {
-        await sequelize.query(`ALTER TABLE UserProfiless AUTO_INCREMENT = 1`);
-      } catch (error) {
-        console.error('Error resetting AUTO_INCREMENT:', error);
-      }
+    hooks:{
+      afterDestroy: async () => {
+        try {
+          await sequelize.query(`ALTER TABLE UserProfiles AUTO_INCREMENT = 1`);
+        } catch (error) {
+          console.error('Error resetting AUTO_INCREMENT:', error);
+        }
+        }
     }
   });
   return UserProfiles;

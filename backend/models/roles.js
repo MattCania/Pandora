@@ -30,7 +30,16 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Roles',
-    timestamps: false
+    timestamps: false,
+    hooks:{
+      afterDestroy: async () => {
+        try {
+          await sequelize.query(`ALTER TABLE Roles AUTO_INCREMENT = 1`);
+        } catch (error) {
+          console.error('Error resetting AUTO_INCREMENT:', error);
+        }
+        }
+    }
   });
   return Roles;
 };

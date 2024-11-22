@@ -9,19 +9,24 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			RecordPermissions.belongsTo(models.Permissions, {
-				foreignKey: "accessId",
+				foreignKey: "accessLevel",
+				targetKey: "accessId",
 				as: "userAccess",
+				onDelete: 'CASCADE'
 			});
 
 			RecordPermissions.belongsTo(models.TransactionRecords, {
 				foreignKey: "recordId",
+				targetKey: 'recordId',
 				as: "transactionId",
+				onDelete: 'CASCADE'
 			});
 
 			RecordPermissions.belongsTo(models.UserAccounts, {
 				foreignKey: "permittedUser",
 				targetKey: "userId",
 				as: "creatorId",
+				onDelete: 'CASCADE'
 			});
 		}
 	}
@@ -51,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
 			accessLevel: {
 				type: DataTypes.INTEGER,
 				references: {
-					model: "RecordPermissions",
+					model: "Permissions",
 					key: "accessId",
 					onDelete: "CASCADE",
 				},
@@ -61,6 +66,15 @@ module.exports = (sequelize, DataTypes) => {
 			sequelize,
 			modelName: "RecordPermissions",
 			timestamps: false,
+			hooks:{
+				afterDestroy: async () => {
+					try {
+					  await sequelize.query(`ALTER TABLE RecordPermissions AUTO_INCREMENT = 1`);
+					} catch (error) {
+					  console.error('Error resetting AUTO_INCREMENT:', error);
+					}
+				  }
+			}
 		}
 	);
 	return RecordPermissions;

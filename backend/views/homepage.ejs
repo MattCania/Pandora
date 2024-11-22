@@ -1,16 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Home Page</title>
 </head>
+
 <body>
 	<h1>Welcome <%= username %></h1>
+
 	<a href="/profile">Profile</a>
 	<a href="records">Records</a>
 	<a href="inventory">Inventory</a>
 	<a href="company">Company</a>
 	<a href="analytics">Analytics</a>
+
+	<button id="logout">Logout</button>
+	<script>
+		document.getElementById("logout").addEventListener('click', (e) => {
+			e.preventDefault()
+
+			fetch('/api/logout', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then(response => {
+					if (!response.ok) throw new Error("Logout Failure")
+					return response.json()
+				})
+				.then(data => {
+					console.log(data);
+					alert("Logout Success")
+					window.location.replace("/user-login")
+				})
+				.catch((err) => {
+					console.error('There was a problem with the fetch operation:', error);
+				})
+		})
+	</script>
 </body>
+
 </html>

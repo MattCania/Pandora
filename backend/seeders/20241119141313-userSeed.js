@@ -96,11 +96,10 @@ module.exports = {
 			},
 		]);
 	},
-
 	async down(queryInterface, Sequelize) {
-		await queryInterface.bulkDelete("UserAccounts", null, {});
 		await queryInterface.bulkDelete("Admins", null, {});
 		await queryInterface.bulkDelete("UserProfiles", null, {});
+		await queryInterface.bulkDelete("UserAccounts", null, {});
 		await queryInterface.sequelize.query('ALTER TABLE UserAccounts AUTO_INCREMENT = 1')
 		await queryInterface.sequelize.query('ALTER TABLE UserProfiles AUTO_INCREMENT = 1')
 		await queryInterface.sequelize.query('ALTER TABLE Admins AUTO_INCREMENT = 1')

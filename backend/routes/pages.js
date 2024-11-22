@@ -7,7 +7,12 @@ router.get("/", (req, res) => {
 });
 
 router.get("/user-login", (req, res) => {
-	res.render("login.ejs");
+	let username
+	if (req.session.userId) {
+		username = req.session.username
+	}
+
+	res.render("login.ejs", { loggedUser: username});
 });
 
 router.get("/user-register", (req, res) => {
@@ -25,8 +30,10 @@ router.get("/user/account-recovery", (req, res) => {
 	res.render("accountRecovery.ejs", { email: email });
 });
 
-router.get("/homepage", isAuthenticated, (req, res) => {
-	res.render("homepage.ejs", { username: req.session.username });
+router.get("/homepage", isAuthenticated, async (req, res) => {
+	const username = req.session.username;
+
+	res.render("homepage.ejs", { username: req.session.username});
 });
 
-module.exports = router;
+module.exports = router;		

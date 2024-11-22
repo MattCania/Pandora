@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Permissions.hasMany(models.RecordPermissions, {
-        foreignKey: 'accessId',
-        as: 'accessLevel',
+        foreignKey: 'accessLevel',
+        as: 'accessInfo',
         onDelete: 'CASCADE'
       })
     }
@@ -30,7 +30,16 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Permissions',
-    timestamps: false
+    timestamps: false,
+    hooks:{
+      afterDestroy: async () => {
+        try {
+          await sequelize.query(`ALTER TABLE Permissions AUTO_INCREMENT = 1`);
+        } catch (error) {
+          console.error('Error resetting AUTO_INCREMENT:', error);
+        }
+        }
+    }
   });
   return Permissions;
 };

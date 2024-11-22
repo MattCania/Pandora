@@ -46,7 +46,8 @@ app.use(
 );
 
 sequelize
-	.sync()
+  .sync()
+  // .sync({ force: true })
 	// .sync({ alter: true })
 	.then(() => {
 		console.log("Database synchronized successfully!");
@@ -61,11 +62,13 @@ sequelize
 const pageRoute = require('./routes/pages')
 app.use('/', pageRoute)
 
+const recordsRoute = require('./routes/records')
 const loginRoute = require("./routes/login");
 const sessionRoute = require("./routes/session")
 const registerRoute = require('./routes/register')
 const recoveryRoute = require('./routes/recovery')
 
+app.use('/api', recordsRoute)
 app.use("/api", loginRoute);
 app.use("/api", sessionRoute);
 app.use("/api", registerRoute)

@@ -13,11 +13,14 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "userId",
 				targetKey: "userId",
 				as: "userRoleId",
+				onDelete: "CASCADE",
 			});
 
 			UserRoles.belongsTo(models.Roles, {
 				foreignKey: "roleId",
+				targetKey: 'roleId',
 				as: "userRole",
+				onDelete: "CASCADE",
 			});
 		}
 	}
@@ -27,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				primaryKey: true,
 				references: {
-					foreignKey: "Roles",
+					model: "Roles",
 					key: "roleId",
 				},
 				onDelete: "CASCADE",
@@ -45,6 +48,15 @@ module.exports = (sequelize, DataTypes) => {
 			sequelize,
 			modelName: "UserRoles",
 			timestamps: false,
+			hooks:{
+				afterDestroy: async () => {
+					try {
+					  await sequelize.query(`ALTER TABLE UserRoles AUTO_INCREMENT = 1`);
+					} catch (error) {
+					  console.error('Error resetting AUTO_INCREMENT:', error);
+					}
+				  }
+			}
 		}
 	);
 	return UserRoles;

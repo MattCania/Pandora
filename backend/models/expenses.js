@@ -9,19 +9,21 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Expenses.belongsTo(models.TransactionRecords, {
-				foreignKey: "recordId",
-				as: "transactionId",
+				foreignKey: "expenseId",
+				targetKey: "recordId",
+				as: "expenseTransaction",
+				onDelete: "CASCADE",
 			});
 		}
 	}
 	Expenses.init(
 		{
-			expenseId: {
+			transactionId: {
 				type: DataTypes.INTEGER,
 				autoIncrement: true,
 				primaryKey: true,
 			},
-			recordId: {
+			expenseId: {
 				type: DataTypes.INTEGER,
 				references: {
 					model: "TransactionRecords",
@@ -146,11 +148,28 @@ module.exports = (sequelize, DataTypes) => {
 					max: 9999999,
 				},
 			},
+			createdAt: {
+			  type: DataTypes.DATE,
+			  defaultValue: DataTypes.NOW
+			},
+			updatedAt: {
+			  type: DataTypes.DATE,
+			  defaultValue: DataTypes.NOW
+			}
 		},
 		{
 			sequelize,
 			modelName: "Expenses",
 			timestamps: true,
+			hooks:{
+				afterDestroy: async () => {
+					try {
+					  await sequelize.query(`ALTER TABLE Expenses AUTO_INCREMENT = 1`);
+					} catch (error) {
+					  console.error('Error resetting AUTO_INCREMENT:', error);
+					}
+				  }
+			}
 		}
 	);
 	return Expenses;

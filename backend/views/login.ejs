@@ -21,7 +21,12 @@
 
 	</form>
 
-	<button id="logout">Logout</button>
+	<% const username = loggedUser ? loggedUser : null %>
+	<% if(username) {%>
+		<a href="/homepage"><%= username %> already logged in</a>
+	<% } %>
+
+
 	<a href="/user-register">Register Page</a>
 	<a href="/user/forgot-password">Forgot Password</a>
 
@@ -59,26 +64,7 @@
 				})
 		})
 
-		document.getElementById("logout").addEventListener('click', (e) => {
-			e.preventDefault()
-
-			fetch('/api/logout', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
-				.then(response => {
-					if (!response.ok) throw new Error("Logout Failure")
-					return response.json()
-				})
-				.then(data => {
-					console.log(data);
-				})
-				.catch((err) => {
-					console.error('There was a problem with the fetch operation:', error);
-				})
-		})
+		
 
 	</script>
 </body>
