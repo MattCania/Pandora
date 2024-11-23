@@ -4,7 +4,6 @@ require('express-async-errors');
 const session = require("express-session");
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const cors = require("cors");
-const path = require("path");
 const helmet = require("helmet");
 const { sequelize } = require('./models')
 
@@ -20,17 +19,12 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, "public")));
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-
-
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(
   session({
@@ -46,9 +40,9 @@ app.use(
 );
 
 sequelize
-  // .sync()
+  .sync()
   // .sync({ force: true })
-	.sync({ alter: true })
+	// .sync({ alter: true })
 	.then(() => {
 		console.log("Database synchronized successfully!");
 	})
@@ -56,12 +50,7 @@ sequelize
 		console.error("Error synchronizing the database:", error);
 	});
 
-
-
 // Routes and Controllers
-const pageRoute = require('./routes/pages')
-app.use('/', pageRoute)
-
 const recordsRoute = require('./routes/records')
 const loginRoute = require("./routes/login");
 const sessionRoute = require("./routes/session")

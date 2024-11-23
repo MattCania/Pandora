@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const { UserAccounts, UserProfiles } = require("../models");
 
-// Default Login mechanism, validates email, then compare password
 const handleLogin = async (req, res) => {
 	const { email, password } = req.body;
 
@@ -31,7 +30,6 @@ const handleLogin = async (req, res) => {
 				profileId: userId
 			}
 		})
-
 
 		if (!profile) throw new Error("Error Email Profile")
 

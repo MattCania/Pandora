@@ -11,12 +11,9 @@ const authRecovery = async (req, res) => {
 			},
 		});
 
-		if (!user) {
-			throw new Error("Invalid Request");
-		}
-
-		res.status(200).json({message: "Successful Email Confirmation", redirectUrl: `/user/account-recovery?email=${encodeURIComponent(email)}`})
+		if (!user) throw new Error("Invalid Request");
 		
+		res.status(200).json({message: "Successful Email Confirmation"})
 	} catch (err) {
 		return res.status(500).json({ error: err.message });
 	}
@@ -24,7 +21,8 @@ const authRecovery = async (req, res) => {
 }
 
 const handleRecovery = async (req, res) => {
-	const { email, password, confirmpassword} = req.body
+	const email = req.params.email
+	const { password, confirmpassword } = req.body
 	const salt = await bcrypt.genSalt(10)
 
 	if (password !== confirmpassword) return res.status(401).json({message: "Password Mismatch"})

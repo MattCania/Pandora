@@ -3,6 +3,6 @@ const router = express.Router()
 
 const recordsController = require('../controllers/recordsController')
 
-router.get('/get-transactions/:user', recordsController.getRecords);
+router.get('/records/:user', recordsController.getRecords);
 
 module.exports = router;

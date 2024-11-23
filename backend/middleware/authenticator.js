@@ -2,7 +2,7 @@ function isAuthenticated(req, res, next) {
   if (req.session.userId) {
     next();
   } else {
-    res.redirect('/user-login')
+    res.status(401).json({message: "Invalid Credentials"})
   }
 }
 module.exports = isAuthenticated;
