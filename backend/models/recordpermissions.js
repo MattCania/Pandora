@@ -22,12 +22,13 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'CASCADE'
 			});
 
-			RecordPermissions.belongsTo(models.UserAccounts, {
+
+			RecordPermissions.belongsTo(models.UserProfiles, {
 				foreignKey: "permittedUser",
-				targetKey: "userId",
-				as: "creatorId",
+				targetKey: "profileId",
+				as: "userProfiles", 
 				onDelete: 'CASCADE'
-			});
+			  });
 		}
 	}
 	RecordPermissions.init(
@@ -48,8 +49,8 @@ module.exports = (sequelize, DataTypes) => {
 			permittedUser: {
 				type: DataTypes.INTEGER,
 				references: {
-					model: "UserAccounts",
-					key: "userId",
+					model: "UserProfiles",
+					key: "profileId",
 					onDelete: "CASCADE",
 				},
 			},

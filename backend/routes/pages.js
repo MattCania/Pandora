@@ -1,5 +1,6 @@
 const express = require("express");
 const isAuthenticated = require("../middleware/authenticator");
+const recordsRouter = require("../routes/records");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -7,12 +8,12 @@ router.get("/", (req, res) => {
 });
 
 router.get("/user-login", (req, res) => {
-	let username
+	let username;
 	if (req.session.userId) {
-		username = req.session.username
+		username = req.session.username;
 	}
 
-	res.render("login.ejs", { loggedUser: username});
+	res.render("login.ejs", { loggedUser: username });
 });
 
 router.get("/user-register", (req, res) => {
@@ -30,10 +31,28 @@ router.get("/user/account-recovery", (req, res) => {
 	res.render("accountRecovery.ejs", { email: email });
 });
 
+router.use('/api', recordsRouter)
+
 router.get("/homepage", isAuthenticated, async (req, res) => {
 	const username = req.session.username;
+	const userId = req.session.userId;
 
-	res.render("homepage.ejs", { username: req.session.username});
+	try {
+		const response = await fetch(`http://localhost:5000/api/get-transactions/${userId}`);
+
+		const data = await response.json();
+
+		if (response.ok && data.results) {
+			const result = data.results;
+			res.render("homepage.ejs", { username: username, records: result });
+		} else {
+			console.error("Error fetching records:", data.message);
+			res.status(500).send("Error fetching records");
+		}
+	} catch (error) {
+		console.error("Error fetching records:", error.message);
+		res.status(500).send("Error fetching records");
+	}
 });
 
-module.exports = router;		
+module.exports = router;

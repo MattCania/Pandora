@@ -12,33 +12,28 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			UserAccounts.hasOne(models.UserProfiles, {
 				foreignKey: "profileId",
-				as: "profileDetails",
+				as: "accountProfile",
 				onDelete: "CASCADE",
 			});
 
 			UserAccounts.hasOne(models.UserRoles, {
 				foreignKey: "userId",
-				as: "roleId",
+				as: "accountRole",
 				onDelete: "CASCADE",
 			});
 
 			UserAccounts.hasMany(models.TransactionRecords, {
 				foreignKey: "creatorId",
-				as: "creatorInfo",
+				as: "accountRecord",
 				onDelete: "CASCADE",
 			});
 
 			UserAccounts.hasOne(models.Admins, {
 				foreignKey: "accountId",
-				as: "adminDetails",
+				as: "accountAdmin",
 				onDelete: "CASCADE",
 			});
 
-			UserAccounts.hasMany(models.RecordPermissions, {
-				foreignKey: "permittedUser",
-				as: "permitId",
-				onDelete: "CASCADE",
-			});
 		}
 	}
 	UserAccounts.init(

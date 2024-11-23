@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
 			UserRoles.belongsTo(models.UserAccounts, {
 				foreignKey: "userId",
 				targetKey: "userId",
-				as: "userRoleId",
+				as: "roleAccount",
 				onDelete: "CASCADE",
 			});
 
 			UserRoles.belongsTo(models.Roles, {
 				foreignKey: "roleId",
 				targetKey: 'roleId',
-				as: "userRole",
+				as: "role",
 				onDelete: "CASCADE",
 			});
 		}

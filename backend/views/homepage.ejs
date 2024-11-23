@@ -10,6 +10,27 @@
 <body>
 	<h1>Welcome <%= username %></h1>
 
+	<table>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Record Type</th>
+				<th>Record Name</th>
+				<th>Access Type</th>
+			</tr>
+		</thead>
+		<tbody>
+				<% records.forEach((item, index) => { %>
+				<tr>
+					<td><%= index+1 %></td>
+					<td><%= item.transactionId.recordType %></td>	
+					<td><%= item.transactionId.recordName %></td>	
+					<td><%= item.userAccess.accessType %></td>	
+				</tr>
+				<%});%>
+			</tbody>
+		</table>
+
 	<a href="/profile">Profile</a>
 	<a href="records">Records</a>
 	<a href="inventory">Inventory</a>

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       TransactionRecords.hasMany(models.RecordPermissions, {
         foreignKey: 'recordId',
-        as: 'recordPermissions',
+        as: 'transactionId',
         onDelete: 'CASCADE'
       })
 
@@ -28,11 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       })
 
-      // Foreign Key in use
       TransactionRecords.belongsTo(models.UserAccounts, {
         foreignKey: 'creatorId',
         targetKey: 'userId',
-        as: 'creatorInfo',
+        as: 'creatorAccount',
         onDelete: 'CASCADE'
       })
 

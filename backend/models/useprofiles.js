@@ -14,9 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       UserProfiles.belongsTo(models.UserAccounts, {
         foreignKey: 'profileId',
         targetKey: 'userId',
-        as: 'accountDetails',
+        as: 'profileAccount',
         onDelete: 'CASCADE'
       })
+
+      UserProfiles.hasMany(models.RecordPermissions, {
+        foreignKey: 'permittedUser',
+        sourceKey: 'profileId',      
+        as: 'profilePermission',
+        onDelete: 'CASCADE'
+      });
+
+
     }
   }
   UserProfiles.init({
@@ -35,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        is: /^[a-zA-Z\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 25]
       }
     },
@@ -43,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate:{
+        is: /^[0-9\-\+\s]*$/,
         len: [7, 15]
       }
     },
@@ -57,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[a-zA-Z0-9\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [3, 25]
       }
     },
@@ -65,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[a-zA-Z0-9\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 50]
       }
     },
@@ -73,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[a-zA-Z0-9\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 50]
       }
     },
@@ -81,7 +91,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[a-zA-Z0-9\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 50]
       }
     },
@@ -89,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[a-zA-Z0-9\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 50]
       }
     },
@@ -97,7 +107,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[a-zA-Z0-9\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 50]
       }
     },
@@ -105,7 +115,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[a-zA-Z0-9\s]*$/i,
+        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 50]
       }
     },
