@@ -6,7 +6,7 @@ function Confirmation() {
 	const navigate = useNavigate()
 
 	// Defaultform Values
-	const [formValues, setFormValues] = useState({ email: ""});
+	const [formValues, setFormValues] = useState({ email: "" });
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target
@@ -34,7 +34,8 @@ function Confirmation() {
 			})
 
 			if (!response.ok) throw new Error("Error Confirming Account")
-				navigate(`/change-password/${formData.email}`)
+			console.log("Successfully Confirmed Email")
+			navigate(`/change-password/${formData.email}`)
 
 		} catch (error) {
 			console.error("Error:", error)
@@ -43,12 +44,12 @@ function Confirmation() {
 
 	return (
 		<>
-		<form>
-			<h1>Enter Recovery Email</h1>
-			<input type="email" name="email" id="email" placeholder="Email" onChange={handleInputChange} />
+			<form>
+				<h1>Enter Recovery Email</h1>
+				<input type="email" name="email" id="email" placeholder="Email" onChange={handleInputChange} />
 
-			<input type="submit" value="submit" onClick={handleSubmit} />
-		</form>
+				<input type="submit" value="submit" onClick={handleSubmit} />
+			</form>
 		</>
 
 	)

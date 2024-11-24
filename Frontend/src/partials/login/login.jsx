@@ -64,7 +64,7 @@ function Login() {
 
 	return (
 		<>
-		{isAuth ? (<a href="/home">User Already Logged In</a>) : <></> }
+		{isAuth && <a href="/home">User Already Logged In</a> }
 		<form>
 			<h1>Log In</h1>
 			<input type="email" name="email" id="email" placeholder="Email" onChange={handleInputChange} />
