@@ -1,9 +1,4 @@
-const {
-	RecordPermissions,
-	TransactionRecords,
-	UserProfiles,
-	Permissions,
-} = require("../models");
+const { RecordPermissions, TransactionRecords, UserProfiles, Permissions } = require("../models");
 
 const getRecords = async (req, res) => {
 	const userId = req.params.user;
@@ -39,17 +34,17 @@ const getRecords = async (req, res) => {
 
 const createRecord = async (req, res) => {
 	const userId = req.session.userId;
-	const { creatorId, recordType, recordName } = req.body;
+	const { creatorId, recordType, recordName, creationDate } = req.body;
 
 	try {
 		const results = await TransactionRecords.create({
 			creatorId: creatorId || userId,
 			recordType: recordType,
 			recordName: recordName,
-			createdAt: createdAt || new DATE(),
-			updatedAt: new DATE() 
+			createdAt: creationDate || new DATE(),
+			updatedAt: new Date() 
 		});
-		if (!results.ok) throw new Error("Record Creation Failure")
+		if (!results) throw new Error("Record Creation Failure")
 
 		res.status(200).json({message: "Successful Record Creation", results})
 	} catch (err) {
@@ -67,11 +62,10 @@ const updateRecord = async (req, res) => {
 			creatorId: creatorId || userId,
 			recordType: recordType,
 			recordName: recordName,
-			createdAt: createdAt || new DATE(),
 			updatedAt: new DATE() 
 		});
 
-		if (!results.ok) throw new Error("Record Update Failure")
+		if (!results) throw new Error("Record Update Failure")
 
 		res.status(200).json({message: "Successful Record Changes", results})
 	} catch (err) {

@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");	// For comparing hashed and unhashed password
 const { UserAccounts, UserProfiles } = require("../models");
 
 const handleLogin = async (req, res) => {
@@ -6,9 +6,7 @@ const handleLogin = async (req, res) => {
 
 	try {
 		const user = await UserAccounts.findOne({
-			where: {
-				email: email,
-			},
+			where: { email: email },
 		});
 
 		if (!user) {
@@ -18,17 +16,12 @@ const handleLogin = async (req, res) => {
 		
 		const userId = user.userId
 		const hashedPassword = user.securedPassword;
-
 		const isMatch = await bcrypt.compare(password, hashedPassword);
-		
-    	if (!isMatch) {
-			throw new Error("Invalid Credentials");
-		}
+
+    	if (!isMatch) throw new Error("Invalid Credentials");
 
 		const profile = await UserProfiles.findOne({
-			where:{
-				profileId: userId
-			}
+			where:{ profileId: userId }
 		})
 
 		if (!profile) throw new Error("Error Email Profile")
@@ -40,7 +33,7 @@ const handleLogin = async (req, res) => {
 		return res.status(200).json({ message: "Successful Log In" });
 	} catch (err) {
 		req.session.destroy();
-		return res.status(500).json({ error: err.message });
+		return res.status(500).json({ message: "Server Error", error: err.message });
 	}
 };
 

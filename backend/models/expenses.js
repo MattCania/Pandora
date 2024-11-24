@@ -108,6 +108,14 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: true,
 				},
 			},
+			debit: { 
+			  type: DataTypes.DECIMAL,
+			  allowNull: false,
+			  defaultValue: 0.00,
+			  validate: {
+				notEmpty: true
+			  } 
+			},
 			currency: {
 				type: DataTypes.STRING,
 				allowNull: false,
