@@ -17,6 +17,10 @@ function ConfirmEmail() {
 		}))
 	}
 
+	const storeSensitiveData = (email) => {
+	  sessionStorage.setItem("email", email);
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 
@@ -36,7 +40,8 @@ function ConfirmEmail() {
 
 			if (!response.ok) throw new Error("Invalid Account Input")
 			console.log("Successfully Confirmed Email")
-			navigate(`new-password/${formData.email}`)
+			storeSensitiveData(formData.email)
+			navigate(`new-password`)
 
 		} catch (error) {
 			setError(error.message)

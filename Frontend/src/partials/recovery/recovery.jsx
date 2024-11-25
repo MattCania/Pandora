@@ -19,7 +19,7 @@ function Recovery(){
 				</a>
 				<Routes>
             		<Route path="/" element={<ConfirmEmail />} />
-            		<Route path="/new-password/:email" element={<ChangePassword />} />
+            		<Route path="/new-password" element={<ChangePassword />} />
          		</Routes>
 			</div>
 

@@ -12,6 +12,8 @@ function Login() {
 	const [isAuth, setAuth] = useState(false)
 	const user = GetSession()
 
+	sessionStorage.clear()
+
 	// Prompt
 	const [showPrompt, setShowPrompt] = useState(false);
 	const [errMessage, setError] = useState(null)
@@ -62,7 +64,6 @@ function Login() {
 			})
 
 			if (!response.ok) throw new Error("Invalid Credentials")
-			alert("Login Successful")
 			navigate('/home')
 		} catch (error) {
 			setError(error.message)

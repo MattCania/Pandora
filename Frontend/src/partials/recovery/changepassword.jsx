@@ -6,8 +6,10 @@ import Prompt from "../../components/prompt/prompt";
 
 function ChangePassword() {
 	const navigate = useNavigate()
-	const { email } = useParams()
+	const email = sessionStorage.getItem("email")
 
+	if (!email) navigate('/login')
+	
 	// Prompt Functions
 	const [showPrompt, setShowPrompt] = useState(false);
 	const [errMessage, setError] = useState(null)
@@ -58,6 +60,7 @@ function ChangePassword() {
 
 			if (!response.ok) throw new Error("Account Recovery Failure")
 			console.log("Successful Password Change")
+			sessionStorage.removeItem("email");
 			navigate('/login')
 		} catch (error) {
 			setError(error.message)

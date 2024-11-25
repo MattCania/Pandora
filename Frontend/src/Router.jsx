@@ -3,6 +3,7 @@ import Login from './partials/login/login';
 import Register from './partials/register/register';
 import Records from './partials/records/records';
 import Recovery from './partials/recovery/recovery';
+import Home from './pages/home/home';
 
 function RouterApp() {
 	return (
@@ -10,7 +11,7 @@ function RouterApp() {
 			<Route path="/" element={<Navigate to="/login" replace />} />
 			<Route path="/login" element={<Login />} />
 			<Route path='/register' element={<Register/>} />
-			<Route path='/home' element={<Records/>} />
+			<Route path='/home' element={<Home/>} />
 			<Route path='/recovery/*' element={<Recovery/>}/>
 			
 		</Routes>
