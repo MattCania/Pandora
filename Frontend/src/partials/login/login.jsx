@@ -1,11 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import GetSession from "../../hooks/GetSession"
+import styles from './login.module.css'
+import Logo from '/src/assets/MainLogo.svg'
 
 function Login() {
 	const navigate = useNavigate()
 	const [isAuth, setAuth] = useState(false)
 	const user = GetSession()
+
+	// Prompt
+	const [showPrompt, setShowPrompt] = useState(false);
+	const [errMessage, setError] = useState(null)
+	const timeoutRef = useRef(null);
 
 	// Authenticate if already logged in
 	useEffect(() => {
@@ -51,30 +61,64 @@ function Login() {
 				credentials: "include",
 			})
 
-			if (response.ok) {
-				alert("Login Successful")
-				navigate('/home')
-			} else {
-				alert("Login Unsuccessful")
-			}
+			if (!response.ok) throw new Error("Invalid Credentials")
+			alert("Login Successful")
+			navigate('/home')
 		} catch (error) {
+			setError(error.message)
+			setShowPrompt(true);
+			
 			console.error("Error:", error)
+
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+
+			timeoutRef.current = setTimeout(() => {
+				setShowPrompt(false);
+			}, 2000);
 		}
 	}
 
 	return (
-		<>
-		{isAuth && <a href="/home">User Already Logged In</a> }
-		<form>
-			<h1>Log In</h1>
-			<input type="email" name="email" id="email" placeholder="Email" onChange={handleInputChange} />
-			<input type={visible ? "text" : "password"} name="password" id="password" placeholder="Password" onChange={handleInputChange} />
-			<button type="button" onClick={setVisibility}>SetVisibility: {!visible}</button>
+		<section className={styles.section}>
+			<div className={styles.leftImage}></div>
 
-			<input type="submit" value="submit" onClick={handleSubmit} />
-		</form>
-		</>
+			<div className={styles.middleSection}>
+				<a href="/">
+					<img className={styles.formLogo} src={Logo} alt="" draggable="false" />
+				</a>
+				<form className={styles.form}>
 
+				{showPrompt && <p style={{color: 'red', fontWeight: 'bold', margin: '0'}}>{errMessage}</p>}
+					<h3>Log In Account</h3>
+
+					<div className={styles.gmailDiv}>
+						<a href="" target="_blank">Google Sign In</a>
+						<span><FontAwesomeIcon icon={faGoogle} /></span>
+					</div>
+
+					<h4>or</h4>
+					<input type="email" name="email" id="email" placeholder="Email" onChange={handleInputChange} required />
+
+					<div className={styles.passwordDiv}>
+						<input type={visible ? "text" : "password"} name="password" id="password" placeholder="Password" onChange={handleInputChange} required />
+						<button type="button" onClick={setVisibility}>
+							{visible ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+						</button>
+					</div>
+
+
+					<input type="submit" value="Log In" onClick={handleSubmit} />
+				</form>
+				<div className={styles.accountOptions}>
+					<a href="/register">Dont have an Account?</a>
+					<a href="/recovery">Forgot Password?</a>
+				</div>
+			</div>
+
+			<div className={styles.rightImage}></div>
+		</section>
 	)
 }
 

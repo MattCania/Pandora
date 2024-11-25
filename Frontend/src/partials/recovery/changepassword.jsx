@@ -1,18 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import Prompt from "../../components/prompt/prompt";
 
 function ChangePassword() {
 	const navigate = useNavigate()
 	const { email } = useParams()
+
+	// Prompt Functions
+	const [showPrompt, setShowPrompt] = useState(false);
+	const [errMessage, setError] = useState(null)
+	const timeoutRef = useRef(null)
+
 	// Defaultform Values
 	const [formValues, setFormValues] = useState({ password: "", confirmpassword: "" });
 
 	// Password Visibility Function
-	const [visible, setVisible] = useState(false);
+	const [passVisible, setPassVisible] = useState(false);
+	const [confirmVisible, setConfirmVisible] = useState(false);
 
-	const setVisibility = () => {
-		setVisible((visible) => !visible)
-	}
+	const togglePassVisibility = () => {
+		setPassVisible(prev => !prev);
+	};
+
+	const toggleConfirmVisibility = () => {
+		setConfirmVisible(prev => !prev);
+	};
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target
@@ -32,6 +46,7 @@ function ChangePassword() {
 
 		try {
 			if (formData.password !== formData.confirmpassword) throw new Error("New Password Mismatch")
+			if (formData.password.length === 0 || formData.confirmpassword.length === 0) throw new Error("Invalid Input")
 			const response = await fetch(`/api/recover-email/${email}`, {
 				method: "POST",
 				headers: {
@@ -43,22 +58,40 @@ function ChangePassword() {
 
 			if (!response.ok) throw new Error("Account Recovery Failure")
 			console.log("Successful Password Change")
+			navigate('/login')
 		} catch (error) {
+			setError(error.message)
+			setShowPrompt(true)
 			console.error("Error:", error)
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+
+			timeoutRef.current = setTimeout(() => {
+				setShowPrompt(false);
+			}, 2000);
 		}
 	}
 
 	return (
-		<>
 		<form>
-			<h1>New Password</h1>
-			<input type={visible ? "text" : "password"} name="password" id="password" placeholder="Password" onChange={handleInputChange} />
-			<input type={visible ? "text" : "password"} name="confirmpassword" id="confirmpassword" placeholder="Confirm Password" onChange={handleInputChange} />
-			<button type="button" onClick={setVisibility}>SetVisibility: {!visible}</button>
+			{showPrompt && <p style={{color: 'red', fontWeight: 'bold', margin: '0'}}>{errMessage}</p>}
+			<h4>Enter New Password</h4>
+			<div>
+				<input type={passVisible ? "text" : "password"} name="password" id="password" placeholder="Password" onChange={handleInputChange} required/>
+				<button type="button" onClick={togglePassVisibility}>
+					{passVisible ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+				</button>
+			</div>
+			<div>
+				<input type={confirmVisible ? "text" : "password"} name="confirmpassword" id="confirmpassword" placeholder="Password" onChange={handleInputChange} required/>
+				<button type="button" onClick={toggleConfirmVisibility}>
+					{confirmVisible ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+				</button>
+			</div>
 
-			<input type="submit" value="submit" onClick={handleSubmit} />
+			<input type="submit" value="Change Password" onClick={handleSubmit} />
 		</form>
-		</>
 
 	)
 }

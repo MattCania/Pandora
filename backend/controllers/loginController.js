@@ -10,7 +10,6 @@ const handleLogin = async (req, res) => {
 		});
 
 		if (!user) {
-			req.session.destroy();
 			throw new Error("Invalid Credentials");
 		}
 		

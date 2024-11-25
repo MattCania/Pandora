@@ -4,11 +4,33 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --background-color: #F1F1F1;
+  --green:#36AF57;
+  --primary: #E0E0E0;
+  --secondary: #555555;
+  --tertiary: #3A3A3A;
+  --textdark: #000000bf;
+  --textlight: #f1f1f1;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* .dark-theme{
+  --background-color: #3A3A3A;
+  --green:#36AF57;
+  --primary: #3A3A3A;
+  --secondary: #555555;
+  --tertiary: #e0e0e0;
+  --textdark: #f1f1f1;
+  --textlight: rgb(0,0,0,75%);
+} */
+
+input:-webkit-autofill {
+  color: var(--textdark) !important;
+  caret-color: var(--textdark) !important; 
+  -webkit-text-fill-color: var(--textdark) !important; 
+  font-weight: bold;
 }

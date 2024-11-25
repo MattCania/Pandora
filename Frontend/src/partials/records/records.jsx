@@ -32,7 +32,7 @@ function Records() {
 
 			if (!response.ok) throw new Error("Logout Failed")
 			console.log("Logged out successfully");
-			navigate("/user-login");
+			navigate("/login");
 
 		} catch (error) {
 			console.error("Error during logout:", error);

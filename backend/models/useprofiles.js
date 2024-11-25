@@ -63,6 +63,14 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true
       }
     },
+    country:{
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        is: /^[a-zA-Z\s\-\']*$/i,
+        len: [3, 25]
+      }
+    },
     jobTitle: {
       type: DataTypes.STRING,
       allowNull: true,

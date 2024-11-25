@@ -1,0 +1,64 @@
+.section{
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+	backdrop-filter: blur(10px); /* Apply blur effect to the background */
+	-webkit-backdrop-filter: blur(10px); /* For Safari support */
+	z-index: 1;
+}
+
+.promptDiv{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+
+.promptMessage{
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-items: center;
+	border-radius: 15px;
+	width: 24em;
+	height: auto;
+	min-height: 10em;
+	background-color: var(--background-color);
+}
+
+.promptMessage h1{
+	margin: 0;
+}
+
+.promptMessage h2{
+	text-wrap: wrap;
+	text-align: center;
+	color: var(--textdark);
+	margin: 0;
+	width: 90%;
+}
+
+.closeButton{
+	border-radius: 15px;
+	width: 100%;
+	height: 2em;
+	margin: 0;
+	padding: 0;
+}
+
+.closeButton button{
+	height: 2em;
+	width: 2em;
+	margin: 0px -10px; 
+	border-radius: 50%;
+	transition: all 500ms;
+}
+
+.closeButton button:hover{
+	background-color: var(--primary);
+	transition: all 500ms;
+}
