@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { faAngleLeft, faHouse, faFolderOpen, faBox, faBuilding, faChartLine, faBank } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '/src/assets/MainLogo.svg'
@@ -16,14 +16,14 @@ function Aside() {
 		</header>
 		<section className={styles.section}>
 			<div className={styles.buttonSection}>
-				<Link to=""><FontAwesomeIcon icon={faHouse}/>Home</Link>
-				<Link to=""><FontAwesomeIcon icon={faFolderOpen}/>Records</Link>
-				<Link to=""><FontAwesomeIcon icon={faBox}/>Inventory</Link>
+				<NavLink to="" end className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faHouse}/>Home</NavLink>
+				<NavLink to="records" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faFolderOpen}/>Records</NavLink>
+				<NavLink to="inventory" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBox}/>Inventory</NavLink>
 				<hr />
 				
-				<Link to=""><FontAwesomeIcon icon={faChartLine}/>Analytics</Link>
-				<Link to=""><FontAwesomeIcon icon={faBuilding}/>Company</Link>
-				<Link to=""><FontAwesomeIcon icon={faBank}/>Banking</Link>
+				<NavLink to="analytics" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faChartLine}/>Analytics</NavLink>
+				<NavLink to="company" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBuilding}/>Company</NavLink>
+				<NavLink to="banking" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBank}/>Banking</NavLink>
 			</div>
 
 			<button className={styles.closeButton}>

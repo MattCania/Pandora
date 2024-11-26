@@ -99,3 +99,9 @@
 	color: var(--primary);
 	transition: all 500ms;
 }
+
+.active{
+	background-color: var(--green) !important;
+	color: var(--textlight) !important;
+	border: 1px solid var(--green) !important;
+}

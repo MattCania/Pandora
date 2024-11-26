@@ -1,4 +1,10 @@
 body{
   background-color: var(--background-color);
   margin: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
 }

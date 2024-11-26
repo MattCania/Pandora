@@ -1,0 +1,57 @@
+.section{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	min-height: 100vh;
+	height: 2000px;
+}
+
+.welcomeHeader{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 1em;
+	margin: 1em;
+	width: 98%;
+	border-radius: 15px;
+	background-color: var(--background-color);
+	box-shadow: 0px 2px 2px var(--textdark);
+}
+
+.welcomeHeader h1{
+	margin: 0;
+	font-size: 1.5em;
+	color: var(--textdark);
+}
+
+.welcomeHeader p{
+	font-size: 1em;
+	margin: 0;
+	color: var(--textdark);
+}
+
+.firstSection{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1em;
+	width: 98%;
+	height: auto;
+}
+
+.secondSection{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1em;
+	width: 98%;
+	height: auto;
+}
+
+.footerSection{
+	height: auto;
+	width: 100%;
+}
