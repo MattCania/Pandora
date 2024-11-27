@@ -3,11 +3,9 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	width: calc(100vw - 16vw);
-	flex: 1;
+	width: 100%;
 	height: 8vh;
 	background-color: var(--tertiary);
-	position: fixed;
 }
 
 .createButton{
@@ -35,7 +33,7 @@
 
 .section{
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	align-items: center;
 	width: 50%;
 	height: 100%;
@@ -43,7 +41,6 @@
 
 .ad{
 	display: flex;
-	flex: 1;
 	justify-content: center;
 	align-items: center;
 	margin: 2px;
@@ -69,7 +66,6 @@
 
 .organization{
 	display: flex;
-	flex: 2;
 	justify-content: space-around;
 	align-items: center;
 	margin: 2px;
@@ -77,12 +73,30 @@
 	color: var(--textlight);
 	gap: 10px;
 	height: 75%;
-	width: 10em;
-	border-radius: 5px;
+	width: 40%;
+	padding: 0 1em;
 	transition: all 500ms;
 	border-right: 1px solid var(--secondary);
 	border-left: 1px solid var(--secondary);
 }
+
+.organization p {
+	text-align: center;
+	width: 70%;
+	white-space: nowrap;
+	overflow: hidden;         
+	text-overflow: ellipsis;
+	transition: all 500ms;
+}
+
+.organization:hover{
+	width: 60%;
+}
+.organization p:hover{
+	width: 100%;
+	transition: all 500ms;
+}
+
 
 .organization button{
 	height: 2em;
@@ -100,11 +114,12 @@
 	transition: all 500ms;
 }
 
+
+
 .options{
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	flex: 1;
 }
 
 .options button{

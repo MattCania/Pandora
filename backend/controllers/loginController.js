@@ -28,7 +28,7 @@ const handleLogin = async (req, res) => {
 		req.session.userId = user.userId;
 		req.session.email = user.email;
 		req.session.username = profile.userName;
-
+		
 		return res.status(200).json({ message: "Successful Log In" });
 	} catch (err) {
 		req.session.destroy();

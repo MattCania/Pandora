@@ -1,0 +1,208 @@
+.aside{
+	position: fixed;
+	right: 0;
+	top: 8vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: calc(100vh - 8vh);
+	width: 30%;
+	background-color: var(--background-color);
+	border-left: .5px inset var(--textdark);
+	overflow-y: auto;
+}
+
+.aside hr{
+	color: var(--textdark);
+	width: 95%;
+	margin: 0;
+}
+
+.accountSection{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	padding: 1em 1em;
+	flex: 1;
+}
+
+.profileButton{
+	cursor: pointer;
+	width: 2.5em;
+	height: 2.5em;
+	border-radius: 15px;
+	outline: none;
+	border: none;
+	font-size: 2em;
+	margin: 0;
+	transition: all 250ms;
+}
+
+.profileButton:hover{
+	background-color: var(--primary);
+	color: var(--textdark);
+	transition: all 250ms;
+}
+
+.accountDiv{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 0;
+	min-height: 5em;
+	height: auto;
+	width: calc(100% - 6em);
+	padding: 0 1em;
+	margin: 0;
+}
+
+.accountDiv h1{
+	color: var(--textdark);
+	flex: 1;
+	font-size: 1.5em;
+	margin: 0;
+	height: 2em;
+	white-space: nowrap;
+	overflow: hidden;         
+	text-overflow: ellipsis;
+	transition: all 250ms;
+}
+
+.accountDiv h1:hover{
+	transition: all 250ms;
+	overflow: visible;
+}
+
+.accountDiv p{
+	color: var(--textdark);
+	flex: 1;
+	font-size: .75em;
+	margin: 0;
+}
+
+.accountButtons{
+	flex: .5;
+	display: flex;
+	justify-content: space-between;
+}
+
+.accountButtons a{
+	font-size: 1em;
+	font-size: 14px;
+	font-weight: bold;
+	text-decoration: none;
+	color: var(--green);
+	transition: all 250ms;
+}
+
+.accountButtons a:hover{
+	transition: all 250ms;
+	color: var(--textdark);
+}
+
+.accountButtons button{
+	font-size: 14px;
+	cursor: pointer;
+	height: 100%;
+	background-color: transparent;
+	color: var(--textdark);
+	border: 0;
+	outline: 0;
+	font-weight: bold;
+	transition: all 250ms;
+}
+
+.accountButtons button:hover{
+	color: var(--green);
+	transition: all 250ms;
+}
+
+.departmentSection{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0;
+	color: var(--textdark);
+	width: 100%;
+	flex: 1;
+	padding: 0 1em;
+}
+
+.departmentSection h1{
+	font-size: 1.5em;
+	margin: 0;
+}
+
+.departmentSection h2{
+	margin: 0;
+	font-size: 1em;
+	font-weight: 250;
+}
+
+.links{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: .25em 1em;
+	width: 100%;
+	font-size: 14px;
+	flex: 1.5;
+}
+
+.links div{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.links a{
+	color: var(--textdark);
+	text-decoration: none;
+	transition: all 250ms;
+}
+
+.links a:hover{
+	color: var(--green);
+	transition: all 250ms;
+}
+
+.qrSection{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0;
+	width: 100%;
+	padding: 0em 1em;
+	flex: 1;
+}
+
+.qrSection h2{
+	font-size: 1em;
+	width: 100%;
+	margin: 0;
+	color: var(--textdark);
+}
+
+.qrDivSection{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 75%;
+	margin: .5em 0;
+}
+
+.qrDiv{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80%;
+	color: var(--textdark);
+	font-size: 2em;
+}
+
+.qrDiv img{
+	width: 3em;
+	margin: 0 .25em;
+}

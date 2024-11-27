@@ -3,10 +3,56 @@
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	flex: 1;
-	width: 16vw;
+	width: 20%;
 	height: 100vh;
+	transition: all 500ms;
 	border-right: 0.5px inset var(--secondary);
+}
+
+.asideClose{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 3em;
+	height: 100vh;
+	transition: all 500ms;
+	border-right: 0.5px inset var(--secondary);
+}
+
+.asideClose .buttonSection{
+	margin: 1em 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1em;
+	height: auto;
+	min-height: 50%;
+	width: 100%;
+	transition: all 500ms;
+}
+
+
+.asideClose .buttonSection a{
+	height: 6vh;
+	width: 90%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1em;
+	border-radius: 10px;
+	padding: 0 8px;
+	border: 1px solid var(--secondary);
+	color: var(--textdark);
+	font-weight: bold;
+	text-decoration: none;
+	box-shadow: 0px 2px 4px var(--textdark);
+	transition: all 500ms;
+}
+
+.asideClose header{
+	justify-content: center;
 }
 
 .header{
@@ -47,6 +93,7 @@
 	height: auto;
 	min-height: 50%;
 	width: 100%;
+	transition: all 500ms;
 }
 
 .buttonSection hr{

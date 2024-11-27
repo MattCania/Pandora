@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
 			RecordPermissions.belongsTo(models.TransactionRecords, {
 				foreignKey: "recordId",
 				targetKey: 'recordId',
-				as: "transactionId",
+				as: "transactionPermission",
 				onDelete: 'CASCADE'
 			});
 

@@ -12,10 +12,8 @@ const GetSession = () => {
 			credentials: "include", // If you need to send cookies with the request
 		  });
   
-		  if (!response.ok) {
-			throw new Error("Session Undefined or Empty");
-		  }
-  
+		  if (!response.ok) throw new Error("Session Undefined or Empty");
+		 
 		  const data = await response.json();
 		  setUser(data); // Update user data
   

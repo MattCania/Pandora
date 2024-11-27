@@ -9,7 +9,7 @@ defaults.maintainAspectRatio = true
 function TransactionOverview() {
 	const chartData = {
 		label: "Yearly Expenses",
-		data: [450, 520, 480, 500, 530, 600, 550, 580, 620, 590, 480], // Total for each month (January to December)
+		data: [450, 520, 480, 600, 530, 600, 550, 580, 620, 590, 480], // Total for each month (January to December)
 		backgroundColor: [
 			"rgb(255, 99, 132)",  // January - Red-ish
 			"rgb(54, 162, 235)",  // February - Blue

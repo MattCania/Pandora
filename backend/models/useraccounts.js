@@ -113,6 +113,11 @@ module.exports = (sequelize, DataTypes) => {
 				beforeCreate: async (user) => {
 					const salt = await bcrypt.genSalt(10);
 					user.securedPassword = await bcrypt.hash(user.securedPassword, salt);
+
+					user.firstName = user.firstName.replace(/\b\w/g, char => char.toUpperCase());
+					user.lastName = user.lastName.replace(/\b\w/g, char => char.toUpperCase());
+					if (user.middleName) user.middleName = user.middleName.replace(/\b\w/g, char => char.toUpperCase());
+					if (user.suffx) user.suffix = user.suffix.replace(/\b\w/g, char => char.toUpperCase());
 				},
 				beforeUpdate: async (user) => {
 					if (user.changed("securedPassword")) {
@@ -122,6 +127,10 @@ module.exports = (sequelize, DataTypes) => {
 							salt
 						);
 					}
+					user.firstName = user.firstName.replace(/\b\w/g, char => char.toUpperCase());
+					user.lastName = user.lastName.replace(/\b\w/g, char => char.toUpperCase());
+					if (user.middleName) user.middleName = user.middleName.replace(/\b\w/g, char => char.toUpperCase());
+					if (user.suffx) user.suffix = user.suffix.replace(/\b\w/g, char => char.toUpperCase());
 				},
 				afterDestroy: async () => {
 					try {

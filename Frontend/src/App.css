@@ -8,3 +8,30 @@ body{
 * {
   box-sizing: border-box;
 }
+
+/* Apply to the entire page or a specific container */
+::-webkit-scrollbar {
+  width: 4px; /* Width of the vertical scrollbar */
+  height: 4px; /* Height of the horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color); /* Background of the track */
+  border-radius: 10px; /* Rounded edges for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 10px; /* Rounded edges for the thumb */
+  border: 2px solid #f0f0f0; /* Space between the thumb and track */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tertiary); /* Darker color on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color: var(--secondary) var(--background-color); /* Thumb color | Track color */
+}

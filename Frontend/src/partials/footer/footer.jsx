@@ -1,4 +1,4 @@
-import QR from '/public/fakeQr.svg'
+import QR from '/fakeQr.svg'
 import styles from './footer.module.css'
 
 function Footer() {

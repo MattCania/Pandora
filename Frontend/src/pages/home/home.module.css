@@ -1,5 +1,7 @@
 .main{
 	display: flex;
+	justify-content: space-between;
+	gap: 0;
 	height: 100vh;
 }
 
@@ -7,7 +9,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-    width: calc(100vw - 16vw);
+	width: 100%;
     height: 100%;
     overflow: hidden;
 }
@@ -15,10 +17,10 @@
 .embedSection{
 	display: flex;
 	flex-direction: column;
-	width: calc(100vw - 16vw);
+	/* width: calc(100vw - 16vw); */
+	width: 100%;
 	/* min-height: calc(100% - 8vh); */
 	height: auto;
-	margin-top: 8vh;
 	overflow-y: auto;
 	background-color: var(--primary);
 }

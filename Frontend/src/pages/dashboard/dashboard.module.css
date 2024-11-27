@@ -5,7 +5,7 @@
 	align-items: center;
 	width: 100%;
 	min-height: 100vh;
-	height: 2000px;
+	height: auto;
 }
 
 .welcomeHeader{
@@ -40,6 +40,7 @@
 	margin: 1em;
 	width: 98%;
 	height: auto;
+	padding: 4px 0;
 }
 
 .secondSection{
