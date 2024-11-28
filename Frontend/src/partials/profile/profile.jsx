@@ -13,7 +13,7 @@ function Profile() {
     useEffect(() => {
         // Fetch the user's profile data on component mount
         const fetchUserData = async () => {
-            const data = await GetData("profile"); // Assuming /api/profile is the endpoint
+            const data = await GetData("profile"); 
             if (data) {
                 setUserData(data);
             } else {
@@ -36,6 +36,7 @@ function Profile() {
 
     return (
         <div className = {style.profile}>
+            <img></img>
             <h1>Welcome, {userData.firstname}!</h1>
             <p><strong>Username:</strong> {userData.username}</p>
             <p><strong>Email:</strong> {userData.email}</p>
