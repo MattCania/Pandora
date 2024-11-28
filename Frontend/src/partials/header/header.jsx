@@ -1,43 +1,62 @@
-import { useEffect, useState } from "react";
 import { faPlus, faCrown, faBell, faGear, faBars, faUser, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import React, { useContext, useEffect, useState } from "react";
+import { SessionContext } from "../../pages/home/home";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.css'
-function Header () {
+import MoreSidebar from "../more/more";
+
+
+function Header() {
+	const [showSidebar, setSidebar] = useState(false);
+	const [orgDropdown, setorgDropdown] = useState(false);
+
+	const toggleOrganization = () => {
+		setorgDropdown(orgDropdown => !orgDropdown)
+	}
+
+	const toggleSidebar = () => {
+		setSidebar(showSidebar => !showSidebar)
+	}
+
+	const user = useContext(SessionContext);
+
+	if (!user) {
+		return <p>Loading user data...</p>;
+	}
+
 	
-	return(
+	return (
 		<header className={styles.header}>
-			<Link to="create" className={styles.createButton}><FontAwesomeIcon icon={faPlus}/></Link>
+			<Link to="create" className={styles.createButton}><FontAwesomeIcon icon={faPlus} /></Link>
 
 			<section className={styles.section}>
 				<a href="" className={styles.ad}>
-					<FontAwesomeIcon icon={faCrown} color="gold"/>
+					<FontAwesomeIcon icon={faCrown} color="gold" />
 					Premium
 				</a>
 
-				<div className={styles.organization}>
-					"User Organization Info..."
-					<button>
-						<FontAwesomeIcon icon={faAngleDown}/>
-					</button>
-				</div>
+				{user.profile.organization &&
+					<div className={styles.organization}>
+						<p>
+						{user.profile.organization}
+						</p>
+					</div>
+				}
 
 				<div className={styles.options}>
 					<button>
-						<FontAwesomeIcon icon={faBell}/>
+						<FontAwesomeIcon icon={faBell} />
 					</button>
-					<button>
-						<FontAwesomeIcon icon={faGear}/>
-					</button>
-					<button>
-						<FontAwesomeIcon icon={faUser}/>
-					</button>
-					<button>
-						<FontAwesomeIcon icon={faBars}/>
+					<button onClick={toggleSidebar}>
+						<FontAwesomeIcon icon={faBars} />
 					</button>
 				</div>
 
 			</section>
+			{showSidebar &&
+				<MoreSidebar />
+			}
 		</header>
 	)
 

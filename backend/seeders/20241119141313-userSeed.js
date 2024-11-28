@@ -64,7 +64,7 @@ module.exports = {
 				profileId: mattId,
 				userName: "MattCania",
 				contactNumber: "09108273132",
-				secondaryEmail: null,
+				secondaryEmail: "caniamatthew24@gmail.com",
 				jobTitle: null,
 				organization: null,
 				department: null,

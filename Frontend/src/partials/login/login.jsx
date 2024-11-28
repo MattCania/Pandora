@@ -6,6 +6,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import GetSession from "../../hooks/GetSession"
 import styles from './login.module.css'
 import Logo from '/src/assets/MainLogo.svg'
+import Loading from "../loading/loading";
 
 function Login() {
 	const navigate = useNavigate()
@@ -116,6 +117,7 @@ function Login() {
 					<a href="/register">Dont have an Account?</a>
 					<a href="/recovery">Forgot Password?</a>
 				</div>
+				{user && <a href="/login">`User ${user.username} Already Logged in?`</a>}
 			</div>
 
 			<div className={styles.rightImage}></div>

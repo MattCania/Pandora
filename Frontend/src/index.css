@@ -11,6 +11,8 @@
   --tertiary: #3A3A3A;
   --textdark: #000000bf;
   --textlight: #f1f1f1;
+  --accent: #FF8C00;
+  --border-color: #CCCCCC;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

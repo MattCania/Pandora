@@ -26,7 +26,7 @@ app.use(compression());
 app.use(hpp());
 app.use(
   helmet({
-    contentSecurityPolicy: false,   // False in Development
+    contentSecurityPolicy: process.env.NODE_ENV === 'production' ? true : false,   // False in Development
   })
 );
 
@@ -43,10 +43,16 @@ const limiter = rateLimit({
   max: 100, 
   standardHeaders: true,
   legacyHeaders: false, 
+  handler: (req, res) => {
+    console.warn(`Rate limit exceeded for IP: ${req.ip}`);
+    res.status(429).send('Too many requests, please try again later.');
+  },
 });
 
 // Apply the rate limiter to all requests
-app.use(limiter);
+if (process.env.NODE_ENV === 'production') {
+  app.use('/api', limiter);
+}
 
 // Sessions
 app.use(
@@ -56,7 +62,7 @@ app.use(
     saveUninitialized: false,
     store: new SequelizeStore({ db: sequelize }),
     cookie: {
-      secure: false,  // Set false in Development
+      secure: process.env.NODE_ENV === 'production' ? true : false,  // Set false in Development
       maxAge: 24 * 60 * 60 * 1000,  // 1 Day
     },
   })
@@ -82,7 +88,9 @@ const loginRoute = require("./routes/login");
 const sessionRoute = require("./routes/session")
 const registerRoute = require('./routes/register')
 const recoveryRoute = require('./routes/recovery')
+const userRoute = require('./routes/profile')
 
+app.use('/api', userRoute)
 app.use('/api', recordsRoute)
 app.use("/api", loginRoute);
 app.use("/api", sessionRoute);
