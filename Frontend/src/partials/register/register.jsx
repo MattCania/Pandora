@@ -27,7 +27,7 @@ function Register() {
       [name]: value,
     }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = { ...formValues };
@@ -121,3 +121,4 @@ function Register() {
 }
 
 export default Register;
+
