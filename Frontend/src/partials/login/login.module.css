@@ -4,9 +4,10 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-}
-
-.leftImage {
+	font-family: sans-serif;
+  }
+  
+  .leftImage {
 	display: flex;
 	justify-content: flex-end;
 	background-image: url('/LeftSide.svg');
@@ -16,9 +17,9 @@
 	flex: 1;
 	width: 100%;
 	height: 100%;
-}
-
-.rightImage {
+  }
+  
+  .rightImage {
 	display: flex;
 	justify-content: flex-end;
 	background-image: url('/RightSide.svg');
@@ -28,9 +29,9 @@
 	flex: 1;
 	width: 100%;
 	height: 100%;
-}
-
-.middleSection {
+  }
+  
+  .middleSection {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -39,37 +40,41 @@
 	height: 100%;
 	padding: 0;
 	gap: 0;
-}
-
-.formLogo {
+	width: 100%;  /* Ensures middle section takes full width */
+  }
+  
+  .formLogo {
 	height: 6em;
 	margin: -4em 0 0 0;
 	user-select: none;
-}
-
-.form {
+  }
+  
+  .form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	margin: 2em 0;
 	gap: 1em;
 	width: 100%;
-}
-
-.form h3 {
+	max-width: 450px; /* Set max width to ensure the form doesn't stretch too much */
+	padding: 1em; /* Padding for better spacing inside the form */
+	box-sizing: border-box;
+  }
+  
+  .form h3 {
 	margin: 0;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	color: var(--textdark);
-}
-
-.form h4 {
+  }
+  
+  .form h4 {
 	width: 100%;
 	text-align: center;
 	margin: 0;
 	color: var(--textdark);
-}
-
-.gmailDiv {
+  }
+  
+  .gmailDiv {
 	position: relative;
 	width: 100%;
 	height: 2.5em;
@@ -79,16 +84,16 @@
 	border-radius: 5px;
 	box-shadow: 0px 2px 4px var(--textdark);
 	box-sizing: border-box;
-}
-
-.gmailDiv span {
+  }
+  
+  .gmailDiv span {
 	position: absolute;
 	color: var(--textdark);
 	margin: 0px 4px;
 	font-size: 20px;
-}
-
-.gmailDiv a {
+  }
+  
+  .gmailDiv a {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -102,14 +107,14 @@
 	border: 1px solid var(--textdark);
 	box-sizing: border-box;
 	transition: all 500ms;
-}
-
-.gmailDiv a:hover{
+  }
+  
+  .gmailDiv a:hover {
 	background-color: var(--primary);
 	transition: all 500ms;
-}
-
-.form input:not([type="submit"]) {
+  }
+  
+  .form input:not([type="submit"]) {
 	padding: 0 4px;
 	color: var(--textdark);
 	height: 3em;
@@ -117,9 +122,9 @@
 	border-radius: 5px;
 	border: 1px solid var(--textdark);
 	box-shadow: 0px 2px 4px var(--textdark);
-}
-
-.form input[type="submit"] {
+  }
+  
+  .form input[type="submit"] {
 	cursor: pointer;
 	height: 2em;
 	border-radius: 5px;
@@ -130,28 +135,28 @@
 	font-weight: bolder;
 	box-shadow: 0px 2px 4px var(--textdark);
 	transition: all 500ms;
-}
-
-.form input[type="submit"]:hover {
+  }
+  
+  .form input[type="submit"]:hover {
 	transition: all 500ms;
 	background-color: var(--secondary);
 	color: var(--background-color);
-}
-
-.form input::placeholder {
+  }
+  
+  .form input::placeholder {
 	font-size: calc(10px + .25vw);
-}
-
-.passwordDiv {
+  }
+  
+  .passwordDiv {
 	display: flex;
 	position: relative;
-}
-
-.passwordDiv input {
+  }
+  
+  .passwordDiv input {
 	width: 100%;
-}
-
-.passwordDiv button {
+  }
+  
+  .passwordDiv button {
 	font-size: 1em;
 	color: var(--secondary);
 	position: absolute;
@@ -162,21 +167,22 @@
 	border: none;
 	cursor: pointer;
 	transition: all 500ms;
-}
-
-.passwordDiv button:hover{
+  }
+  
+  .passwordDiv button:hover {
 	color: var(--tertiary);
-}
-
-.accountOptions{
+  }
+  
+  .accountOptions {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
 	height: 2em;
 	margin: 0;
-}
-
-.accountOptions a{
+  }
+  
+  .accountOptions a {
 	color: var(--textdark);
-}
+  }
+  

@@ -8,7 +8,6 @@ import HomeRouter from "./homerouter";
 import GetSession from "../../hooks/GetSession";
 import Prompt from "../../components/prompt/prompt";
 import Loading from "../../partials/loading/loading";
-import GetData from "../../hooks/GetData";
 
 export const SessionContext = createContext();
 
