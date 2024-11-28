@@ -69,7 +69,7 @@ function Login() {
 		} catch (error) {
 			setError(error.message)
 			setShowPrompt(true);
-			
+
 			console.error("Error:", error)
 
 			if (timeoutRef.current) {
@@ -92,7 +92,7 @@ function Login() {
 				</a>
 				<form className={styles.form}>
 
-				{showPrompt && <p style={{color: 'red', fontWeight: 'bold', margin: '0'}}>{errMessage}</p>}
+					{showPrompt && <p style={{ color: 'red', fontWeight: 'bold', margin: '0' }}>{errMessage}</p>}
 					<h3>Log In Account</h3>
 
 					<div className={styles.gmailDiv}>
@@ -117,7 +117,7 @@ function Login() {
 					<a href="/register">Dont have an Account?</a>
 					<a href="/recovery">Forgot Password?</a>
 				</div>
-				{user && <a href="/login">`User ${user.username} Already Logged in?`</a>}
+				{/* {user && <a href="/login">`User ${user.username} Already Logged in?`</a>} */}
 			</div>
 
 			<div className={styles.rightImage}></div>

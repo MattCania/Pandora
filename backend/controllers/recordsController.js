@@ -14,12 +14,10 @@ const getRecords = async (req, res) => {
 				{
 					model: TransactionRecords,
 					as: "transactionPermission",
-					attributes: ["recordName", "recordType"],
 				},
 				{
 					model: Permissions,
 					as: "userAccess",
-					attributes: ["accessType"],
 				},
 			],
 		});

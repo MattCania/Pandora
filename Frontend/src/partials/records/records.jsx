@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import GetData from '../../hooks/GetData'
 import styles from './records.module.css'
 import SubHeader from "../../components/overviews/subheader";
@@ -11,10 +13,9 @@ import GetSession from "../../hooks/GetSession";
 
 function Records() {
 	const [data, setData] = useState([])
+	const navigate = useNavigate()
 	const user = useContext(SessionContext);
-
-
-
+	const [searchTerm, setSearchTerm] = useState("");
 	useEffect(() => {
 		const fetchRecords = async () => {
 			try {
@@ -30,10 +31,95 @@ function Records() {
 		}
 		fetchRecords();
 
-	}, [])
+	}, [user])
+
+	if (!data) {
+		return <Loading />;
+	}
+
+	const expenseData = data.filter(record =>
+		record.transactionPermission?.recordType === "Expenses"
+	);
+
+	const purchaseData = data.filter(record =>
+		record.transactionPermission?.recordType === "Purchases"
+	);
+
+	// Apply search term filtering
+	const filteredExpenseData = expenseData.filter(record => {
+		const recordId = record.transactionPermission.recordId.toString();
+		const recordName = record.transactionPermission.recordName.toLowerCase();
+		const accessType = record.userAccess.accessType.toLowerCase();
+		const search = searchTerm.toLowerCase();
+
+		return (
+			recordId.includes(search) ||
+			recordName.includes(search) ||
+			accessType.includes(search)
+		);
+	});
+
+	const filteredPurchaseData = purchaseData.filter(record => {
+		const recordId = record.transactionPermission.recordId.toString();
+		const recordName = record.transactionPermission.recordName.toLowerCase();
+		const accessType = record.userAccess.accessType.toLowerCase();
+		const search = searchTerm.toLowerCase();
+
+		return (
+			recordId.includes(search) ||
+			recordName.includes(search) ||
+			accessType.includes(search)
+		);
+	});
+
+	const handleFilter = (event) => {
+		setSearchTerm(event.target.value);
+	};
+
+
+	// Testing Data
+	// const purchaseData = Array.from({ length: 50 }, (_, index) => ({
+	// 	transactionPermission: {
+	// 		recordId: `${index + 1}`,
+	// 		recordName: `Record Name Purchase ${index + 1}`,
+	// 		createdAt: new Date().toISOString(),
+	// 		recordType: "Type A",
+	// 	},
+	// 	userAccess: {
+	// 		accessType: index % 2 === 0 ? "Read" : "Write",
+	// 	},
+	// }));
+
+	// const expenseData = Array.from({ length: 50 }, (_, index) => ({
+	// 	transactionPermission: {
+	// 		recordId: `${index + 1}`,
+	// 		recordName: `Record Name Expense ${index + 1}`,
+	// 		createdAt: new Date().toISOString(),
+	// 		recordType: "Type B",
+	// 	},
+	// 	userAccess: {
+	// 		accessType: index % 2 === 0 ? "Read" : "Write",
+	// 	},
+	// }));
+
+	// Displaying Record Details
+	const openRecord = (recordId, recordType) => {
+		navigate(`${recordType}/${recordId}`)
+	}
+
+	// Create new Record
+	const navigateCreate = () => {
+		navigate('create')
+	}
+
+	// Deletion of Record
+	const deleteRecord = (e, recordId) => {
+		e.stopPropagation();
+		alert(`Deleting Record ${recordId}`)
+	}
 
 	return (
-		user &&
+		user && expenseData && purchaseData &&
 		<section className={styles.section}>
 
 			<header className={styles.subHeader}>
@@ -41,23 +127,124 @@ function Records() {
 			</header>
 
 			<section className={styles.subSection}>
-				<SubHeader text="Expense Transaction Record" />
+				<SubHeader
+					text="Expense Transaction Record"
+					buttonClick={navigateCreate}
+					searchUp={true}
+					placeholder="Search Records"
+					inputChange={handleFilter}
+				/>
 				<section className={styles.displaySection}>
-
+					<div className={styles.table}>
+						<div className={styles.tableHeader}>
+							<div className={styles.index}>#</div>
+							<div className={styles.id}>Record Id</div>
+							<div className={styles.name}>Record Name</div>
+							<div className={styles.access}>Access Type</div>
+							<div className={styles.creation}>Created At</div>
+							<div className={styles.edit}>Edit</div>
+							<div className={styles.delete}>Delete</div>
+						</div>
+						<div className={styles.tableBody}>
+							{filteredExpenseData.map((data, index) => (
+								<div
+									className={styles.row}
+									key={index}
+									onClick={() =>
+										openRecord(
+											data.transactionPermission.recordId,
+											data.transactionPermission.recordType
+										)
+									}
+								>
+									<div className={styles.index}>{index + 1}</div>
+									<div className={styles.id}>{data.transactionPermission.recordId}</div>
+									<div className={styles.name}>{data.transactionPermission.recordName}</div>
+									<div className={styles.access}>{data.userAccess.accessType}</div>
+									<div className={styles.creation}>
+										{new Date(data.transactionPermission.createdAt).toLocaleDateString()}
+									</div>
+									<div className={styles.edit}>
+										<Link
+											to={`edit/${data.transactionPermission.recordId}`}
+											onClick={(e) => e.stopPropagation()}
+										>
+											<FontAwesomeIcon icon={faEdit} />
+										</Link>
+									</div>
+									<div className={styles.delete}>
+										<button
+											onClick={(e) => deleteRecord(e, data.transactionPermission.recordId)}
+										>
+											<FontAwesomeIcon icon={faTrash} />
+										</button>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
 				</section>
 
 			</section>
 
 			<section className={styles.subSection}>
-				<SubHeader text="Expense Transaction Record" />
+				<SubHeader
+					text="Purchase Transaction Record"
+					buttonClick={navigateCreate}
+					searchUp={true}
+					placeholder="Search Records"
+					inputChange={handleFilter}
+				/>
 				<section className={styles.displaySection}>
-					{data.map((item, index) => (
-						<div key={index}>
-							<h2>{item.transactionPermission.recordName}</h2>
-							<p>Access Type: {item.userAccess.accessType}</p>
-							<p>User: {item.userProfiles.userName}</p>
+					<div className={styles.table}>
+						<div className={styles.tableHeader}>
+							<div className={styles.index}>#</div>
+							<div className={styles.id}>Record Id</div>
+							<div className={styles.name}>Record Name</div>
+							<div className={styles.access}>Access Type</div>
+							<div className={styles.creation}>Created At</div>
+							<div className={styles.edit}>Edit</div>
+							<div className={styles.delete}>Delete</div>
 						</div>
-					))}
+						<div className={styles.tableBody}>
+							{filteredPurchaseData.map((data, index) => (
+								<div
+									className={styles.row}
+									key={index}
+									onClick={() =>
+										openRecord(
+											data.transactionPermission.recordId,
+											data.transactionPermission.recordType
+										)
+									}
+								>
+									<div className={styles.index}>{index + 1}</div>
+									<div className={styles.id}>{data.transactionPermission.recordId}</div>
+									<div className={styles.name}>{data.transactionPermission.recordName}</div>
+									<div className={styles.access}>{data.userAccess.accessType}</div>
+									<div className={styles.creation}>
+										{new Date(data.transactionPermission.createdAt).toLocaleDateString()}
+									</div>
+									<div className={styles.edit}>
+										<Link
+											to={`edit/${data.transactionPermission.recordId}`}
+											onClick={(e) => e.stopPropagation()}
+										>
+											<FontAwesomeIcon icon={faEdit} />
+										</Link>
+									</div>
+									<div className={styles.delete}>
+										<button
+											onClick={(e) => deleteRecord(e, data.transactionPermission.recordId)}
+										>
+											<FontAwesomeIcon icon={faTrash} />
+										</button>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+
 				</section>
 
 			</section>

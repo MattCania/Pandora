@@ -7,85 +7,94 @@ module.exports = {
 			{
 				creatorId: 1,
 				recordType: "Expenses",
-				recordName: "General Expenses",
+				recordName: "Office Supplies",
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
 			{
 				creatorId: 2,
 				recordType: "Purchases",
-				recordName: "General Purchases",
+				recordName: "Hardware Purchases",
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+			{
+				creatorId: 3,
+				recordType: "Expenses",
+				recordName: "Travel Expenses",
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+			{
+				creatorId: 4,
+				recordType: "Purchases",
+				recordName: "Software Licenses",
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
 		]);
 
 		await queryInterface.bulkInsert("RecordPermissions", [
-			{
-				recordId: 1,
-				permittedUser: 1,
-				accessLevel: 1,
-			},
-			{
-				recordId: 1,
-				permittedUser: 2,
-				accessLevel: 2,
-			},
-			{
-				recordId: 2,
-				permittedUser: 1,
-				accessLevel: 2,
-			},
-			{
-				recordId: 2,
-				permittedUser: 2,
-				accessLevel: 1,
-			},
+			{ recordId: 1, permittedUser: 1, accessLevel: 1 },
+			{ recordId: 1, permittedUser: 3, accessLevel: 2 },
+			{ recordId: 2, permittedUser: 2, accessLevel: 1 },
+			{ recordId: 2, permittedUser: 4, accessLevel: 2 },
+			{ recordId: 3, permittedUser: 1, accessLevel: 2 },
+			{ recordId: 3, permittedUser: 2, accessLevel: 1 },
+			{ recordId: 4, permittedUser: 3, accessLevel: 1 },
+			{ recordId: 4, permittedUser: 4, accessLevel: 2 },
 		]);
 
-		await queryInterface.bulkInsert("Expenses", [
-			{
-				expenseId: 1,
-				orderNumber: "ORD001",
+		// Insert Expenses
+		const expenses = [];
+		for (let i = 1; i <= 4; i++) {
+			expenses.push({
+				expenseId: i,
+				orderNumber: `ORD${i.toString().padStart(3, "0")}`,
 				account: "Expenses",
-				category: "Expense",
-				paymentType: "Credit Card",
-				transactionDate: new Date("2024-01-01 10:00:00"),
-				description: "Office supplies purchase",
-				amount: 150,
+				category: i % 2 === 0 ? "Travel" : "Office",
+				paymentType: i % 3 === 0 ? "Credit Card" : "Cash",
+				transactionDate: new Date(`2024-0${(i % 12) + 1}-01 10:00:00`),
+				description: `Expense Description ${i}`,
+				amount: Math.floor(Math.random() * 1000 + 100),
 				credit: 0,
 				debit: 0,
 				currency: "USD",
-				vendorCustomer: "Office Supplies Inc.",
-				invoiceNumber: "INV001",
-				tax: 15,
-				balance: 135,
+				vendorCustomer: `Vendor ${i}`,
+				invoiceNumber: `INV${i.toString().padStart(3, "0")}`,
+				tax: Math.floor(Math.random() * 100),
+				balance: Math.floor(Math.random() * 1000),
 				createdAt: new Date(),
 				updatedAt: new Date(),
-			},
-		]);
+			});
+		}
+		await queryInterface.bulkInsert("Expenses", expenses);
 
-		await queryInterface.bulkInsert("Purchases", [
-			{
-				purchaseId: 2,
-				orderNumber: "ORD004",
+		// Insert Purchases
+		const purchases = [];
+		for (let i = 1; i <= 4; i++) {
+			purchases.push({
+				purchaseId: i,
+				orderNumber: `ORD${(i + 20).toString().padStart(3, "0")}`,
 				account: "Liabilities",
-				category: "Liability",
-				paymentType: "Check",
-				transactionDate: new Date("2024-02-10 15:00:00"),
-				description: "Loan payment",
-				amount: 500,
+				category: i % 2 === 0 ? "Software" : "Hardware",
+				paymentType: i % 3 === 0 ? "Bank Transfer" : "Check",
+				transactionDate: new Date(`2024-0${(i % 12) + 1}-10 15:00:00`),
+				description: `Purchase Description ${i}`,
+				amount: Math.floor(Math.random() * 2000 + 200),
 				credit: 0,
 				debit: 0,
 				currency: "USD",
-				vendorCustomer: "Bank XYZ",
-				invoiceNumber: "INV004",
-				tax: 50,
-				balance: 450,
+				vendorCustomer: `Customer ${i}`,
+				invoiceNumber: `INV${(i + 20).toString().padStart(3, "0")}`,
+				tax: Math.floor(Math.random() * 150),
+				balance: Math.floor(Math.random() * 2000),
 				createdAt: new Date(),
 				updatedAt: new Date(),
-			},
-		]);
+			});
+		}
+		await queryInterface.bulkInsert("Purchases", purchases);
+
 	},
 
 	async down(queryInterface, Sequelize) {

@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faAdd } from "@fortawesome/free-solid-svg-icons"
+import { faAdd, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import styles from './subheader.module.css'
 
-function SubHeader( {text, subText} ) {
+function SubHeader( {text, subText, buttonClick, searchUp, placeholder, inputChange} ) {
 	return (
 
 		<header className={styles.header}>
@@ -10,7 +10,13 @@ function SubHeader( {text, subText} ) {
 				<h1>{text}</h1>
 				<p>{subText}</p>
 			</section>
-			<button className={styles.createButton}>
+			{ searchUp &&
+				<section className={styles.searchBar}>	
+					<FontAwesomeIcon icon={faMagnifyingGlass}/>
+					<input type="search" placeholder={placeholder} onChange={inputChange}/>
+				</section>
+			}
+			<button className={styles.createButton} onClick={buttonClick}>
 				<FontAwesomeIcon  icon={faAdd} />
 			</button>
 

@@ -14,7 +14,7 @@ function BudgetOverview() {
 
 					<Doughnut
 						data={{
-							labels: ["Arson", "Guns", "Tax Fraudery", "Smugling"],
+							labels: ["Kitchenette", "Cafe", "Consulting", "Crypto Investments"],
 							datasets: [
 								{
 									label: "Expenses",
