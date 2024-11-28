@@ -1,0 +1,176 @@
+@font-face {
+    font-family: 'Heavitas';
+    src: url('../../assets/heavitas.ttf') format('woff2');
+    font-display: swap;
+}
+
+.section {
+	height: 100vh;
+	width: 100vw;
+    font-family: 'Heavitas', sans-serif;
+}
+
+.navigation {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navigation .logo {
+    flex-grow: 0.09; 
+}
+
+.navigation .links {
+    display: flex;
+    gap: 20px; 
+    flex-grow: 0;
+    font-size: 17px;
+}
+
+.navigation .links a {
+    color: black;
+    text-decoration: none;
+    margin-right: 20px; 
+}
+
+.navigation .logging {
+    display: flex;
+    gap: 20px; 
+    margin-left: auto; 
+    align-items: center; 
+}
+
+.navigation .logging a {
+    display: inline-block; 
+    font-weight: bold; 
+    font-size: 17px;
+}
+
+.navigation .logging a:first-child {
+    text-decoration: none;
+    color: rgba(54, 175, 87, 1); 
+}
+
+.navigation .logging a:last-child {
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: rgba(54, 175, 87, 1);
+    padding: 0.5rem 1.2rem;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.navigation .logging a:last-child:hover {
+    background-color: rgba(45, 142, 58, 1);
+}
+
+.heroContent {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+}
+
+.heroContent .leftContent{
+    color: Black;
+    margin-left: 1em;
+}
+
+.heroContent .leftContent h1:first-child {
+    font-size: 64px;
+    margin-bottom: -20px;
+}
+
+.heroContent .leftContent h1:last-child {
+    font-size: 64px;
+    margin-bottom: 15px;
+    margin-top: -20px;
+}
+
+.heroContent .leftContent .subheader h2{
+    font-size: 20px;
+    margin-bottom: 1.4em;
+}
+
+
+.heroContent .leftContent .loggingIn a {
+    margin-top: 3em;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: rgba(54, 175, 87, 1);
+    padding: 0.5rem 1.2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.heroContent .leftContent .loggingIn a:hover {
+    background-color: rgba(45, 142, 58, 1);
+}
+
+.rightContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.featuresCard {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 0; /* Remove padding to let child elements define spacing */
+    width: 80%;
+    max-width: 500px;
+    height: 75vh;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Ensure content doesn’t overflow the box */
+}
+
+.featuresCard h2 {
+    background-color: #333; /* Dark gray for the header */
+    color: white;
+    padding: 1rem 0; /* Add consistent padding inside the header */
+    margin: 0; /* Remove any external margin */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 24px; /* Larger font for visibility */
+    text-align: center; /* Center the text horizontally */
+    width: 100%; /* Ensure it spans the full card width */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    position: relative; /* Stay positioned at the top */
+}
+
+.featuresCard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.featuresCard li {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* Space between icon and text */
+    margin: 1rem 0;
+}
+
+.featuresCard li img {
+    width: 65px; /* Adjust icon size */
+    height: 65px;
+    margin-left: 30px;
+}
+
+.featuresCard li span {
+    font-weight: bold;
+    color: #000000;
+    font-size: 25px;
+    text-transform: uppercase; /* Optional for uppercase text */
+}
