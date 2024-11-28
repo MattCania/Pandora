@@ -14,12 +14,11 @@ function Landing() {
         <section className={styles.section}>
             <div className={styles.navigation}>
                     <div className={styles.logo}>
-                        <img src={Logo} alt="Pandora" />
+                        <img src={Logo} alt="Pandora"/>
                     </div>
                     <div className={styles.links}>
-                        <a href="">Products</a>
-                        <a href="">Company</a>
-                        <a href="">...</a>
+                        <a href="/aboutus">About Us</a>
+                        <a href="">Contact Us</a>
                     </div>
                     <div className={styles.logging}>
                         <a href="/login">Sign In</a>

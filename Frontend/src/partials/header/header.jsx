@@ -4,7 +4,7 @@ import { SessionContext } from "../../pages/home/home";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.css'
-import MoreSidebar from "../more/more";
+import MoreSidebar from "../../partials/more/more.jsx";
 
 
 function Header() {
@@ -48,15 +48,13 @@ function Header() {
 					<button>
 						<FontAwesomeIcon icon={faBell} />
 					</button>
-					<button onClick={toggleSidebar}>
-						<FontAwesomeIcon icon={faBars} />
-					</button>
+					<Link to="/more">
+						<button onClick={toggleSidebar}>
+							<FontAwesomeIcon icon={faBars} />
+						</button>
+					</Link>
 				</div>
-
 			</section>
-			{showSidebar &&
-				<MoreSidebar />
-			}
 		</header>
 	)
 

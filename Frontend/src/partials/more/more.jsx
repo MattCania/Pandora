@@ -7,6 +7,7 @@ import { SessionContext } from "../../pages/home/home"
 import fakeQr from '/fakeQr.svg'
 import styles from './more.module.css'
 import Loading from "../loading/loading"
+import Profile from "../../partials/profile/profile.jsx"
 
 function MoreSidebar() {
 	const navigate = useNavigate()
@@ -39,7 +40,7 @@ function MoreSidebar() {
 					<p>{user.session.email}</p>
 
 					<div className={styles.accountButtons}>
-						<a href="">
+						<a href={Profile}>
 							My Account
 						</a>
 						<button onClick={handleLogout}>Sign Out</button>

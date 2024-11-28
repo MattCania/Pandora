@@ -174,3 +174,46 @@
     font-size: 25px;
     text-transform: uppercase; /* Optional for uppercase text */
 }
+
+
+.lowerSection {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.halfLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #232323;
+    color: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.halfLeft h1 {
+    margin-top: -4rem;
+    font-size: 45px;
+    margin-bottom: 1rem;
+}
+
+.halfLeft h3 {
+    font-family: sans-serif;
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+.halfRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
+}
+
+.halfRight img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+
+}

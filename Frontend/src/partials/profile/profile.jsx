@@ -1,8 +1,7 @@
 import { useContext } from "react";
-import { SessionContext } from "../home/home";
+import { SessionContext } from "../../pages/home/home";
 import Loading from "../../partials/loading/loading";
 import style from './profile.module.css'
-import Loading from "../loading/loading";
 
 function Profile() {
     const user = useContext(SessionContext);
@@ -25,3 +24,5 @@ function Profile() {
         </div>
     );
 }
+
+export default Profile;
