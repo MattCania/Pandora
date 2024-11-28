@@ -1,50 +1,27 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import GetData from '../../hooks/GetData'
+import { useContext } from "react";
+import { SessionContext } from "../home/home";
+import Loading from "../../partials/loading/loading";
 import style from './profile.module.css'
+import Loading from "../loading/loading";
 
 function Profile() {
+    const user = useContext(SessionContext);
 
-    const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        // Fetch the user's profile data on component mount
-        const fetchUserData = async () => {
-            const data = await GetData("profile"); 
-            if (data) {
-                setUserData(data);
-            } else {
-                setError("Failed to load user data");
-            }
-            setLoading(false);
-        };
-
-        fetchUserData();
-    }, []);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
-
-    if (!userData) {
-        // Redirect to login if no user data is available
-        navigate('/login');
-        return null;
+    if(!user) {
+        return (<Loading></Loading>)
     }
 
     return (
         <div className = {style.profile}>
             <img></img>
-            <h1>Welcome, {userData.firstname}!</h1>
-            <p><strong>Username:</strong> {userData.username}</p>
-            <p><strong>Email:</strong> {userData.email}</p>
-            <p><strong>Contact:</strong> {userData.contact}</p>
-            <p><strong>Organization:</strong> {userData.organization}</p>
-            <p><strong>Department:</strong> {userData.department}</p>
-            <p><strong>Birthday:</strong> {userData.birthday}</p>
-            <p><strong>Gender:</strong> {userData.gender}</p>
+            <h1>Welcome, {user.user.firstname}!</h1>
+            <p><strong>Username:</strong> {user.profile.userName}</p>
+            <p><strong>Email:</strong> {user.session.email}</p>
+            <p><strong>Contact:</strong> {user.profile.contact}</p>
+            <p><strong>Organization:</strong> {user.profile.organization}</p>
+            <p><strong>Department:</strong> {user.profile.department}</p>
+            <p><strong>Birthday:</strong> {user.profile.birthday}</p>
+            <p><strong>Gender:</strong> {user.profile.gender}</p>
         </div>
     );
 }

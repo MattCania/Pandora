@@ -1,0 +1,171 @@
+.container {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.formSection {
+  padding-left: 20%;
+  background-color: #f4f4f4;
+  color: rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.logo {
+  position: relative;   
+  top: 10px; 
+  right: 100px;
+  width: 80px; 
+}
+
+input, .gender select {
+  border-radius: 5px;
+  padding: 10px;
+  width: 330px;
+  height: 32px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: white;
+  color: #333; /* Darker text color */
+  border: 1px solid var(--textdark);
+  box-shadow: 0px 2px 4px var(--textdark);
+}
+
+h3 {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--textdark);
+  margin-right: 6em;
+  text-align: center;
+}
+
+h4 {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--textdark);
+  margin-right: 9em;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.passwordContainer {
+  position: relative;
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.passwordContainer input {
+  width: 330;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: white;
+  color: #333; /* Darker text color */
+}
+
+.passwordContainer button {
+  position: absolute;
+  top: 40%;
+  right: -20px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--secondary);
+  font-size: 1em;
+  transition: color 0.3s;
+}
+
+.passwordContainer button:hover {
+  color: var(--tertiary);
+}
+
+.gender {
+  background-color: white;
+  width: 300px;
+}
+
+.gender select {
+  text-align: start;
+}
+
+.reg input[type="submit"] {
+  background-color: rgba(54, 175, 87, 1);
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  font-weight: bolder;
+  padding-bottom: 30px;
+}
+
+.reg input[type="submit"]:hover {
+  transition: all 500ms;
+  background-color: var(--secondary);
+  color: var(--background-color);
+}
+
+.imageSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.imageSection img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .formSection {
+    padding-left: 10%;
+  }
+
+  .imageSection img {
+    height: 10em;
+  }
+
+  input, .gender select {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .formSection {
+    padding-left: 5%;
+  }
+
+  .imageSection img {
+    height: 8em;
+  }
+
+  input, .gender select {
+    width: 100%;
+    height: 40px;
+  }
+
+  .reg input[type="submit"] {
+    width: 100%;
+    height: 45px;
+  }
+}
