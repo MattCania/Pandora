@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { faAngleLeft, faAngleRight, faHouse, faFolderOpen, faBox, faBuilding, faChartLine, faBank } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '/src/assets/MainLogo.svg'
@@ -19,9 +19,9 @@ function Aside() {
 	return (
 		<aside className={displayAside ? styles.asideClose : styles.aside}>
 			<header className={styles.header}>
-				<a href="">
+				<Link to="">
 					<img src={displayAside ? LogoMain : Logo} alt="" draggable="false" />
-				</a>
+				</Link>
 			</header>
 			<section className={styles.section}>
 				<div className={styles.buttonSection}>

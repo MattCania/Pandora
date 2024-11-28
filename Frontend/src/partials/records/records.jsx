@@ -1,68 +1,70 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import GetData from '../../hooks/GetData'
+import styles from './records.module.css'
+import SubHeader from "../../components/overviews/subheader";
+import Footer from "../footer/footer";
+import { SessionContext } from "../../pages/home/home";
+import Loading from "../loading/loading";
+import GetSession from "../../hooks/GetSession";
+
 
 function Records() {
-	const navigate = useNavigate()
-	const [data, setData] = useState([]);
+	const [data, setData] = useState([])
+	const user = useContext(SessionContext);
+
+
 
 	useEffect(() => {
 		const fetchRecords = async () => {
 			try {
+				if (!user) return
+				const records = await GetData(`records/${user.session.userId}`)
+				if (!records) throw new Error("Records Null or Undefined")
 
-				const user = await GetData("user-info");
-				if (!user) throw new Error("Fetching Error")
-				const userId = user.userId
-				const records = await GetData(`records/${userId}`)
-				setData(records || [])
+				setData(records)
+			} catch (error) {
+				console.error("Error fetching data:", error);
 			}
-			catch (err) {
-				console.error(err)
-			}
+
 		}
 		fetchRecords();
+
 	}, [])
 
-	const handleLogout = async () => {
-		try {
-			const response = await fetch("/api/logout", {
-				method: "GET",
-				credentials: "include",
-			});
-
-			if (!response.ok) throw new Error("Logout Failed")
-			console.log("Logged out successfully");
-			navigate("/login");
-
-		} catch (error) {
-			console.error("Error during logout:", error);
-		}
-	};
-
 	return (
-		<>
-			<table>
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Record Type</th>
-						<th>Record Name</th>
-						<th>Access Type</th>
-					</tr>
-				</thead>
-				<tbody>
+		user &&
+		<section className={styles.section}>
+
+			<header className={styles.subHeader}>
+				<h1>Available Records for User {user.profile.userName}</h1>
+			</header>
+
+			<section className={styles.subSection}>
+				<SubHeader text="Expense Transaction Record" />
+				<section className={styles.displaySection}>
+
+				</section>
+
+			</section>
+
+			<section className={styles.subSection}>
+				<SubHeader text="Expense Transaction Record" />
+				<section className={styles.displaySection}>
 					{data.map((item, index) => (
-						<tr key={index}>
-							<td>{index + 1}</td>
-							<td>{item.transactionId.recordName}</td>
-							<td>{item.transactionId.recordType}</td>
-							<td>{item.userAccess.accessType}</td>
-						</tr>
+						<div key={index}>
+							<h2>{item.transactionPermission.recordName}</h2>
+							<p>Access Type: {item.userAccess.accessType}</p>
+							<p>User: {item.userProfiles.userName}</p>
+						</div>
 					))}
-				</tbody>
-			</table>
-			<button onClick={handleLogout}>Logout</button>
-		</>
+				</section>
+
+			</section>
+
+			<Footer />
+		</section>
+
 	)
 
 }

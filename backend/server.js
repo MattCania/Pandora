@@ -69,9 +69,9 @@ app.use(
 );
 
 sequelize
-  // .sync()
+  .sync()
   // .sync({ force: true })
-	.sync({ alter: true })
+	// .sync({ alter: true })
 	.then(() => {
 		console.log("Database synchronized successfully!");
 	})

@@ -1,8 +1,7 @@
 const { RecordPermissions, TransactionRecords, UserProfiles, Permissions } = require("../models");
 
 const getRecords = async (req, res) => {
-	const userId = req.params.user;
-
+	const userId = await req.params.user;
 	try {
 		const records = await RecordPermissions.findAll({
 			where: { permittedUser: userId },
@@ -14,7 +13,7 @@ const getRecords = async (req, res) => {
 				},
 				{
 					model: TransactionRecords,
-					as: "transactionId",
+					as: "transactionPermission",
 					attributes: ["recordName", "recordType"],
 				},
 				{

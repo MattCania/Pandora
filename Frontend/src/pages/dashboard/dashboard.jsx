@@ -10,10 +10,9 @@ import Loading from "../../partials/loading/loading";
 
 function Dashboard() {
 	const user = useContext(SessionContext);
-	console.log(user)
 	
 	if (!user) {
-        return (<Loading/>)
+        return
     }
 
 	return (
