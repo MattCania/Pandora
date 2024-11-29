@@ -2,7 +2,7 @@ const { RecordPermissions, TransactionRecords, UserProfiles, Permissions, Expens
 const { Op } = require('sequelize');
 
 const getExpenses = async (req, res) => {
-	const recordType = req.params;
+	const recordId = req.params.recordId;
 	const userId = req.session.userId;
 
 	try {
@@ -13,7 +13,7 @@ const getExpenses = async (req, res) => {
 					as: "expenseRecord",
 					attributes: ["recordName"],
 					where: {
-						recordType: recordType
+						recordId: recordId
 					}
 				},
 				{
@@ -40,7 +40,7 @@ const getExpenses = async (req, res) => {
 };
 
 const getPurchases = async (req, res) => {
-	const recordType = req.params;
+	const recordId = req.params.recordId;
 	const userId = req.session.userId;
 
 	try {
@@ -51,7 +51,7 @@ const getPurchases = async (req, res) => {
 					as: "purchaseRecord",
 					attributes: ["recordName"],
 					where: {
-						recordType: recordType
+						recordId: recordId
 					}
 				},
 				{

@@ -104,6 +104,15 @@
 	width: 60%;
 }
 
+.accessType {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 20%; /* Adjust width as needed */
+    height: 100%;
+}
+
 .description {
     display: flex;
     justify-content: center;

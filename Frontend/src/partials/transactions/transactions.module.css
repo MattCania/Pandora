@@ -1,0 +1,28 @@
+.section {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	min-height: 200vh;
+	height: auto;
+}
+
+.subHeader {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	width: 98%;
+	height: 20vh;
+	margin: 1em 0;
+	background-color: var(--tertiary);
+	border-radius: 15px;
+	box-shadow: 0px 2px 4px var(--textdark);
+
+}
+
+.subHeader h1 {
+	display: flex;
+	font-size: 2em;
+	margin: 0 1em;
+}

@@ -115,7 +115,6 @@ function Records() {
 	// Deletion of Record
 	const deleteRecord = (e, recordId) => {
 		e.stopPropagation();
-		alert(`Deleting Record ${recordId}`)
 	}
 
 	return (
@@ -128,7 +127,7 @@ function Records() {
 
 			<section className={styles.subSection}>
 				<SubHeader
-					text="Quick Transaction Overview"
+					text="Quick Inventory Overview"
 					buttonClick={navigateCreate}
 					searchUp={true}
 					placeholder="Search Records"
@@ -140,10 +139,12 @@ function Records() {
 							<div className={styles.index}>#</div>
 							<div className={styles.id}>Record Id</div>
 							<div className={styles.name}>Record Name</div>
-							<div className={styles.name}>Description</div>
-							<div className={styles.name}>Category</div>
-							<div className={styles.name}>Unit Price</div>
+							<div className={styles.description}>Description</div>
+							<div className={styles.category}>Category</div>
+							<div className={styles.access}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
+							<div className={styles.edit}>Edit</div>
+							<div className={styles.delete}>Delete</div>
 						</div>
 						<div className={styles.tableBody}>
 							{filteredExpenseData.map((data, index) => (
@@ -195,7 +196,7 @@ function Records() {
 
 			<section className={styles.subSection}>
 				<SubHeader
-					text="Full Transaction Records"
+					text="Full Inventory Records"
 					buttonClick={navigateCreate}
 					searchUp={true}
 					placeholder="Search Records"
