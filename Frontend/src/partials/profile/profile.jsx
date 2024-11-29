@@ -1,27 +1,72 @@
-import { useContext } from "react";
-import { SessionContext } from "../../pages/home/home";
+import React, { useState, useEffect } from "react";
+import GetSession from "../../hooks/GetSession";
 import Loading from "../../partials/loading/loading";
-import style from './profile.module.css'
+import style from './profile.module.css';
+import Header from "../../partials/header/Header.jsx";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
-    const user = useContext(SessionContext);
+    const navigate = useNavigate();
+    const user = GetSession();
+    const [isAuth, setAuth] = useState(false);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        if (user) {
+            setAuth(true);
+        } else {
+            setAuth(false);
+        }
+        setLoading(false);
+    }, [user]);
 
-    if(!user) {
-        return (<Loading></Loading>)
+    if (loading || !user || !user.profile || !user.session) {
+        return <Loading />;
     }
 
     return (
-        <div className = {style.profile}>
-            <img></img>
-            <h1>Welcome, {user.user.firstname}!</h1>
-            <p><strong>Username:</strong> {user.profile.userName}</p>
-            <p><strong>Email:</strong> {user.session.email}</p>
-            <p><strong>Contact:</strong> {user.profile.contact}</p>
-            <p><strong>Organization:</strong> {user.profile.organization}</p>
-            <p><strong>Department:</strong> {user.profile.department}</p>
-            <p><strong>Birthday:</strong> {user.profile.birthday}</p>
-            <p><strong>Gender:</strong> {user.profile.gender}</p>
-        </div>
+        <section className={style.portion}>
+            <Header />
+            <div className={style.left}></div>
+            <div className={style.middle}>
+                <div className={style.head}>
+                    <img src={user.profile.image || '/default-profile.png'} alt="Profile" />
+                    <h1>Welcome, {user.user.firstName}!</h1>
+                    <div className={style.field}>
+                        <label>Username:</label>
+                        <input type="text" value={user.profile.userName} readOnly />
+                    </div>
+                </div>
+                <div className={style.upperSection}>
+                    <h2>Personal Information</h2>
+                    <div className={style.field}>
+                        <label>Email:</label>
+                        <input type="text" value={user.session.email} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Contact:</label>
+                        <input type="text" value={user.profile.contact} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Organization:</label>
+                        <input type="text" value={user.profile.organization} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Department:</label>
+                        <input type="text" value={user.profile.department} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Birthday:</label>
+                        <input type="text" value={user.profile.birthday} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Gender:</label>
+                        <input type="text" value={user.profile.gender} readOnly />
+                    </div>
+                </div>
+            </div>
+            <div className={style.right}></div>
+        </section>
     );
 }
 

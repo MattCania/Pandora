@@ -1,0 +1,60 @@
+.portion {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: #f7f7f7;
+}
+
+.left,
+.right {
+    flex: 1;
+    background-color: #eaeaea;
+}
+
+.middle {
+    flex: 2;
+    background-color: #fff;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    color: black;
+}
+
+.head {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.head img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.head h1 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.field label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.field input {
+    font-size: 16px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+}

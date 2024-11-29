@@ -124,28 +124,28 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 0; /* Remove padding to let child elements define spacing */
+    padding: 0; 
     width: 80%;
     max-width: 500px;
     height: 75vh;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Ensure content doesn’t overflow the box */
+    overflow: hidden; 
 }
 
 .featuresCard h2 {
-    background-color: #333; /* Dark gray for the header */
+    background-color: #333; 
     color: white;
-    padding: 1rem 0; /* Add consistent padding inside the header */
-    margin: 0; /* Remove any external margin */
+    padding: 1rem 0; 
+    margin: 0; 
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    font-size: 24px; /* Larger font for visibility */
-    text-align: center; /* Center the text horizontally */
-    width: 100%; /* Ensure it spans the full card width */
-    box-sizing: border-box; /* Ensure padding doesn't affect width */
-    position: relative; /* Stay positioned at the top */
+    font-size: 24px; 
+    text-align: center; 
+    width: 100%; 
+    box-sizing: border-box; 
+    position: relative; 
 }
 
 .featuresCard ul {
@@ -158,12 +158,12 @@
 .featuresCard li {
     display: flex;
     align-items: center;
-    gap: 2rem; /* Space between icon and text */
+    gap: 2rem; 
     margin: 1rem 0;
 }
 
 .featuresCard li img {
-    width: 65px; /* Adjust icon size */
+    width: 65px; 
     height: 65px;
     margin-left: 30px;
 }
@@ -172,7 +172,7 @@
     font-weight: bold;
     color: #000000;
     font-size: 25px;
-    text-transform: uppercase; /* Optional for uppercase text */
+    text-transform: uppercase; 
 }
 
 
