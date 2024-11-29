@@ -52,7 +52,9 @@ function Register() {
     <div className={styles.container}>
       <div className={styles.formSection}>
         <div className={styles.logo}>
-          <img className={styles.formLogo} src={Logo} alt="" draggable="false" />
+          <a href="/landing"> 
+            <img className={styles.formLogo} src={Logo} alt="" draggable="false" />
+          </a>
         </div>
         <h3 className={styles.welcome}>Welcome to Pandora!</h3>
         <form onSubmit={handleSubmit}>
