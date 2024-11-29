@@ -27,7 +27,7 @@ function Aside() {
 				<div className={styles.buttonSection}>
 					<NavLink onClick={linkToggle} to="" end className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faHouse} />{!displayAside && "Home"}</NavLink>
 					<NavLink onClick={linkToggle} to="records" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faFolderOpen} />{!displayAside && "Records"}</NavLink>
-					<NavLink onClick={linkToggle} to="inventory" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBox} />{!displayAside && "Inventory"}</NavLink>
+					<NavLink onClick={linkToggle} to="inventorydisplay" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBox} />{!displayAside && "Inventory"}</NavLink>
 					<hr />
 
 					<NavLink onClick={linkToggle} to="analytics" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faChartLine} />{!displayAside && "Analytics"}</NavLink>
