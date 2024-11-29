@@ -17,7 +17,6 @@
 	margin: 1em 0;
 	background-color: var(--tertiary);
 	border-radius: 15px;
-	box-shadow: 0px 2px 4px var(--textdark);
 
 }
 
@@ -39,7 +38,6 @@
 	/* overflow: hidden; */
 	overflow: hidden;
 	background-color: var(--background-color);
-	box-shadow: 0px 2px 4px var(--textdark);
 }
 
 .displaySection {

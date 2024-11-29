@@ -11,7 +11,7 @@ import Loading from "../loading/loading";
 import GetSession from "../../hooks/GetSession";
 
 
-function Records() {
+function InventoryDisplay() {
 	const [data, setData] = useState([])
 	const navigate = useNavigate()
 	const user = useContext(SessionContext);
@@ -113,7 +113,7 @@ function Records() {
 	}
 
 	// Deletion of Record
-	const deleteRecord = (e, recordId) => {
+	const deleteRecord = async (e, recordId) => {
 		e.stopPropagation();
 	}
 
@@ -266,4 +266,4 @@ function Records() {
 
 }
 
-export default Records
+export default InventoryDisplay

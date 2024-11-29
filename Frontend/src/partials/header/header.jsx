@@ -4,7 +4,8 @@ import { SessionContext } from "../../pages/home/home";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.css'
-import MoreSidebar from "../../partials/more/more.jsx";
+import MoreSidebar from '../more/more';
+
 
 
 function Header() {
@@ -19,7 +20,7 @@ function Header() {
 		setSidebar(showSidebar => !showSidebar)
 	}
 
-	const user = useContext(SessionContext);
+	const user = useContext(SessionContext)
 
 	if (!user) {
 		return <p>Loading user data...</p>;
@@ -48,16 +49,13 @@ function Header() {
 					<button>
 						<FontAwesomeIcon icon={faBell} />
 					</button>
-					{/* <Link to="/more"> */}
 						<button onClick={toggleSidebar}>
 							<FontAwesomeIcon icon={faBars} />
 						</button>
-					{/* </Link> */}
 				</div>
 			</section>
-			{showSidebar && 
-			<MoreSidebar/>
-
+			{
+				showSidebar && <MoreSidebar/>
 			}
 		</header>
 	)

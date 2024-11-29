@@ -10,6 +10,7 @@ import { SessionContext } from "../../pages/home/home";
 import Loading from "../loading/loading";
 import GetSession from "../../hooks/GetSession";
 
+
 function Records() {
 	const [data, setData] = useState([])
 	const navigate = useNavigate()
@@ -28,6 +29,33 @@ function Records() {
 		}
 
 	}
+
+	
+	//Testing Data
+	// const purchaseData = Array.from({ length: 50 }, (_, index) => ({
+	// 	transactionPermission: {
+	// 		recordId: `${index + 1}`,
+	// 		recordName: `Record Name Purchase ${index + 1}`,
+	// 		createdAt: new Date().toISOString(),
+	// 		recordType: "Type A",
+	// 	},
+	// 	userAccess: {
+	// 		accessType: index % 2 === 0 ? "Read" : "Write",
+	// 	},
+	// }));
+
+	// const expenseData = Array.from({ length: 50 }, (_, index) => ({
+	// 	transactionPermission: {
+	// 		recordId: `${index + 1}`,
+	// 		recordName: `Record Name Expense ${index + 1}`,
+	// 		createdAt: new Date().toISOString(),
+	// 		recordType: "Type B",
+	// 	},
+	// 	userAccess: {
+	// 		accessType: index % 2 === 0 ? "Read" : "Write",
+	// 	},
+	// }));
+
 
 	useEffect(() => {	
 		fetchRecords();
@@ -77,31 +105,6 @@ function Records() {
 	};
 
 
-	// Testing Data
-	// const purchaseData = Array.from({ length: 50 }, (_, index) => ({
-	// 	transactionPermission: {
-	// 		recordId: `${index + 1}`,
-	// 		recordName: `Record Name Purchase ${index + 1}`,
-	// 		createdAt: new Date().toISOString(),
-	// 		recordType: "Type A",
-	// 	},
-	// 	userAccess: {
-	// 		accessType: index % 2 === 0 ? "Read" : "Write",
-	// 	},
-	// }));
-
-	// const expenseData = Array.from({ length: 50 }, (_, index) => ({
-	// 	transactionPermission: {
-	// 		recordId: `${index + 1}`,
-	// 		recordName: `Record Name Expense ${index + 1}`,
-	// 		createdAt: new Date().toISOString(),
-	// 		recordType: "Type B",
-	// 	},
-	// 	userAccess: {
-	// 		accessType: index % 2 === 0 ? "Read" : "Write",
-	// 	},
-	// }));
-
 	// Displaying Record Details
 	const openRecord = (recordId, recordType) => {
 		navigate(`${recordType.toLowerCase()}/${recordId}`)
@@ -116,6 +119,10 @@ function Records() {
 	const deleteRecord = async (e, recordId) => {
 		e.stopPropagation();
 
+		// Create a prompt for this line
+		const confirmDelete = window.confirm(`Are you sure you want to delete record ${recordId}?`);
+		if (!confirmDelete) return;
+
 		try {
 			const response = await fetch(`/api/delete-record/${recordId}`, {
 				method: "DELETE",
@@ -127,10 +134,8 @@ function Records() {
 			}
 
 			fetchRecords()
-			
 		} catch (error) {
 			console.error("Error:", error);
-			alert("An error occurred while deleting the record");
 		}
 	}
 
@@ -158,7 +163,6 @@ function Records() {
 							<div className={styles.name}>Record Name</div>
 							<div className={styles.access}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
-							<div className={styles.creation}>Last Modified</div>
 							<div className={styles.edit}>Edit</div>
 							<div className={styles.delete}>Delete</div>
 						</div>
@@ -180,9 +184,6 @@ function Records() {
 									<div className={styles.access}>{data.userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.transactionPermission.createdAt).toLocaleDateString()}
-									</div>
-									<div className={styles.creation}>
-										{new Date(data.transactionPermission.updatedAt).toLocaleDateString()}
 									</div>
 									<div className={styles.edit}>
 										<Link

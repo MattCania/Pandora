@@ -13,11 +13,9 @@ function CreateRecords() {
 	// if (!user) {
 	// 	return (<Loading />)
 	// }
-
 	const [formValues, setFormValues] = useState({
 		recordType: "", recordName: ""
 	});
-
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setFormValues((prevValues) => ({
@@ -25,11 +23,9 @@ function CreateRecords() {
 			[name]: value,
 		}));
 	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formData = { ...formValues };
-
 		try {
 			const response = await fetch("/api/create-record", {
 				method: "POST",
@@ -37,15 +33,12 @@ function CreateRecords() {
 				body: JSON.stringify(formData),
 				credentials: "include",
 			});
-
 			if (!response.ok) throw new Error("Error Creation")
 			navigate(-1)
-
 		} catch (error) {
 			console.error("Error:", error);
 		}
 	};
-
 	return (
 		<section className={styles.blur}>
 			
@@ -62,14 +55,13 @@ function CreateRecords() {
 					</select>
 				</div>
 				<input type="text" name="recordName" id="recordName" value={formValues.recordName} onChange={handleInputChange} placeholder="Record Name" />
-
 				<input type="submit" value="Create Record"/>
 			</form>
 
 		</section>
 	)
+	
 
 }
 
 export default CreateRecords
-

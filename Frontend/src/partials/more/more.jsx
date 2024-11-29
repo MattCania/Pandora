@@ -7,7 +7,6 @@ import { SessionContext } from "../../pages/home/home"
 import fakeQr from '/fakeQr.svg'
 import styles from './more.module.css'
 import Loading from "../loading/loading"
-import Profile from "../../partials/profile/profile.jsx"
 
 function MoreSidebar() {
 	const navigate = useNavigate()
@@ -78,7 +77,7 @@ function MoreSidebar() {
 					<Link to="">Settings</Link>
 					<Link to="">Privacy Policy</Link>
 					<Link to="">Other Links</Link>
-					<Link to="">About Us</Link>
+					<Link to="/aboutus">About Us</Link>
 					<Link to="">Request a Feature</Link>
 				</div>
 

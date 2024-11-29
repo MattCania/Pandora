@@ -1,11 +1,12 @@
 import Raect, { useContext, useState, useEffect } from "react";
-
 import GetSession from "../../hooks/GetSession";
 import Loading from "../../partials/loading/loading";
 import style from './profile.module.css'
 import { SessionContext } from "../../pages/home/home";
 import { useNavigate } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import Header from "../header/Header";
 function Profile() {
     const navigate = useNavigate()
 	const user = GetSession()
@@ -28,17 +29,49 @@ function Profile() {
     }
 
     return (
-        <div className = {style.profile}>
-            <img></img>
-            <h1>Welcome, {user.user.firstname}!</h1>
-            <p><strong>Username:</strong> {user.profile.userName}</p>
-            <p><strong>Email:</strong> {user.session.email}</p>
-            <p><strong>Contact:</strong> {user.profile.contact}</p>
-            <p><strong>Organization:</strong> {user.profile.organization}</p>
-            <p><strong>Department:</strong> {user.profile.department}</p>
-            <p><strong>Birthday:</strong> {user.profile.birthday}</p>
-            <p><strong>Gender:</strong> {user.profile.gender}</p>
-        </div>
+        <section className={style.portion}>
+            <header className={style.header}>
+                <button onClick={() => navigate('/home')}></button>
+            </header>
+            <div className={style.middle}>
+                <div className={style.head}>
+                    {/* <img src={user.profile.image || '/default-profile.png'} alt="Profile" /> */}
+                    <h1><FontAwesomeIcon icon={faUser}/></h1>
+                    <h1>Welcome, {user.user.firstName}!</h1>
+                    <div className={style.field}>
+                        <label>Username:</label>
+                        <input type="text" value={user.profile.userName} readOnly />
+                    </div>
+                </div>
+                <div className={style.upperSection}>
+                    <h2>Personal Information</h2>
+                    <div className={style.field}>
+                        <label>Email:</label>
+                        <input type="text" value={user.session.email} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Contact:</label>
+                        <input type="text" value={user.profile.contact} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Organization:</label>
+                        <input type="text" value={user.profile.organization} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Department:</label>
+                        <input type="text" value={user.profile.department} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Birthday:</label>
+                        <input type="text" value={user.profile.birthday} readOnly />
+                    </div>
+                    <div className={style.field}>
+                        <label>Gender:</label>
+                        <input type="text" value={user.profile.gender} readOnly />
+                    </div>
+                </div>
+            </div>
+        </section>
     );
 }
 

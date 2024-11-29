@@ -52,7 +52,9 @@ function Register() {
     <div className={styles.container}>
       <div className={styles.formSection}>
         <div className={styles.logo}>
-          <img className={styles.formLogo} src={Logo} alt="" draggable="false" />
+          <a href="/landing"> 
+            <img className={styles.formLogo} src={Logo} alt="" draggable="false" />
+          </a>
         </div>
         <h3 className={styles.welcome}>Welcome to Pandora!</h3>
         <form onSubmit={handleSubmit}>
@@ -101,7 +103,7 @@ function Register() {
           <input type="date" name="birthday" id="birthday" placeholder="Birthday" onChange={handleInputChange} />
           <div className={styles.gender}>
             <select name="gender" id="gender">
-              <option value="" selected="selected" disabled>Gender</option>
+              <option value="" disabled>Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="others">Others</option>
