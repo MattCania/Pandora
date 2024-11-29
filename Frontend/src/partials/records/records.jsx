@@ -16,21 +16,21 @@ function Records() {
 	const user = useContext(SessionContext);
 	const [searchTerm, setSearchTerm] = useState("");
 	
-	useEffect(() => {
-		const fetchRecords = async () => {
-			try {
-				if (!user) return
-				const records = await GetData(`records/${user.session.userId}`)
-				if (!records) throw new Error("Records Null or Undefined")
+	const fetchRecords = async () => {
+		try {
+			if (!user) return
+			const records = await GetData(`records/${user.session.userId}`)
+			if (!records) throw new Error("Records Null or Undefined")
 
-				setData(records)
-			} catch (error) {
-				console.error("Error fetching data:", error);
-			}
-
+			setData(records)
+		} catch (error) {
+			console.error("Error fetching data:", error);
 		}
-		fetchRecords();
 
+	}
+
+	useEffect(() => {	
+		fetchRecords();
 	}, [user])
 
 	if (!data) {
@@ -104,7 +104,7 @@ function Records() {
 
 	// Displaying Record Details
 	const openRecord = (recordId, recordType) => {
-		navigate(`${recordType}/${recordId}`)
+		navigate(`${recordType.toLowerCase()}/${recordId}`)
 	}
 
 	// Create new Record
@@ -115,8 +115,6 @@ function Records() {
 	// Deletion of Record
 	const deleteRecord = async (e, recordId) => {
 		e.stopPropagation();
-		const confirmDelete = window.confirm(`Are you sure you want to delete record ${recordId}?`);
-		if (!confirmDelete) return;
 
 		try {
 			const response = await fetch(`/api/delete-record/${recordId}`, {
@@ -128,8 +126,8 @@ function Records() {
 				throw new Error("Failed to delete the record");
 			}
 
-			alert(`Record ${recordId} deleted successfully`);
-
+			fetchRecords()
+			
 		} catch (error) {
 			console.error("Error:", error);
 			alert("An error occurred while deleting the record");
