@@ -87,7 +87,7 @@ function Login() {
 			<div className={styles.leftImage}></div>
 
 			<div className={styles.middleSection}>
-				<a href="/">
+				<a href="/landing">
 					<img className={styles.formLogo} src={Logo} alt="" draggable="false" />
 				</a>
 				<form className={styles.form}>
