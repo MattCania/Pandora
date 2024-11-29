@@ -40,7 +40,7 @@ function MoreSidebar() {
 					<p>{user.session.email}</p>
 
 					<div className={styles.accountButtons}>
-						<a href={Profile}>
+						<a href='/profile'>
 							My Account
 						</a>
 						<button onClick={handleLogout}>Sign Out</button>

@@ -1,12 +1,29 @@
-import { useContext } from "react";
-import { SessionContext } from "../../pages/home/home";
+import Raect, { useContext, useState, useEffect } from "react";
+
+import GetSession from "../../hooks/GetSession";
 import Loading from "../../partials/loading/loading";
 import style from './profile.module.css'
+import { SessionContext } from "../../pages/home/home";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
-    const user = useContext(SessionContext);
+    const navigate = useNavigate()
+	const user = GetSession()
+	const [isAuth, setAuth] = useState(false);
+	const [loading, setLoading] = useState(true);
 
+	useEffect(() => {
+		if (loading) return;
+
+		if (user) {
+			setAuth(true);
+		} else {
+			setAuth(false);
+		}
+	}, [user, loading]);
+    
     if(!user) {
+        navigate('/login')
         return (<Loading></Loading>)
     }
 

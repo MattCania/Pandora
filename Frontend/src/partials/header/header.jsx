@@ -48,13 +48,17 @@ function Header() {
 					<button>
 						<FontAwesomeIcon icon={faBell} />
 					</button>
-					<Link to="/more">
+					{/* <Link to="/more"> */}
 						<button onClick={toggleSidebar}>
 							<FontAwesomeIcon icon={faBars} />
 						</button>
-					</Link>
+					{/* </Link> */}
 				</div>
 			</section>
+			{showSidebar && 
+			<MoreSidebar/>
+
+			}
 		</header>
 	)
 
