@@ -5,6 +5,7 @@ import CreateRecords from '../../partials/records/createRecords';
 import EditRecords from '../../partials/records/editRecords';
 import InventoryDisplay from '../../partials/inventoryD/inventoryD.jsx';
 import Home from './home.jsx';
+import Company from '../../partials/company/company.jsx';
 
 function HomeRouter() {
 
@@ -17,6 +18,7 @@ function HomeRouter() {
         <Route path="inventorydisplay" element={<InventoryDisplay/>}/>
         <Route path='records/edit/:recordId' element={<EditRecords/>}/>
         <Route path="records/:transaction/:recordId" element={<h1>No Display Yet</h1>}/>
+        <Route path="company" element={<Company/>}/>
       </Routes>
 
   );
