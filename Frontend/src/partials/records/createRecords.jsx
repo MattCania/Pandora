@@ -38,7 +38,7 @@ function CreateRecords() {
 				credentials: "include",
 			});
 
-			if (!response.ok) throw new Error("Error Registration")
+			if (!response.ok) throw new Error("Error Creation")
 			navigate(-1)
 
 		} catch (error) {
@@ -57,7 +57,7 @@ function CreateRecords() {
 				<div className={styles.recordType}>
 					<select name="recordType" id="recordType" value={formValues.recordType} onChange={handleInputChange}>
 						<option value="" disabled>Record Type</option>
-						<option value="Expenses">Expneses</option>
+						<option value="Expenses">Expenses</option>
 						<option value="Purchases">Purchases</option>
 					</select>
 				</div>
