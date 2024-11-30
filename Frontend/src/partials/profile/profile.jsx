@@ -1,4 +1,4 @@
-import Raect, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import GetSession from "../../hooks/GetSession";
 import Loading from "../../partials/loading/loading";
 import style from './profile.module.css'
@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Header from "../header/Header";
+import Logo from '/src/assets/MainLogo.svg'
+
 function Profile() {
     const navigate = useNavigate()
 	const user = GetSession()
@@ -31,7 +33,7 @@ function Profile() {
     return (
         <section className={style.portion}>
             <header className={style.header}>
-                <button onClick={() => navigate('/home')}></button>
+                <a href="/home"><img src={Logo}/></a>
             </header>
             <div className={style.middle}>
                 <div className={style.head}>
@@ -39,33 +41,23 @@ function Profile() {
                     <h1><FontAwesomeIcon icon={faUser}/></h1>
                     <h1>Welcome, {user.user.firstName}!</h1>
                     <div className={style.field}>
-                        <label>Username:</label>
-                        <input type="text" value={user.profile.userName} readOnly />
                     </div>
                 </div>
                 <div className={style.upperSection}>
                     <h2>Personal Information</h2>
                     <div className={style.field}>
+                        <label>Username:</label>
+                        <input type="text" value={user.profile.userName} readOnly />
                         <label>Email:</label>
                         <input type="text" value={user.session.email} readOnly />
-                    </div>
-                    <div className={style.field}>
                         <label>Contact:</label>
                         <input type="text" value={user.profile.contact} readOnly />
-                    </div>
-                    <div className={style.field}>
                         <label>Organization:</label>
                         <input type="text" value={user.profile.organization} readOnly />
-                    </div>
-                    <div className={style.field}>
                         <label>Department:</label>
                         <input type="text" value={user.profile.department} readOnly />
-                    </div>
-                    <div className={style.field}>
                         <label>Birthday:</label>
                         <input type="text" value={user.profile.birthday} readOnly />
-                    </div>
-                    <div className={style.field}>
                         <label>Gender:</label>
                         <input type="text" value={user.profile.gender} readOnly />
                     </div>
