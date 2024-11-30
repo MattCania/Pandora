@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 				targetKey: "userId",
 				as: "profileAccount",
 				onDelete: "CASCADE",
+    		    onUpdate: 'CASCADE'
 			});
 
 			UserProfiles.hasMany(models.RecordPermissions, {
@@ -21,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 				sourceKey: "profileId",
 				as: "profilePermission",
 				onDelete: "CASCADE",
+    		    onUpdate: 'CASCADE'
 			});
 		}
 	}

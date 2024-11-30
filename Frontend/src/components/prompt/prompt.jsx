@@ -11,7 +11,7 @@ function Prompt({ error, message, onClose }) {
 			<div className={styles.promptDiv}>
 				<section className={styles.promptMessage}>
 					<div className={styles.closeButton}>
-						<button onClick={onClose}> 
+						<button type='button' onClick={onClose}> 
 							<FontAwesomeIcon icon={faX}/>
 						</button>
 					</div>

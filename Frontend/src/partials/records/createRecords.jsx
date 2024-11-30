@@ -4,6 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from './records.module.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import PostRequest from "../../hooks/PostRequest";
+
 // import { SessionContext } from "../../pages/home/home";
 // import Loading from "../loading/loading";
 
@@ -26,15 +28,12 @@ function CreateRecords() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formData = { ...formValues };
+
 		try {
-			const response = await fetch("/api/create-record", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(formData),
-				credentials: "include",
-			});
-			if (!response.ok) throw new Error("Error Creation")
-			navigate(-1)
+			if (formData.recordType.length === 0 || !formData.recordType || formData.recordName.length === 0 || !formData.recordName) throw new Error ("Please Input a record type")
+			const response = PostRequest("create-record", formData)
+			if (!response) throw new Error("Error Creation")
+			navigate('/home/records')
 		} catch (error) {
 			console.error("Error:", error);
 		}

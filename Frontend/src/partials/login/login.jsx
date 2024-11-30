@@ -6,12 +6,16 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import GetSession from "../../hooks/GetSession"
 import styles from './login.module.css'
 import Logo from '/src/assets/MainLogo.svg'
+
 import Loading from "../loading/loading";
+import PostRequest from "../../hooks/PostRequest";
 
 function Login() {
 	const navigate = useNavigate()
 	const [isAuth, setAuth] = useState(false)
 	const user = GetSession()
+
+	// if (!user) return <Loading/>
 
 	sessionStorage.clear()
 
@@ -55,16 +59,9 @@ function Login() {
 		}
 
 		try {
-			const response = await fetch("/api/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(formData),
-				credentials: "include",
-			})
+			const response = await PostRequest("/login", formData)
 
-			if (!response.ok) throw new Error("Invalid Credentials")
+			if (!response) throw new Error("Invalid Credentials")
 			navigate('/home')
 		} catch (error) {
 			setError(error.message)

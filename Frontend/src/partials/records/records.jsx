@@ -8,19 +8,19 @@ import SubHeader from "../../components/overviews/subheader";
 import Footer from "../footer/footer";
 import { SessionContext } from "../../pages/home/home";
 import Loading from "../loading/loading";
-import GetSession from "../../hooks/GetSession";
-
+import DeleteRequest from "../../hooks/DeleteRequest";
 
 function Records() {
 	const [data, setData] = useState([])
 	const navigate = useNavigate()
 	const user = useContext(SessionContext);
 	const [searchTerm, setSearchTerm] = useState("");
-	
+
 	const fetchRecords = async () => {
 		try {
 			if (!user) return
 			const records = await GetData(`records/${user.session.userId}`)
+			console.log(records)
 			if (!records) throw new Error("Records Null or Undefined")
 
 			setData(records)
@@ -30,34 +30,7 @@ function Records() {
 
 	}
 
-	
-	//Testing Data
-	// const purchaseData = Array.from({ length: 50 }, (_, index) => ({
-	// 	transactionPermission: {
-	// 		recordId: `${index + 1}`,
-	// 		recordName: `Record Name Purchase ${index + 1}`,
-	// 		createdAt: new Date().toISOString(),
-	// 		recordType: "Type A",
-	// 	},
-	// 	userAccess: {
-	// 		accessType: index % 2 === 0 ? "Read" : "Write",
-	// 	},
-	// }));
-
-	// const expenseData = Array.from({ length: 50 }, (_, index) => ({
-	// 	transactionPermission: {
-	// 		recordId: `${index + 1}`,
-	// 		recordName: `Record Name Expense ${index + 1}`,
-	// 		createdAt: new Date().toISOString(),
-	// 		recordType: "Type B",
-	// 	},
-	// 	userAccess: {
-	// 		accessType: index % 2 === 0 ? "Read" : "Write",
-	// 	},
-	// }));
-
-
-	useEffect(() => {	
+	useEffect(() => {
 		fetchRecords();
 	}, [user])
 
@@ -66,18 +39,18 @@ function Records() {
 	}
 
 	const expenseData = data.filter(record =>
-		record.transactionPermission?.recordType === "Expenses"
+		record.recordType === "Expenses"
 	);
 
 	const purchaseData = data.filter(record =>
-		record.transactionPermission?.recordType === "Purchases"
+		record.recordType === "Purchases"
 	);
 
 	// Apply search term filtering
 	const filteredExpenseData = expenseData.filter(record => {
-		const recordId = record.transactionPermission.recordId.toString();
-		const recordName = record.transactionPermission.recordName.toLowerCase();
-		const accessType = record.userAccess.accessType.toLowerCase();
+		const recordId = record.recordId.toString();
+		const recordName = record.recordName.toLowerCase();
+		const accessType = record.recordPermissions[0].userAccess.accessType.toLowerCase();
 		const search = searchTerm.toLowerCase();
 
 		return (
@@ -88,9 +61,9 @@ function Records() {
 	});
 
 	const filteredPurchaseData = purchaseData.filter(record => {
-		const recordId = record.transactionPermission.recordId.toString();
-		const recordName = record.transactionPermission.recordName.toLowerCase();
-		const accessType = record.userAccess.accessType.toLowerCase();
+		const recordId = record.recordId.toString();
+		const recordName = record.recordName.toLowerCase();
+		const accessType = record.recordPermissions[0].userAccess.accessType.toLowerCase();
 		const search = searchTerm.toLowerCase();
 
 		return (
@@ -100,8 +73,8 @@ function Records() {
 		);
 	});
 
-	const handleFilter = (event) => {
-		setSearchTerm(event.target.value);
+	const handleFilter = (e) => {
+		setSearchTerm(e.target.value);
 	};
 
 
@@ -124,12 +97,9 @@ function Records() {
 		if (!confirmDelete) return;
 
 		try {
-			const response = await fetch(`/api/delete-record/${recordId}`, {
-				method: "DELETE",
-				headers: { "Content-Type": "application/json" },
-			});
+			const response = await DeleteRequest(`delete-record/${recordId}`)
 
-			if (!response.ok) {
+			if (!response) {
 				throw new Error("Failed to delete the record");
 			}
 
@@ -173,21 +143,21 @@ function Records() {
 									key={index}
 									onClick={() =>
 										openRecord(
-											data.transactionPermission.recordId,
-											data.transactionPermission.recordType
+											data.recordId,
+											data.recordType
 										)
 									}
 								>
 									<div className={styles.index}>{index + 1}</div>
-									<div className={styles.id}>{data.transactionPermission.recordId}</div>
-									<div className={styles.name}>{data.transactionPermission.recordName}</div>
-									<div className={styles.access}>{data.userAccess.accessType}</div>
+									<div className={styles.id}>{data.recordId}</div>
+									<div className={styles.name}>{data.recordName}</div>
+									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
-										{new Date(data.transactionPermission.createdAt).toLocaleDateString()}
+										{new Date(data.createdAt).toLocaleDateString()}
 									</div>
 									<div className={styles.edit}>
 										<Link
-											to={`edit/${data.transactionPermission.recordId}`}
+											to={`edit/${data.recordId}`}
 											onClick={(e) => e.stopPropagation()}
 										>
 											<FontAwesomeIcon icon={faEdit} />
@@ -195,7 +165,7 @@ function Records() {
 									</div>
 									<div className={styles.delete}>
 										<button
-											onClick={(e) => deleteRecord(e, data.transactionPermission.recordId)}
+											onClick={(e) => deleteRecord(e, data.recordId)}
 										>
 											<FontAwesomeIcon icon={faTrash} />
 										</button>
@@ -207,10 +177,9 @@ function Records() {
 				</section>
 
 			</section>
-
 			<section className={styles.subSection}>
 				<SubHeader
-					text="Purchase Transaction Record"
+					text="Purchases Transaction Record"
 					buttonClick={navigateCreate}
 					searchUp={true}
 					placeholder="Search Records"
@@ -234,21 +203,21 @@ function Records() {
 									key={index}
 									onClick={() =>
 										openRecord(
-											data.transactionPermission.recordId,
-											data.transactionPermission.recordType
+											data.recordId,
+											data.recordType
 										)
 									}
 								>
 									<div className={styles.index}>{index + 1}</div>
-									<div className={styles.id}>{data.transactionPermission.recordId}</div>
-									<div className={styles.name}>{data.transactionPermission.recordName}</div>
-									<div className={styles.access}>{data.userAccess.accessType}</div>
+									<div className={styles.id}>{data.recordId}</div>
+									<div className={styles.name}>{data.recordName}</div>
+									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
-										{new Date(data.transactionPermission.createdAt).toLocaleDateString()}
+										{new Date(data.createdAt).toLocaleDateString()}
 									</div>
 									<div className={styles.edit}>
 										<Link
-											to={`edit/${data.transactionPermission.recordId}`}
+											to={`edit/${data.recordId}`}
 											onClick={(e) => e.stopPropagation()}
 										>
 											<FontAwesomeIcon icon={faEdit} />
@@ -256,7 +225,7 @@ function Records() {
 									</div>
 									<div className={styles.delete}>
 										<button
-											onClick={(e) => deleteRecord(e, data.transactionPermission.recordId)}
+											onClick={(e) => deleteRecord(e, data.recordId)}
 										>
 											<FontAwesomeIcon icon={faTrash} />
 										</button>
@@ -265,7 +234,6 @@ function Records() {
 							))}
 						</div>
 					</div>
-
 				</section>
 
 			</section>

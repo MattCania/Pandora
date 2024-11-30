@@ -9,6 +9,4 @@ router.post('/create-transactions', transactionController.createTransaction)
 router.post('/update-transactions/:transaction/:transactionId', transactionController.updateTransaction)
 router.post('/delete-transactions/:transaction/:transactionId', transactionController.deleteTransaction)
 
-module.exports = {
-	router
-}
+module.exports = router

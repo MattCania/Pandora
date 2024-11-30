@@ -7,6 +7,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import GetData from "../../hooks/GetData";
 // import { SessionContext } from "../../pages/home/home";
 import Loading from "../loading/loading";
+import PostRequest from "../../hooks/PostRequest";
 
 function EditRecords() {
     const navigate = useNavigate();
@@ -23,16 +24,18 @@ function EditRecords() {
 	// 	return <Loading/>
 	// }
 	useEffect(() => {
-		fetch(`/api/edit-record/${recordId}`)
-		  .then((response) => response.json())
-		  .then((data) => {
-			// Populate formData with the fetched record's data
-			setFormValues(data);
-		  })
-		  .catch((error) => {
-			console.error('Error fetching record:', error);
-		  });
-	  }, [recordId]);
+		const fetchRecord = async () => {
+			try{
+				const data = await GetData(`records/open/${recordId}`)
+				if (!data) throw new Error("Fetching Error")
+				setFormValues(data)
+			}
+			catch(err){
+				return
+			}
+		}
+		fetchRecord()
+	}, [recordId]);
 
 
 	const handleInputChange = (e) => {
@@ -48,19 +51,9 @@ function EditRecords() {
 		const formData = { ...formValues };
 
 		try {
-			const response = await fetch(`/api/update-record/${recordId}`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(formData),
-				credentials: "include",
-			});
-			if (!response.ok) {
-				const errorData = await response.json();
-				throw new Error(errorData.message || "Unknown error occurred");
-			  }
-
+			const response = await PostRequest(`update-record/${recordId}`, formData)
+			if (!response) throw new Error("Updating Data Error");
 			navigate(-1)
-
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -71,7 +64,7 @@ function EditRecords() {
 			
 			<form className={styles.createForm} onSubmit={handleSubmit}>
 				<div className={styles.buttonDiv}>
-					<button onClick={() => navigate(-1)}><FontAwesomeIcon icon={faXmark}/></button>
+					<button type="button" onClick={() => navigate(-1)}><FontAwesomeIcon icon={faXmark}/></button>
 				</div>
 				<h1>Update Record #{recordId}</h1>
 				<div className={styles.recordType}>
