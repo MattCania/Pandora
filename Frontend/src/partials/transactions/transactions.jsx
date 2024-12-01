@@ -83,7 +83,7 @@ function Transactions() {
 									</div>
 									<div className={styles.edit}>
 										<Link
-											to={`edit/expense/${data.expenseId}`}
+											to={`edit/${data.expenseId}`}
 											onClick={(e) => e.stopPropagation()}
 										>
 											<FontAwesomeIcon icon={faEdit} />

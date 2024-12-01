@@ -1,0 +1,126 @@
+.blur {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	min-width: 30%;
+	width: auto;
+	max-width: 80%;
+	min-height: 20%;
+	height: auto;
+	max-height: 90%;
+	border-radius: 15px;
+	border: 1px solid var(--textdark);
+	background-color: var(--background-color);
+	overflow: hidden;
+	gap: 1em;
+}
+
+.section h1{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	height: 50%;
+	color: var(--textdark);
+	font-size: 14px;
+	padding: 0em 1em;
+}
+
+.header{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--tertiary);
+	width: 100%;
+	height: 40%;
+	padding: .25em 1em;
+	flex: 1;
+	border-bottom: 1px solid var(--textdark);
+}
+
+.header h1{
+	font-size: 1.25em;
+	margin: 0;
+	padding: 0;
+	color: var(--textlight);
+}
+
+.header button{
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 1.5em;
+	width: 1.5em;
+	border: 0;
+	border-radius: 5px;
+	outline: 0;
+	transition: all 500ms;
+	background-color: transparent;
+	color: var(--textlight);
+}
+
+.header button:hover{
+	color: var(--textlight);
+	background-color: var(--secondary);
+	transition: all 500ms;
+}
+
+.buttonDiv{
+	border-top: 1px solid var(--textdark);
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	flex: 4;
+	/* padding: 1em; */
+}
+
+.cancel, .proceed{
+	width: 10em;
+	height: 3em;
+	border-radius: 10px;
+	margin: 8px;
+	border: none;
+	outline: none;
+	transition: all 250ms;
+}
+
+.cancel{
+	cursor: pointer;
+	background-color: var(--primary);
+	box-shadow: 0px 2px 4px var(--textdark);
+	color: var(--textdark);
+}
+
+.proceed{
+	cursor: pointer;
+	background-color: var(--green);
+	box-shadow: 0px 2px 4px var(--textdark);
+}
+
+.cancel:hover, .proceed:hover{
+	background-color: var(--secondary);
+	transition: all 250ms;
+	color: var(--textlight);
+}
+
+
+

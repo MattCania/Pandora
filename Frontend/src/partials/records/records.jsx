@@ -2,18 +2,21 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import GetData from '../../hooks/GetData'
+import { SessionContext } from "../../pages/home/home";
 import styles from './records.module.css'
+import Loading from "../loading/loading";
+import GetData from '../../hooks/GetData'
 import SubHeader from "../../components/overviews/subheader";
 import Footer from "../footer/footer";
-import { SessionContext } from "../../pages/home/home";
-import Loading from "../loading/loading";
 import DeleteRequest from "../../hooks/DeleteRequest";
+import CreateInterface from "../../components/interface/createInterface";
+import FilterRecords from "../../utils/recordFilter";
+
 
 function Records() {
-	const [data, setData] = useState([])
 	const navigate = useNavigate()
 	const user = useContext(SessionContext);
+	const [data, setData] = useState([])
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const fetchRecords = async () => {
@@ -84,6 +87,7 @@ function Records() {
 	}
 
 	// Create new Record
+
 	const navigateCreate = () => {
 		navigate('create')
 	}
@@ -112,7 +116,6 @@ function Records() {
 	return (
 		user && expenseData && purchaseData &&
 		<section className={styles.section}>
-
 			<header className={styles.subHeader}>
 				<h1>Available Records for User {user.profile.userName}</h1>
 			</header>

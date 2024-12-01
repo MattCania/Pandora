@@ -75,7 +75,6 @@ function EditRecords() {
 					</select>
 				</div>
 				<input type="text" name="recordName" id="recordName" value={formValues.recordName} onChange={handleInputChange} placeholder="Record Name" />
-
 				<input type="submit" value="Update Record"/>
 			</form>
 
