@@ -9,12 +9,12 @@ function ConfirmPrompt({ mainText, subText, cancelText, proceedText, close, acti
 			<section className={promptStyle.section}>
 				<header className={promptStyle.header}>
 					<h1>{mainText ? mainText : "Deleting Record?"}</h1>
-					<button><FontAwesomeIcon icon={faX}/></button>
+					<button onClick={close}><FontAwesomeIcon icon={faX}/></button>
 				</header>
 				<h1>{subText ? subText : "This action cannot be undone!"}</h1>
 				<div className={promptStyle.buttonDiv}>
-					<button className={promptStyle.cancel}>{cancelText ? cancelText : "Cancel"}</button>
-					<button className={promptStyle.proceed}>{proceedText ? proceedText : "Continue"}</button>
+					<button onClick={close} className={promptStyle.cancel}>{cancelText ? cancelText : "Cancel"}</button>
+					<button onClick={action} className={promptStyle.proceed}>{proceedText ? proceedText : "Continue"}</button>
 				</div>
 			</section>
 		</div>

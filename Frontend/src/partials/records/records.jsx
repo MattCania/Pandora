@@ -11,13 +11,14 @@ import Footer from "../footer/footer";
 import DeleteRequest from "../../hooks/DeleteRequest";
 import CreateInterface from "../../components/interface/createInterface";
 import FilterRecords from "../../utils/recordFilter";
-
+import ConfirmPrompt from "../../components/prompts/confirmPrompt";
 
 function Records() {
 	const navigate = useNavigate()
 	const user = useContext(SessionContext);
 	const [data, setData] = useState([])
-	const [searchTerm, setSearchTerm] = useState("");
+	const [purchaseTerm, setPurchaseTerm] = useState("");
+	const [expenseTerm, setExpenseTerm] = useState('')
 
 	const fetchRecords = async () => {
 		try {
@@ -30,7 +31,6 @@ function Records() {
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
-
 	}
 
 	useEffect(() => {
@@ -54,7 +54,7 @@ function Records() {
 		const recordId = record.recordId.toString();
 		const recordName = record.recordName.toLowerCase();
 		const accessType = record.recordPermissions[0].userAccess.accessType.toLowerCase();
-		const search = searchTerm.toLowerCase();
+		const search = expenseTerm.toLowerCase();
 
 		return (
 			recordId.includes(search) ||
@@ -67,7 +67,7 @@ function Records() {
 		const recordId = record.recordId.toString();
 		const recordName = record.recordName.toLowerCase();
 		const accessType = record.recordPermissions[0].userAccess.accessType.toLowerCase();
-		const search = searchTerm.toLowerCase();
+		const search = purchaseTerm.toLowerCase();
 
 		return (
 			recordId.includes(search) ||
@@ -76,10 +76,13 @@ function Records() {
 		);
 	});
 
-	const handleFilter = (e) => {
-		setSearchTerm(e.target.value);
+	const purchaseFilter = (e) => {
+		setPurchaseTerm(e.target.value);
 	};
 
+	const expenseFilter = (e) => {
+		setExpenseTerm(e.target.value);
+	};
 
 	// Displaying Record Details
 	const openRecord = (recordId, recordType) => {
@@ -92,13 +95,36 @@ function Records() {
 		navigate('create')
 	}
 
+	const [showConfirmPrompt, setShowConfirmPrompt] = useState(false);
+	const [recordToDelete, setRecordToDelete] = useState(null);
+
+	const triggerDeletePrompt = (e, recordId) => {
+		e.stopPropagation();
+		setRecordToDelete(recordId);
+		setShowConfirmPrompt(true);
+	};
+
+	const confirmDeletion = async () => {
+		try {
+			if (!recordToDelete) return;
+
+			const response = await DeleteRequest(`delete-record/${recordToDelete}`);
+			if (!response) {
+				throw new Error("Failed to delete the record");
+			}
+
+			fetchRecords();
+		} catch (error) {
+			console.error("Error:", error);
+		} finally {
+			setShowConfirmPrompt(false);
+			setRecordToDelete(null);
+		}
+	};
+
 	// Deletion of Record
 	const deleteRecord = async (e, recordId) => {
 		e.stopPropagation();
-
-		// Create a prompt for this line
-		const confirmDelete = window.confirm(`Are you sure you want to delete record ${recordId}?`);
-		if (!confirmDelete) return;
 
 		try {
 			const response = await DeleteRequest(`delete-record/${recordId}`)
@@ -116,6 +142,7 @@ function Records() {
 	return (
 		user && expenseData && purchaseData &&
 		<section className={styles.section}>
+
 			<header className={styles.subHeader}>
 				<h1>Available Records for User {user.profile.userName}</h1>
 			</header>
@@ -126,7 +153,7 @@ function Records() {
 					buttonClick={navigateCreate}
 					searchUp={true}
 					placeholder="Search Records"
-					inputChange={handleFilter}
+					inputChange={expenseFilter}
 				/>
 				<section className={styles.displaySection}>
 					<div className={styles.table}>
@@ -168,7 +195,7 @@ function Records() {
 									</div>
 									<div className={styles.delete}>
 										<button
-											onClick={(e) => deleteRecord(e, data.recordId)}
+											onClick={(e) => triggerDeletePrompt(e, data.recordId)}
 										>
 											<FontAwesomeIcon icon={faTrash} />
 										</button>
@@ -186,7 +213,7 @@ function Records() {
 					buttonClick={navigateCreate}
 					searchUp={true}
 					placeholder="Search Records"
-					inputChange={handleFilter}
+					inputChange={purchaseFilter}
 				/>
 				<section className={styles.displaySection}>
 					<div className={styles.table}>
@@ -228,7 +255,8 @@ function Records() {
 									</div>
 									<div className={styles.delete}>
 										<button
-											onClick={(e) => deleteRecord(e, data.recordId)}
+											// onClick={() => setShowConfirmPrompt(showConfirmPrompt => !showConfirmPrompt)}
+											onClick={(e) => triggerDeletePrompt(e, data.recordId)}
 										>
 											<FontAwesomeIcon icon={faTrash} />
 										</button>
@@ -241,6 +269,27 @@ function Records() {
 
 			</section>
 
+			{showConfirmPrompt && (
+				<ConfirmPrompt
+					mainText="Confirm Deletion"
+					subText={`Are you sure you want to delete record ${recordToDelete}?`}
+					cancelText="Cancel"
+					proceedText="Delete"
+					close={() => setShowConfirmPrompt(false)}
+					action={confirmDeletion}
+				/>
+			)}
+
+			{showConfirmPrompt && (
+				<ConfirmPrompt
+					mainText="Confirm Deletion"
+					subText={`Are you sure you want to delete record ${recordToDelete}?`}
+					cancelText="Cancel"
+					proceedText="Delete"
+					close={() => setShowConfirmPrompt(false)}
+					action={confirmDeletion}
+				/>
+			)}
 			<Footer />
 		</section>
 

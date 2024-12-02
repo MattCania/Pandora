@@ -40,6 +40,8 @@
 	color: var(--textdark);
 	font-size: 14px;
 	padding: 0em 1em;
+	
+	/* border-radius: 15px 15px 0px 0px; */
 }
 
 .header{
@@ -52,6 +54,7 @@
 	padding: .25em 1em;
 	flex: 1;
 	border-bottom: 1px solid var(--textdark);
+	/* border-radius: 15px 15px 0px 0px; */
 }
 
 .header h1{

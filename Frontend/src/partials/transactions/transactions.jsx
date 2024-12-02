@@ -5,6 +5,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import GetData from '../../hooks/GetData'
 import styles from './transactions.module.css'
 import SubHeader from "../../components/overviews/subheader";
+import Error from "../../components/error/error";
 
 function Transactions() {
 	const navigate = useNavigate()

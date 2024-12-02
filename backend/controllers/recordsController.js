@@ -66,7 +66,7 @@ const getSingleRecord = async (req, res) => {
 
 const createRecord = async (req, res) => {
   const userId = req.session.userId;
-  const { recordType, recordName } = req.body;
+  const { recordType, recordName, userPermissions } = req.body;
 
   try {
     const results = await TransactionRecords.create({
@@ -88,8 +88,25 @@ const createRecord = async (req, res) => {
 
     if (!response) throw new Error("Record Creation Failure");
 
+    if (Array.isArray(userPermissions) && userPermissions.length > 0) {
+      const permissions = await Promise.all(userPermissions.map(async (userName) => {
+        const user = await UserProfiles.findOne({ where: { userName: userName } });
+
+        if (!user) {
+          throw new Error(`User with userName ${userName} not found`);
+        }
+
+        return {
+          recordId: newRecordId,
+          accessLevel: 3,
+          permittedUser: user.profileId,
+        };
+      }));
+
+      await RecordPermissions.bulkCreate(permissions);
+    }
     res.status(200).json({ message: "Successful Record Creation", results });
-  } catch (err) {
+  }catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error", error: err.message });
   }

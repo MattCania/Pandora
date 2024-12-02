@@ -8,10 +8,23 @@ import GetData from "../../hooks/GetData";
 // import { SessionContext } from "../../pages/home/home";
 import Loading from "../loading/loading";
 import PostRequest from "../../hooks/PostRequest";
+import GetSession from "../../hooks/GetSession";
+import Error from "../../components/error/error";
+
 
 function EditRecords() {
-    const navigate = useNavigate();
-	const {recordId} = useParams()
+	const navigate = useNavigate();
+	const { recordId } = useParams()
+	const user = GetSession()
+	const [isAuth, setAuth] = useState(false);
+
+	useEffect(() => {
+		if (user) {
+			setAuth(true);
+		} else {
+			setAuth(false);
+		}
+	}, [user]);
 
 	const [formValues, setFormValues] = useState({
 		recordType: '',
@@ -19,18 +32,18 @@ function EditRecords() {
 	});
 
 	// const record = GetData(`/edit-record/${recordId}`);
-	
+
 	// if (!record){
 	// 	return <Loading/>
 	// }
 	useEffect(() => {
 		const fetchRecord = async () => {
-			try{
+			try {
 				const data = await GetData(`records/open/${recordId}`)
 				if (!data) throw new Error("Fetching Error")
 				setFormValues(data)
 			}
-			catch(err){
+			catch (err) {
 				return
 			}
 		}
@@ -60,24 +73,35 @@ function EditRecords() {
 	};
 
 	return (
+		user && 
 		<section className={styles.blur}>
-			
-			<form className={styles.createForm} onSubmit={handleSubmit}>
-				<div className={styles.buttonDiv}>
-					<button type="button" onClick={() => navigate(-1)}><FontAwesomeIcon icon={faXmark}/></button>
-				</div>
-				<h1>Update Record #{recordId}</h1>
-				<div className={styles.recordType}>
-					<select name="recordType" id="recordType" value={formValues.recordType} onChange={handleInputChange}>
-						<option value="" disabled>Record Type</option>
-						<option value="Expenses">Expneses</option>
-						<option value="Purchases">Purchases</option>
-					</select>
-				</div>
-				<input type="text" name="recordName" id="recordName" value={formValues.recordName} onChange={handleInputChange} placeholder="Record Name" />
-				<input type="submit" value="Update Record"/>
-			</form>
 
+			<section className={styles.createSection}>
+
+				<div className={styles.buttonDiv}>
+					<button type="button" onClick={() => navigate(-1)}><FontAwesomeIcon icon={faXmark} /></button>
+				</div>
+
+				<div className={styles.container}>
+
+					<form className={styles.createForm} onSubmit={handleSubmit}>
+						<h1>Update Record #{recordId}</h1>
+						<div className={styles.recordType}>
+							<select name="recordType" id="recordType" value={formValues.recordType} onChange={handleInputChange}>
+								<option value="" disabled>Record Type</option>
+								<option value="Expenses">Expneses</option>
+								<option value="Purchases">Purchases</option>
+							</select>
+						</div>
+						<input type="text" name="recordName" id="recordName" value={formValues.recordName} onChange={handleInputChange} placeholder="Record Name" />
+						<input type="submit" value="Update Record" />
+					</form>
+
+					<section className={styles.userSection}>
+
+					</section>
+				</div>
+			</section>
 		</section>
 	)
 

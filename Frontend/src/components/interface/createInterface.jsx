@@ -5,7 +5,7 @@ import MiniHeader from "../subheader/miniheader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
-function CreateInterface({ mainText, subText, formInput, formValues, inputChange, onClose, onSubmit}) {
+function CreateInterface({ mainText, subText, formInput, formValues, inputChange, onClose, onSubmit, customInput}) {
 	return (
 		<div className={interfaceStyle.blur}>
 			<section className={interfaceStyle.section}>
@@ -45,6 +45,11 @@ function CreateInterface({ mainText, subText, formInput, formValues, inputChange
 							)}
 						</div>
 					))}
+					{customInput && (
+						<section>
+							
+						</section>
+					)}
 					</section>
 					<div className={interfaceStyle.submission}>
 						<button type="button" onClick={onClose}><FontAwesomeIcon icon={faX}/></button>

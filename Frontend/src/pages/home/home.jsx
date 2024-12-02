@@ -7,8 +7,9 @@ import Header from "../../partials/header/Header";
 import HomeRouter from "./homerouter";
 import GetSession from "../../hooks/GetSession";
 import Prompt from "../../components/prompt/prompt";
-import Loading from "../../partials/loading/loading";
+import Loading from "../../partials/loading/loading"
 import GetData from "../../hooks/GetData";
+import Error from "../../components/error/error";
 
 export const SessionContext = createContext();
 
@@ -46,7 +47,8 @@ function Home() {
 		<main className={styles.main}>
 			{loading && <Loading />}
 			{!isAuth && !loading && !user && (
-				<Prompt error={true} message="Unauthorized Access" onClose={userUnauthorized} />
+				// <Prompt error={true} message="Unauthorized Access" onClose={userUnauthorized} />
+				<Error/>
 			)}
 
 			<SessionContext.Provider value={user} >

@@ -21,16 +21,9 @@ function Register() {
     setVisible(prev => !prev);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues(prevValues => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
 
   const validate = () => {
-    const newErrors = {};
+    let newErrors = {};
     if (!formValues.firstname.trim()) newErrors.firstname = "First name is required.";
     if (!formValues.lastname.trim()) newErrors.lastname = "Last name is required.";
     if (!formValues.email.trim()) newErrors.email = "Email is required.";
@@ -45,6 +38,16 @@ function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleInputChange = (e) => {
+    setErrors("")
+    const { name, value } = e.target;
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;

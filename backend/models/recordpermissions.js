@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "permittedUser",
 				targetKey: "profileId",
 				as: "userProfiles", 
-				onDelete: 'CASCADE'
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE'
 			  });
 		}
 	}
