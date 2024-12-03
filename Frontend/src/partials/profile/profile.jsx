@@ -5,8 +5,8 @@ import style from './profile.module.css'
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import Logo from '/src/assets/MainLogo.svg'
-
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function Profile() {
     const navigate = useNavigate()
@@ -36,11 +36,12 @@ function Profile() {
                     {/* <img src={user.profile.image || '/default-profile.png'} alt="Profile" /> */}
                     <p><FontAwesomeIcon icon={faUser} /></p>
                     <div className={style.titleWrapper}>
-                        <h1>Welcome,</h1>
+                        <h1>Welcome, </h1>
                         <h2> {user.user.firstName} {user.user.lastName}</h2>
                         <h3>Username: {user.profile.userName} || Email: {user.session.email}</h3>
                     </div>
                 </div>
+                <Link to="profileEdit"><button className={style.edit}> <FontAwesomeIcon icon={faPen} /> </button></Link>
                 <div className={style.upperSection}>
                     <h2>Personal Information</h2>
                     <div className={style.field}>

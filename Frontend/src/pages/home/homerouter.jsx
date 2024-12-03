@@ -8,6 +8,7 @@ import Company from '../../partials/company/company.jsx';
 import Transactions from '../../partials/transactions/transactions.jsx';
 import Profile from '../../partials/profile/profile.jsx';
 import Create from '../createPage/create.jsx';
+import ProfileEdit from '../../partials/profile editing/profileEdit.jsx'
 
 
 function HomeRouter() {
@@ -25,6 +26,7 @@ function HomeRouter() {
       <Route path="records/:transaction/:recordId" element={<CreateRecords />} />
         <Route path="inventory" element={<InventoryDisplay/>}/>
         <Route path="profile" element={<Profile/>}/>
+        <Route path="profile/profileEdit" element={<ProfileEdit/>}/>
         <Route path="company" element={<Company/>}/>
       </Routes>
 
