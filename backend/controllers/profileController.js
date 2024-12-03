@@ -23,6 +23,48 @@ const getUserDetails = async (req, res) =>{
 	}
 }
 
+const updateProfile = async (req, res) => {
+	const profileId = req.session.userId
+	const {
+		userName, contactNumber,
+		secondaryEmail, country,
+		jobTitle, organization,
+		department, street,
+		city, state,
+		postal, birthday,
+		gender
+	} = req.body
+
+	try {
+		const response = await UserProfiles.update({
+			where: {
+				profileId: profileId
+			},
+			userName: userName,
+			contactNumber: contactNumber || null,
+			secondaryEmail: secondaryEmail || null,
+			country: country || null,
+			jobTitle: jobTitle || null,
+			organization: organization || null,
+			department: department || null,
+			street: street || null,
+			city: city || null,
+			state: state || null,
+			postal: postal || null,
+			birthday: birthday || null,
+			gender: gender || null,
+		})
+
+		if (!response.ok) throw new Error("Error Updating Profile")
+
+		res.status(500).json({message: "Successfully Updated Profile"})
+	} catch (err) {
+		return res.status(500).json({ message: "Server Error", error: err.message });
+	}
+
+}
+
 module.exports = {
-	getUserDetails
+	getUserDetails,
+	updateProfile
 }

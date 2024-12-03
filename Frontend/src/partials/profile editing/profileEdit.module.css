@@ -22,12 +22,6 @@
     margin-left: 2em;
 }
 
-.left,
-.right {
-    flex: 1;
-    background-color: rgb(255, 255, 255);
-}
-
 .middle {
     flex: 2;
     background-color: #909090;
@@ -110,7 +104,6 @@
     column-gap: 2rem; 
     row-gap: 1rem;
     align-items: center;
-
 }
 
 .field label {
@@ -135,6 +128,15 @@
     border-radius: 40px;
     background-color: white;
     padding: 4em;
+}
+
+.submit {
+    margin-top: 1em;
+    border-radius: 10px;
+    width: 200px;
+    height: 40px;
+    background-color: #4caf50;
+    font-weight: bolder;
 }
 
 /* For smaller screens, make the grid responsive */
