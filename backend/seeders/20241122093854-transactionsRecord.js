@@ -3,6 +3,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
+		await queryInterface.bulkInsert("Permissions", [
+			{
+			  accessType: 'Admin'
+			},
+			{
+			  accessType: 'Owner'
+			},
+			{
+			  accessType: 'Editor'
+			},
+			{
+			  accessType: 'Viewer'
+			}
+		  ])    
+
 		await queryInterface.bulkInsert("TransactionRecords", [
 			{
 				creatorId: 1,
@@ -102,6 +117,9 @@ module.exports = {
 		await queryInterface.bulkDelete("Purchases", null, {});
 		await queryInterface.bulkDelete("TransactionRecords", null, {});
 		await queryInterface.bulkDelete("RecordPermissions", null, {});
+		
+		await queryInterface.bulkDelete("Permissions", null, {})
+		await queryInterface.sequelize.query('ALTER TABLE Permissions AUTO_INCREMENT = 1')
 		await queryInterface.sequelize.query(
 			"ALTER TABLE Expenses AUTO_INCREMENT = 1"
 		);

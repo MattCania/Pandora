@@ -17,6 +17,7 @@
   height: 100vh;
   width: 40%;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .formSection form{

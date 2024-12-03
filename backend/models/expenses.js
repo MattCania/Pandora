@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 				targetKey: "recordId",
 				as: "expenseTransaction",
 				onDelete: "CASCADE",
+				onUpdate: 'CASCADE'
 			});
 		}
 	}

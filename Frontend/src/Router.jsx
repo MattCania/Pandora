@@ -7,6 +7,7 @@ import Home from './pages/home/home';
 import Landing from './partials/landing/landing.jsx';
 import Profile from './partials/profile/profile.jsx'
 import About from './partials/landing/about.jsx'
+import Test from './pages/home/testing.jsx';
 
 function RouterApp() {
 	return (
@@ -18,8 +19,9 @@ function RouterApp() {
 			<Route path='/home/*' element={<Home/>} />
 			<Route path='/recovery/*' element={<Recovery/>}/>
 			<Route path='/records' element={<Records/>}/>
-			<Route path='/profile' element={<Profile/>} />
 			<Route path='/aboutus' element={<About/>} />
+
+			<Route path='/test' element={<Test/>}/>
 		</Routes>
 	);
 }

@@ -31,9 +31,6 @@ function Profile() {
 
     return (
         <section className={style.portion}>
-            <header className={style.header}>
-                <a href="/home"><img src={Logo}/></a>
-            </header>
             <div className={style.middle}>
                 <div className={style.head}>
                     {/* <img src={user.profile.image || '/default-profile.png'} alt="Profile" /> */}

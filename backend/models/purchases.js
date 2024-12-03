@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'recordId',
         as: 'purchaseTransaction',
 				onDelete: "CASCADE",
+				onUpdate: 'CASCADE'
       })
     }
   }

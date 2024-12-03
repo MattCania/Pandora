@@ -12,14 +12,16 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "accessLevel",
 				targetKey: "accessId",
 				as: "userAccess",
-				onDelete: 'CASCADE'
+				onDelete: 'CASCADE',
+    		    onUpdate: 'CASCADE'
 			});
 
 			RecordPermissions.belongsTo(models.TransactionRecords, {
 				foreignKey: "recordId",
 				targetKey: 'recordId',
 				as: "transactionPermission",
-				onDelete: 'CASCADE'
+				onDelete: 'CASCADE',
+    		    onUpdate: 'CASCADE'
 			});
 
 
@@ -27,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "permittedUser",
 				targetKey: "profileId",
 				as: "userProfiles", 
-				onDelete: 'CASCADE'
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE'
 			  });
 		}
 	}
