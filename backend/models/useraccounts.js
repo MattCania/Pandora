@@ -37,6 +37,13 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+
+      UserAccounts.hasMany(models.ProfileImage, {
+        foreignKey: 'userId',
+        as: 'imageId',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      })
     }
   }
   UserAccounts.init(

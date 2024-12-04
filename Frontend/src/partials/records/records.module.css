@@ -150,6 +150,11 @@
 	transition: all 250ms;
 }
 
+.delete button:disabled{
+	background-color: var(--tertiary);
+	color: var(--textlight);
+}
+
 .row {
 	color: var(--textdark);
 	display: flex;

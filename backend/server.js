@@ -9,6 +9,7 @@ const compression = require("compression");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const cors = require("cors");
 const helmet = require("helmet");
+const path = require('path')
 const { sequelize } = require("./models");
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(
 app.use(
   cors({
     origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT"],
     credentials: true,
   })
 );
@@ -90,7 +92,9 @@ const recoveryRoute = require("./routes/recovery");
 const userRoute = require("./routes/profile");
 const transactionRoute = require('./routes/transactions')
 const accountRoute = require('./routes/accounts')
+const imageRoute = require('./routes/profileImage')
 
+app.use('/api', imageRoute)
 app.use('/api', accountRoute)
 app.use("/api", userRoute);
 app.use("/api", recordsRoute);
@@ -99,6 +103,7 @@ app.use("/api", sessionRoute);
 app.use("/api", registerRoute);
 app.use("/api", recoveryRoute);
 app.use("/api", transactionRoute)
+
 
 // Localhost port
 const port = process.env.PORT;

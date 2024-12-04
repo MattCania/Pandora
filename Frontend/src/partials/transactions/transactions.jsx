@@ -6,6 +6,9 @@ import GetData from '../../hooks/GetData'
 import styles from './transactions.module.css'
 import SubHeader from "../../components/overviews/subheader";
 import Error from "../../components/error/error";
+import ConfirmPrompt from "../../components/prompts/confirmPrompt";
+import DeleteRequest from "../../hooks/DeleteRequest";
+
 
 function Transactions() {
 	const navigate = useNavigate()
@@ -40,11 +43,51 @@ function Transactions() {
 	}
 	
 	useEffect(() => {
-		
 		fetchTransactions();
 	}, [transaction])
 
+	const [showConfirmPrompt, setShowConfirmPrompt] = useState(false);
+	const [transactionToDelete, setTransactionToDelete] = useState(null);
+	
+	const triggerDeletePrompt = (e, recordId) => {
+		e.stopPropagation();
+		setTransactionToDelete(recordId);
+		setShowConfirmPrompt(true);
+	};
+	
+	const confirmDeletion = async () => {
+		try {
+			if (!transactionToDelete) return;
 
+			const response = await DeleteRequest(`delete-${transaction.toLowerCase().slice(0, -1)}/${transactionToDelete}`);
+			if (!response) {
+				throw new Error("Failed to delete the transaction");
+			}
+
+			fetchTransactions();
+		} catch (error) {
+			console.error("Error:", error);
+		} finally {
+			setShowConfirmPrompt(false);
+			setTransactionToDelete(null);
+		}
+	};
+
+	const deleteRecord = async (e, recordId) => {
+		e.stopPropagation();
+
+		try {
+			const response = await DeleteRequest(`delete-record/${recordId}`)
+
+			if (!response) {
+				throw new Error("Failed to delete the record");
+			}
+
+			fetchTransactions()
+		} catch (error) {
+			console.error("Error:", error);
+		}
+	}
 
 	return (
 		<section className={styles.section}>
@@ -57,6 +100,7 @@ function Transactions() {
 					text="Expense Transaction Record"
 					searchUp={true}
 					placeholder="Search Records"
+					buttonClick={() => navigate(`/home/transaction/create/${transaction.toLowerCase()}/${recordId}`)}
 				/>
 				<section className={styles.displaySection}>
 					<div className={styles.table}>
@@ -84,7 +128,7 @@ function Transactions() {
 									</div>
 									<div className={styles.edit}>
 										<Link
-											to={`edit/${data.expenseId}`}
+											to={`/home/transaction/edit/${transaction.toLowerCase().slice(0, -1)}/${data.transactionId}`}
 											onClick={(e) => e.stopPropagation()}
 										>
 											<FontAwesomeIcon icon={faEdit} />
@@ -92,7 +136,7 @@ function Transactions() {
 									</div>
 									<div className={styles.delete}>
 										<button
-											// onClick={(e) => deleteRecord(e, data.recordId)}
+											onClick={(e) => triggerDeletePrompt(e, data.transactionId)}
 										>
 											<FontAwesomeIcon icon={faTrash} />
 										</button>
@@ -104,7 +148,16 @@ function Transactions() {
 				</section>
 
 			</section>
-
+			{showConfirmPrompt && (
+				<ConfirmPrompt
+					mainText="Confirm Deletion"
+					subText={`Are you sure you want to delete Transaction ${transactionToDelete}?`}
+					cancelText="Cancel"
+					proceedText="Delete"
+					close={() => setShowConfirmPrompt(false)}
+					action={confirmDeletion}
+				/>
+			)}
 		</section>
 	)
 }

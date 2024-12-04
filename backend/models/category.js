@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+// This wont be used either, walang time
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     /**
@@ -14,11 +15,40 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Category.init({
-    categoryId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    categoryId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        is: /^[a-zA-Z\s]*$/i,
+        len: [2, 25],
+      },
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      defaultValue: "",
+      validate: {
+        notEmpty: true,
+        is: /^[a-zA-Z\s]*$/i,
+        len: [0, 100],
+      },
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
+    } 
   }, {
     sequelize,
     modelName: 'Category',

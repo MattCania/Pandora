@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+// This wont be used either, walang time
 module.exports = (sequelize, DataTypes) => {
   class OrderItem extends Model {
     /**

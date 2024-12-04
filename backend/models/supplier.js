@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+
+// This wont be used, only if we have time
 module.exports = (sequelize, DataTypes) => {
   class Supplier extends Model {
     /**
@@ -14,18 +16,66 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Supplier.init({
-    supplierId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    contactPerson: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    email: DataTypes.STRING,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    country: DataTypes.STRING,
-    website: DataTypes.STRING,
-    notes: DataTypes.TEXT,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    supplierId: { 
+      type:DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: { 
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        is: /^[a-zA-Z\s]*$/i,
+        len: [2, 50],
+      },
+    },
+    contactPerson: { 
+      type:DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "",
+      validate: {
+        notEmpty: true,
+        is: /^[a-zA-Z\s]*$/i,
+        len: [2, 100],
+      },
+    },
+    phone: { 
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: /^[0-9\-\+\s]*$/,
+        len: [7, 15],
+      },
+    },
+    email: { 
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isEmail: true,
+      },
+    },
+    address: { 
+      type:DataTypes.STRING,
+    },
+    city: { 
+      type:DataTypes.STRING,
+    },
+    country: { 
+      type:DataTypes.STRING,
+    },
+    website: { 
+      type:DataTypes.STRING,
+    },
+    notes: { 
+      type:DataTypes.TEXT,
+    },
+    createdAt: { 
+      type:DataTypes.DATE,
+    },
+    updatedAt: { 
+      type:DataTypes.DATE,
+    }
   }, {
     sequelize,
     modelName: 'Supplier',
