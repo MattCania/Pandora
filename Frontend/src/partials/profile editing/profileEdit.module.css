@@ -1,0 +1,150 @@
+.portion {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+.header{
+    display: flex;
+    width: 100%;
+    height: 8vh;
+    background-color: var(--tertiary);
+    position: relative;
+}
+
+.header img {
+    margin-top: 5px;
+    margin-left: 2em;
+}
+
+.middle {
+    flex: 2;
+    background-color: #909090;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: black;
+    width: 70%;
+}
+
+.head {
+    display: flex;  
+    align-items: flex-start; 
+    text-align: start;
+    gap: 0.5rem; 
+}
+
+.head .title-wrapper {
+    display: flex; 
+    text-align: center;
+    align-items: center; 
+    gap: 1rem; 
+}
+
+.head p {
+    font-size: 20px;
+    background-color: white;
+    padding: 4em 4.5em 4em 4.5em;
+    border: 1px white;
+    border-radius: 50%;
+    margin-right: 1em;
+}
+
+.head h1 {
+    margin-top: 1em;
+    font-size: 50px;
+    font-weight: bolder;
+    margin-bottom: -20px;
+    color: white;
+}
+.head h2 {
+    font-size: 40px;
+    font-weight: bolder;
+    margin-top: 0.2rem;
+    margin-bottom: -1rem;
+    color: white;
+}
+
+.head h3 {
+    color: rgb(255, 255, 255);
+}
+
+/*.head img {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background-color: #ffffff;
+}*/
+
+.edit {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1.5em;
+    margin-left: 3em;
+    color: black;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.upperSection {
+    border-radius: 40px;
+    background-color: white;
+    padding: 4em;
+    margin-bottom: 2em;
+}
+
+.field {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    column-gap: 2rem; 
+    row-gap: 1rem;
+    align-items: center;
+}
+
+.field label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.field input {
+    font-size: 16px;
+    padding: 0.5rem;
+    border: 1px solid rgba(58, 58, 58, 1);
+    border-radius: 10px;
+    background-color: rgba(58, 58, 58, 1);
+    color: #ffffff;
+    width: 100%; 
+    box-shadow: 0px 2px 4px var(--textdark);
+}
+
+.lowerSection {
+    border-radius: 40px;
+    background-color: white;
+    padding: 4em;
+}
+
+.submit {
+    margin-top: 1em;
+    border-radius: 10px;
+    width: 500px;
+    height: 40px;
+    background-color: #4caf50;
+    font-weight: bolder;
+    margin-left: 2em;
+}
+
+/* For smaller screens, make the grid responsive */
+@media (max-width: 768px) {
+    .field {
+        grid-template-columns: 1fr; /* Single column for narrow screens */
+    }
+}
+
+
