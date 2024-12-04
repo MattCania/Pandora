@@ -9,6 +9,7 @@ import Transactions from '../../partials/transactions/transactions.jsx';
 import Profile from '../../partials/profile/profile.jsx';
 import Create from '../createPage/create.jsx';
 import ProfileEdit from '../../partials/profile editing/profileEdit.jsx'
+import Premium from '../../partials/premium/premium.jsx';
 
 
 function HomeRouter() {
@@ -28,6 +29,7 @@ function HomeRouter() {
         <Route path="profile" element={<Profile/>}/>
         <Route path="profile/profileEdit" element={<ProfileEdit/>}/>
         <Route path="company" element={<Company/>}/>
+        <Route path="/premium" element={<Premium/>}/>
       </Routes>
 
   );

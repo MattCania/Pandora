@@ -1,0 +1,75 @@
+.section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    gap: 40px;
+    height: 100vh;
+}
+
+.nonPremium {
+    display: flex;
+    background-color: white;
+    border-radius: 20px;
+    width: 300px;
+    height: 500px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.nonPremium h1 {
+    background-color: #333; 
+    color: white;
+    padding: 1rem 0; 
+    margin: 0; 
+    font-size: 24px; 
+    text-align: center; 
+    width: 100%; 
+    box-sizing: border-box; 
+    position: relative;
+    padding: 40px;
+}
+
+.NonPremium h2, .NonPremium h3, .NonPremium ul {
+    margin: 5px 0; 
+}
+
+.Premium {
+    display: flex;
+    background-color: white;
+    border-radius: 20px;
+    width: 500px;
+    height: 500px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.Premium h1 {
+    background-color: #333; 
+    color: white;
+    padding: 1rem 0; 
+    margin: 0; 
+    font-size: 24px; 
+    text-align: center; 
+    width: 100%; 
+    height: 16%;
+    box-sizing: border-box; 
+    position: relative;
+}
+
+.Premium h2, .Premium h3, .Premium ul {
+
+}
+
+.button {
+    width: 350px;
+    height: 40px;
+    background-color: rgba(54, 175, 87, 1);
+    border-radius: 10px;
+    color: white;
+    font-weight: bolder;
+}
