@@ -46,46 +46,46 @@ function Profile() {
                     <h2>Personal Information</h2>
                     <div className={style.field}>
                         <label>Username:
-                        <input type="text" value={user.profile.userName} readOnly /></label>
+                        <input type="text" value={user.profile.userName || ""} readOnly /></label>
                         <label>Email:
-                        <input type="text" value={user.session.email} readOnly /></label>
+                        <input type="email" value={user.session.email || ""} readOnly /></label>
                         <label>Suffix:
-                        <input type="text" value={user.user.suffix} readOnly /></label>
+                        <input type="text" value={user.user.suffix || ""} readOnly /></label>
                         <label>First Name:
-                        <input type="text" value={user.user.firstName} readOnly /></label>
+                        <input type="text" value={user.user.firstName || ""} readOnly /></label>
                         <label>Last Name:
-                        <input type="text" value={user.user.lastName} readOnly /></label>
+                        <input type="text" value={user.user.lastName || ""} readOnly /></label>
                         <label>Middle Name:
-                        <input type="text" value={user.user.middleName} readOnly /></label>
+                        <input type="text" value={user.user.middleName || ""} readOnly /></label>
                         <label>Contact:
-                        <input type="text" value={user.profile.contactNumber} readOnly /></label>
+                        <input type="text" value={user.profile.contactNumber || ""} readOnly /></label>
                         <label>Birthday:
-                        <input type="text" value={user.profile.birthday} readOnly /></label>
+                        <input type="date" value={new Date(user.profile.birthday).toISOString().slice(0,10) || ""} readOnly /></label>
                         <label>Gender:
-                        <input type="text" value={user.profile.gender} readOnly /></label>
+                        <input type="text" value={user.profile.gender || ""} readOnly /></label>
                     </div>
                 </div>
                 <div className={style.lowerSection}>
                     <h2>Profile Information</h2>
                     <div className={style.field}>
                         <label>Job Title
-                        <input type="text" value={user.profile.jobTitle} readOnly /></label>
+                        <input type="text" value={user.profile.jobTitle || ""} readOnly /></label>
                         <label>Organization:
-                        <input type="text" value={user.profile.organization} readOnly /></label>
+                        <input type="text" value={user.profile.organization || ""} readOnly /></label>
                         <label>Department:
-                        <input type="text" value={user.profile.department} readOnly /></label>
+                        <input type="text" value={user.profile.department || ""} readOnly /></label>
                         <label>Backup Email
-                        <input type="text" value={user.profile.department} readOnly /></label>
+                        <input type="text" value={user.profile.department || ""} readOnly /></label>
                         <label>Street
-                        <input type="text" value={user.profile.street} readOnly /></label>
+                        <input type="text" value={user.profile.street || ""} readOnly /></label>
                         <label>City
-                        <input type="text" value={user.profile.city} readOnly /></label>
+                        <input type="text" value={user.profile.city || ""} readOnly /></label>
                         <label>State
-                        <input type="text" value={user.profile.state} readOnly /></label>
+                        <input type="text" value={user.profile.state || ""} readOnly /></label>
                         <label>Postal
-                        <input type="text" value={user.profile.postal} readOnly /></label>
+                        <input type="text" value={user.profile.postal || ""} readOnly /></label>
                         <label>Country
-                        <input type="text" value={user.profile.country} readOnly /></label>
+                        <input type="text" value={user.profile.country || ""} readOnly /></label>
                     </div>  
                 </div>
             </div>

@@ -38,7 +38,7 @@ const updateProfile = async (req, res) => {
 		jobTitle = "",
 		organization = "",
 		department = "",
-		backupEmail = "",
+		secondaryEmail = "",
 		street = "",
 		city = "",
 		state = "",
@@ -63,31 +63,36 @@ const updateProfile = async (req, res) => {
 			}
 		);
 
-		if (!accountUpdate.ok) res.status(500).json({message: "Error Account Update"})
+		if (!accountUpdate[0]) res.status(500).json({message: "Error Account Update"})
 
-		const response = await UserProfiles.update({
-			where: {
-				profileId: userId
+		const response = await UserProfiles.update(
+			{
+				userName: userName,
+				contactNumber: contactNumber || null,
+				secondaryEmail: secondaryEmail || null,
+				country: country || null,
+				jobTitle: jobTitle || null,
+				organization: organization || null,
+				department: department || null,
+				street: street || null,
+				city: city || null,
+				state: state || null,
+				postal: postal || null,
+				birthday: birthday || null,
+				gender: gender || null,
 			},
-			userName: userName,
-			contactNumber: contactNumber || null,
-			secondaryEmail: backupEmail || null,
-			country: country || null,
-			jobTitle: jobTitle || null,
-			organization: organization || null,
-			department: department || null,
-			street: street || null,
-			city: city || null,
-			state: state || null,
-			postal: postal || null,
-			birthday: birthday || null,
-			gender: gender || null,
-		})
+			{
+				where: {
+					profileId: userId
+				}
+			},
+		)
 
-		if (!response.ok) throw new Error("Error Updating Profile")
+		if (!response[0]) throw new Error("Error Updating Profile")
 
 		res.status(200).json({message: "Successfully Updated Profile"})
 	} catch (err) {
+		console.log(err)
 		return res.status(500).json({ message: "Server Error", error: err.message });
 	}
 

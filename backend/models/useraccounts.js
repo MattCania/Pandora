@@ -91,10 +91,10 @@ module.exports = (sequelize, DataTypes) => {
       suffix: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "N/A",
         validate: {
-          notEmpty: true,
           is: /^[a-zA-Z\s]*$/i,
-          len: [2, 15],
+          len: [0, 15],
         },
       },
       email: {
