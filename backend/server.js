@@ -31,6 +31,7 @@ app.use(
 app.use(
   cors({
     origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT"],
     credentials: true,
   })
 );
@@ -66,9 +67,9 @@ app.use(
 );
 
 sequelize
-  .sync()
+  // .sync()
   // .sync({ force: true })
-  // .sync({ alter: true })
+  .sync({ alter: true })
   .then(() => {
     console.log("Database synchronized successfully!");
   })
@@ -90,7 +91,9 @@ const recoveryRoute = require("./routes/recovery");
 const userRoute = require("./routes/profile");
 const transactionRoute = require('./routes/transactions')
 const accountRoute = require('./routes/accounts')
+const imageRoute = require('./routes/profileImage')
 
+app.use('/api', imageRoute)
 app.use('/api', accountRoute)
 app.use("/api", userRoute);
 app.use("/api", recordsRoute);
@@ -99,6 +102,7 @@ app.use("/api", sessionRoute);
 app.use("/api", registerRoute);
 app.use("/api", recoveryRoute);
 app.use("/api", transactionRoute)
+
 
 // Localhost port
 const port = process.env.PORT;

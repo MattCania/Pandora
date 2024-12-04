@@ -24,41 +24,75 @@ const getUserDetails = async (req, res) =>{
 }
 
 const updateProfile = async (req, res) => {
-	const profileId = req.session.userId
+	const userId = req.session.userId
 	const {
-		userName, contactNumber,
-		secondaryEmail, country,
-		jobTitle, organization,
-		department, street,
-		city, state,
-		postal, birthday,
-		gender
-	} = req.body
+		userName = "",
+		email = "",
+		suffix = "",
+		firstName = "",
+		lastName = "",
+		middleName = "",
+		contactNumber = "",
+		birthday = "",
+		gender = "",
+		jobTitle = "",
+		organization = "",
+		department = "",
+		secondaryEmail = "",
+		street = "",
+		city = "",
+		state = "",
+		postal = "",
+		country = ""
+	} = req.body;
 
 	try {
-		const response = await UserProfiles.update({
-			where: {
-				profileId: profileId
+
+		const accountUpdate = await UserAccounts.update(
+			{
+				firstName: firstName,
+				lastName: lastName,
+				middleName: middleName,
+				suffix: suffix,
+				email: email,
 			},
-			userName: userName,
-			contactNumber: contactNumber || null,
-			secondaryEmail: secondaryEmail || null,
-			country: country || null,
-			jobTitle: jobTitle || null,
-			organization: organization || null,
-			department: department || null,
-			street: street || null,
-			city: city || null,
-			state: state || null,
-			postal: postal || null,
-			birthday: birthday || null,
-			gender: gender || null,
-		})
+			{
+				where: {
+					userId: userId,
+				},
+			}
+		);
 
-		if (!response.ok) throw new Error("Error Updating Profile")
+		if (!accountUpdate[0]) res.status(500).json({message: "Error Account Update"})
 
-		res.status(500).json({message: "Successfully Updated Profile"})
+		const response = await UserProfiles.update(
+			{
+				userName: userName,
+				contactNumber: contactNumber || null,
+				secondaryEmail: secondaryEmail || null,
+				country: country || null,
+				jobTitle: jobTitle || null,
+				organization: organization || null,
+				department: department || null,
+				street: street || null,
+				city: city || null,
+				state: state || null,
+				postal: postal || null,
+				birthday: birthday || null,
+				gender: gender || null,
+			},
+			{
+				where: {
+					profileId: userId
+				}
+			},
+		)
+
+		if (!response[0]) throw new Error("Error Updating Profile")
+
+		res.status(200).json({message: "Successfully Updated Profile"})
 	} catch (err) {
+		console.log(err)
 		return res.status(500).json({ message: "Server Error", error: err.message });
 	}
 

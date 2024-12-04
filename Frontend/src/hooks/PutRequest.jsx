@@ -1,6 +1,6 @@
 async function PutRequest(uri, data) {
 	try {
-		const tokenResponse = await fetch("/api/csrf-token");
+		const tokenResponse = await fetch("/api/cusrf-token");
 		if (!tokenResponse.ok) throw new Error("Failed to fetch CSRF token");
 		
 		const tokenData = await tokenResponse.json()

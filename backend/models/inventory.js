@@ -14,44 +14,33 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Inventory.init({
-    inventoryId: { 
+    inventoryId: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement:true
     },
-    name: { 
-      type: DataTypes.STRING
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      defaultValue: "",
+      validate: {
+        notEmpty: true,
+        is: /^[a-zA-Z\s]*$/i,
+        len: [0, 100],
+      },
     },
-    description: { 
-      type: DataTypes.TEXT
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
     },
-    category: { 
-      type: DataTypes.STRING
-    },
-    quantity: { 
-      type: DataTypes.INTEGER
-    },
-    unitPrice: { 
-      type: DataTypes.DECIMAL
-    },
-    supplierId: { 
-      type: DataTypes.INTEGER
-    },
-    location: { 
-      type: DataTypes.STRING
-    },
-    minQty: { 
-      type: DataTypes.INTEGER
-    },
-    status: { 
-      type: DataTypes.STRING
-    },
-    createdAt: { 
-      type: DataTypes.DATE
-    },
-    updatedAt: { 
-      type: DataTypes.DATE
-    } 
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+      onUpdate: DataTypes.NOW 
+    }
+    
   }, {
     sequelize,
     modelName: 'Inventory',

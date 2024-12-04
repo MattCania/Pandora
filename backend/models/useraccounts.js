@@ -37,6 +37,21 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+
+      UserAccounts.hasMany(models.ProfileImage, {
+        foreignKey: 'userId',
+        as: 'imageId',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      })
+
+      UserAccounts.hasMany(models.CompanyMembers, {
+        foreignKey: 'accountId',
+        as: 'userCompany',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      })
+
     }
   }
   UserAccounts.init(
@@ -76,10 +91,10 @@ module.exports = (sequelize, DataTypes) => {
       suffix: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "N/A",
         validate: {
-          notEmpty: true,
           is: /^[a-zA-Z\s]*$/i,
-          len: [2, 15],
+          len: [0, 15],
         },
       },
       email: {
@@ -102,11 +117,14 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
+        allowNull: false
       },
       updatedAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
-      },
+        allowNull: false,
+        onUpdate: DataTypes.NOW 
+      }
     },
     {
       sequelize,
@@ -127,7 +145,7 @@ module.exports = (sequelize, DataTypes) => {
             user.middleName = user.middleName.replace(/\b\w/g, (char) =>
               char.toUpperCase()
             );
-          if (user.suffx)
+          if (user.suffix)
             user.suffix = user.suffix.replace(/\b\w/g, (char) =>
               char.toUpperCase()
             );

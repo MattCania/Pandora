@@ -3,22 +3,46 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class profileImage extends Model {
+  class ProfileImage extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
+      ProfileImage.belongsTo(models.UserAccounts, {
+        foreignKey: 'userId',
+        as: 'user',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
+
     }
   }
-  profileImage.init({
-    userId: DataTypes.INTEGER,
-    profileImg: DataTypes.BLOB
+  ProfileImage.init({
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER, 
+      allowNull: false,
+      references: {
+        model: 'UserAccounts',
+        key: 'userId'
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    },
+    profileImg: {
+      type: DataTypes.BLOB('long'),
+      allowNull: false,
+    } 
   }, {
     sequelize,
-    modelName: 'profileImage',
+    modelName: 'ProfileImage',
   });
-  return profileImage;
+  return ProfileImage;
 };

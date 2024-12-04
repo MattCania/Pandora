@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { SessionContext } from "../../pages/home/home";
 import styles from './records.module.css'
 import Loading from "../loading/loading";
@@ -195,9 +195,18 @@ function Records() {
 									</div>
 									<div className={styles.delete}>
 										<button
-											onClick={(e) => triggerDeletePrompt(e, data.recordId)}
+										disabled={data.recordPermissions[0].userAccess.accessType === "Editor" ? true : false}
+										onClick={(e) => {
+											if (data.recordPermissions[0].userAccess.accessType === "editor") {
+												e.preventDefault();
+												e.stopPropagation();
+												return; // Block further execution
+											}
+											triggerDeletePrompt(e, data.recordId);
+										}}
 										>
-											<FontAwesomeIcon icon={faTrash} />
+											{data.recordPermissions[0].userAccess.accessType === 'Editor' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faTrash} />}
+											
 										</button>
 									</div>
 								</div>
@@ -255,7 +264,7 @@ function Records() {
 									</div>
 									<div className={styles.delete}>
 										<button
-											// onClick={() => setShowConfirmPrompt(showConfirmPrompt => !showConfirmPrompt)}
+											disabled={data.recordPermissions[0].userAccess.accessType === 'Editor'}
 											onClick={(e) => triggerDeletePrompt(e, data.recordId)}
 										>
 											<FontAwesomeIcon icon={faTrash} />

@@ -5,7 +5,9 @@ import MiniHeader from "../subheader/miniheader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
-function CreateInterface({ mainText, subText, formInput, formValues, inputChange, onClose, onSubmit, customInput}) {
+function CreateInterface({ mainText, subText, formInput, formValues,  inputChange, onClose, onSubmit, customInput, buttonText}) {
+	if (Object.keys(formValues).length === 0) return <h1>Loading...</h1>;
+	console.log(formValues)
 	return (
 		<div className={interfaceStyle.blur}>
 			<section className={interfaceStyle.section}>
@@ -17,12 +19,13 @@ function CreateInterface({ mainText, subText, formInput, formValues, inputChange
 						<div key={index} className={interfaceStyle.inputDiv}>
 							<label htmlFor={data.id}>{data.label}</label>
 							{data.type === "select" ? (
-								<select id={data.id} name={data.name} value={formValues[[data.name]]} onChange={inputChange}>
+								<select id={data.id} name={data.name} 
+								value={formValues[data.name] || ""} onChange={inputChange}>
 								<option value="" disabled>
 								  Select {data.label}
 								</option>
 								{data.options?.map((option, idx) => (
-								  <option key={idx} value={option}>
+								  <option key={idx} value={data.value}>
 									{option}
 								  </option>
 								))}
@@ -32,6 +35,7 @@ function CreateInterface({ mainText, subText, formInput, formValues, inputChange
 									id={data.id}
 									name={data.name}
 									placeholder={data.placeholder}
+									value={formValues[data.name] || ""}
 									onChange={inputChange}
 								></textarea>
 							) : (
@@ -39,6 +43,7 @@ function CreateInterface({ mainText, subText, formInput, formValues, inputChange
 									type={data.type}
 									id={data.id}
 									name={data.name}
+									value={formValues[data.name] || ""}
 									placeholder={data.placeholder}
 									onChange={inputChange}
 								/>
@@ -53,7 +58,7 @@ function CreateInterface({ mainText, subText, formInput, formValues, inputChange
 					</section>
 					<div className={interfaceStyle.submission}>
 						<button type="button" onClick={onClose}><FontAwesomeIcon icon={faX}/></button>
-						<input type="submit" value="Create" />
+						<input type="submit" value={buttonText || "Create"} />
 					</div>
 				</form>
 

@@ -38,16 +38,11 @@ function Home() {
 		fetchUser();
 	}, []);
 
-	const userUnauthorized = () => {
-		navigate('/login')
-	}
-
 	return (
 
 		<main className={styles.main}>
 			{loading && <Loading />}
 			{!isAuth && !loading && !user && (
-				// <Prompt error={true} message="Unauthorized Access" onClose={userUnauthorized} />
 				<Error/>
 			)}
 

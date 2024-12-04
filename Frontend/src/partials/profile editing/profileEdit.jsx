@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faPen } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import PutRequest from "../../hooks/PutRequest";
+import PostRequest from "../../hooks/PostRequest";
 
 function ProfileEdit() {
     const navigate = useNavigate();
@@ -25,12 +26,14 @@ function ProfileEdit() {
                 lastName: user.user.lastName || "",
                 middleName: user.user.middleName || "",
                 contactNumber: user.profile.contactNumber || "",
-                birthday: user.profile.birthday || "",
+                // birthday: user.profile.birthday ||  "",
+                birthday: user.profile.birthday ? new Date(user.profile.birthday).toISOString().slice(0, 10) // Format for datetime-local
+                : "",
                 gender: user.profile.gender || "",
                 jobTitle: user.profile.jobTitle || "",
                 organization: user.profile.organization || "",
                 department: user.profile.department || "",
-                backupEmail: user.profile.backupEmail || "",
+                secondaryEmail: user.profile.secondaryEmail || "",
                 street: user.profile.street || "",
                 city: user.profile.city || "",
                 state: user.profile.state || "",
@@ -57,9 +60,22 @@ function ProfileEdit() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validate()) return;
+
+        const formattedBirthday = `${new Date(formValues.birthday).toISOString().slice(0, 10)}T00:00:00`
+
+        const formData = {
+            ...formValues,
+            birthday: formattedBirthday
+        }
+
         try {
-            const response = await PutRequest("update-profile", formValues);
-            navigate("../profile");
+            const response = await PostRequest("update-profile", formData);
+
+            if (response) {
+                navigate("../profile");
+            } else {
+                throw new Error("Error Updating Profile");
+            }
         } catch (error) {
             console.error("Error:", error);
             setErrors("Failed to update profile. Please try again.");
@@ -87,37 +103,37 @@ function ProfileEdit() {
                         <FontAwesomeIcon icon={faPen} />
                     </button>
                 </Link>
-                <button type="submit" className={style.submit}>Save Changes</button>
                 <form onSubmit={handleSubmit}>
+                    <button type="submit" className={style.submit}>Save Changes</button>
                     <div className={style.upperSection}>
                         <h2>Personal Information</h2>
                         <div className={style.field}>
                             <label>Username:
-                                <input type="text" name="userName" value={formValues.userName} onChange={handleInputChange} />
+                                <input type="text" name="userName" value={formValues.userName || ""} onChange={handleInputChange} />
                             </label>
                             <label>Email:
-                                <input type="email" name="email" value={formValues.email} onChange={handleInputChange} />
+                                <input type="email" name="email" value={formValues.email || ""} onChange={handleInputChange} />
                             </label>
                             <label>Suffix:
-                                <input type="text" name="suffix" value={formValues.suffix} onChange={handleInputChange} />
+                                <input type="text" name="suffix" value={formValues.suffix || ""} onChange={handleInputChange} />
                             </label>
                             <label>First Name:
-                                <input type="text" name="firstName" value={formValues.firstName} onChange={handleInputChange} />
+                                <input type="text" name="firstName" value={formValues.firstName || ""} onChange={handleInputChange} />
                             </label>
                             <label>Last Name:
-                                <input type="text" name="lastName" value={formValues.lastName} onChange={handleInputChange} />
+                                <input type="text" name="lastName" value={formValues.lastName || ""} onChange={handleInputChange} />
                             </label>
                             <label>Middle Name:
-                                <input type="text" name="middleName" value={formValues.middleName} onChange={handleInputChange} />
+                                <input type="text" name="middleName" value={formValues.middleName || ""} onChange={handleInputChange} />
                             </label>
                             <label>Contact:
-                                <input type="text" name="contactNumber" value={formValues.contactNumber} onChange={handleInputChange} />
+                                <input type="text" name="contactNumber" value={formValues.contactNumber || ""} onChange={handleInputChange} />
                             </label>
                             <label>Birthday:
-                                <input type="date" name="birthday" value={formValues.birthday} onChange={handleInputChange} />
+                                <input type="date" name="birthday" value={formValues.birthday ? new Date(formValues.birthday).toISOString().slice(0,10) : ""} onChange={handleInputChange} />
                             </label>
                             <label>Gender:
-                                <input type="text" name="gender" value={formValues.gender} onChange={handleInputChange} />
+                                <input type="text" name="gender" value={formValues.gender || ""} onChange={handleInputChange} />
                             </label>
                         </div>
                     </div>
@@ -125,31 +141,31 @@ function ProfileEdit() {
                         <h2>Profile Information</h2>
                         <div className={style.field}>
                             <label>Job Title:
-                                <input type="text" name="jobTitle" value={formValues.jobTitle} onChange={handleInputChange} />
+                                <input type="text" name="jobTitle" value={formValues.jobTitle || ""} onChange={handleInputChange} />
                             </label>
                             <label>Organization:
-                                <input type="text" name="organization" value={formValues.organization} onChange={handleInputChange} />
+                                <input type="text" name="organization" value={formValues.organization || ""} onChange={handleInputChange} />
                             </label>
                             <label>Department:
-                                <input type="text" name="department" value={formValues.department} onChange={handleInputChange} />
+                                <input type="text" name="department" value={formValues.department || ""} onChange={handleInputChange} />
                             </label>
                             <label>Backup Email:
-                                <input type="email" name="backupEmail" value={formValues.backupEmail} onChange={handleInputChange} />
+                                <input type="email" name="secondaryEmail" value={formValues.secondaryEmail || ""} onChange={handleInputChange} />
                             </label>
                             <label>Street:
-                                <input type="text" name="street" value={formValues.street} onChange={handleInputChange} />
+                                <input type="text" name="street" value={formValues.street || ""} onChange={handleInputChange} />
                             </label>
                             <label>City:
-                                <input type="text" name="city" value={formValues.city} onChange={handleInputChange} />
+                                <input type="text" name="city" value={formValues.city || ""} onChange={handleInputChange} />
                             </label>
                             <label>State:
-                                <input type="text" name="state" value={formValues.state} onChange={handleInputChange} />
+                                <input type="text" name="state" value={formValues.state || ""} onChange={handleInputChange} />
                             </label>
                             <label>Postal:
-                                <input type="text" name="postal" value={formValues.postal} onChange={handleInputChange} />
+                                <input type="text" name="postal" value={formValues.postal || ""} onChange={handleInputChange} />
                             </label>
                             <label>Country:
-                                <input type="text" name="country" value={formValues.country} onChange={handleInputChange} />
+                                <input type="text" name="country" value={formValues.country || ""} onChange={handleInputChange} />
                             </label>
                         </div>
                     </div>

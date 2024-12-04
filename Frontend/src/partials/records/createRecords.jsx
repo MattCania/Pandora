@@ -32,6 +32,7 @@ function CreateRecords() {
 
 				if (!usernames) {
 					console.log('No username found')
+					setUsernames([])
 					return
 				}
 
@@ -73,7 +74,7 @@ function CreateRecords() {
 		e.preventDefault();
 		const formData = {
 			...formValues,
-			userPermissions: userPermissions
+			...(userPermissions && { userPermissions: userPermissions })
 		};
 
 		try {
@@ -111,7 +112,7 @@ function CreateRecords() {
 							<option value="" disabled>
 								Add User
 							</option>
-							{usernames.map((option, index) => (
+							{usernames?.map((option, index) => (
 								user.session.username !== option.userName && !userPermissions.includes(option.userName) &&
 								<option key={index} value={option.userName}>
 									{option.userName}
