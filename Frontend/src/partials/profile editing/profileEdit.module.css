@@ -133,10 +133,11 @@
 .submit {
     margin-top: 1em;
     border-radius: 10px;
-    width: 200px;
+    width: 500px;
     height: 40px;
     background-color: #4caf50;
     font-weight: bolder;
+    margin-left: 2em;
 }
 
 /* For smaller screens, make the grid responsive */

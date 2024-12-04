@@ -87,6 +87,7 @@ function ProfileEdit() {
                         <FontAwesomeIcon icon={faPen} />
                     </button>
                 </Link>
+                <button type="submit" className={style.submit}>Save Changes</button>
                 <form onSubmit={handleSubmit}>
                     <div className={style.upperSection}>
                         <h2>Personal Information</h2>
@@ -152,7 +153,6 @@ function ProfileEdit() {
                             </label>
                         </div>
                     </div>
-                    <button type="submit" className={style.submit}>Save Changes</button>
                     {errors && <p className={style.error}>{errors}</p>}
                 </form>
             </div>
