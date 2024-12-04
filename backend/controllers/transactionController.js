@@ -193,7 +193,7 @@ const createPurchases = async (req, res) => {
   } = req.body;
 
   try {
-    const creation = await Expenses.create({
+    const creation = await Purchases.create({
       purchaseId: recordId,
       orderNumber: orderNumber,
       account: account,

@@ -9,7 +9,6 @@ const compression = require("compression");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const cors = require("cors");
 const helmet = require("helmet");
-const path = require('path')
 const { sequelize } = require("./models");
 
 const app = express();
@@ -68,9 +67,9 @@ app.use(
 );
 
 sequelize
-  .sync()
+  // .sync()
   // .sync({ force: true })
-  // .sync({ alter: true })
+  .sync({ alter: true })
   .then(() => {
     console.log("Database synchronized successfully!");
   })

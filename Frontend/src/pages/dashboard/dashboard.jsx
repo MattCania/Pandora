@@ -7,9 +7,11 @@ import InventoryOverview from "../../components/overviews/homeInventory";
 import BudgetOverview from "../../components/overviews/homeBudget";
 import Footer from "../../partials/footer/footer";
 import Loading from "../../partials/loading/loading";
+import GetSession from "../../hooks/GetSession";
 
 function Dashboard() {
 	const user = useContext(SessionContext);
+	// const user = GetSession();
 	
 	if (!user) {
         return

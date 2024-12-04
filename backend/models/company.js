@@ -2,56 +2,53 @@
 const {
   Model
 } = require('sequelize');
-// This wont be used either, walang time
 module.exports = (sequelize, DataTypes) => {
-  class Category extends Model {
+  class Company extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
+      Company.hasMany(models.CompanyMembers, {
+        foreignKey: 'organizationId',
+        sourceKey: 'companyId',
+        as: 'memberCompany',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
+
     }
   }
-  Category.init({
-    categoryId: {
+  Company.init({
+    companyId: { 
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        is: /^[a-zA-Z\s]*$/i,
-        len: [2, 25],
-      },
-    },
-    description: {
-      type: DataTypes.TEXT,
+    companyName: { 
+      type: DataTypes.STRING, 
       allowNull: false,
       defaultValue: "",
       validate: {
         notEmpty: true,
         is: /^[a-zA-Z\s]*$/i,
-        len: [0, 100],
       },
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false
-    } 
+    companyDescription: { 
+      type: DataTypes.TEXT, 
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        is: /^[a-zA-Z\s]*$/i,
+      },
+    }
   }, {
     sequelize,
-    modelName: 'Category',
+    modelName: 'Company',
+    tableName: 'Company',
+    timestamps: true
   });
-  return Category;
+  return Company;
 };

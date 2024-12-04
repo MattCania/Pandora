@@ -149,7 +149,7 @@ function CreateTransactions() {
 				!formData.vendorCustomer || !formData.invoiceNumber
 			) throw new Error("All fields must be filled out.");
 			
-			const response = await PostRequest(`create-expense/${recordId}`, formData)
+			const response = await PostRequest(`create-${transaction.slice(0, -1)}/${recordId}`, formData)
 			if (!response) throw new Error("Error Creation of Transaction")
 			navigate(`/home/records/${transaction}/${recordId}`)
 		} catch (error) {
