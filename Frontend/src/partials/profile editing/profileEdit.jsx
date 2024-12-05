@@ -61,8 +61,10 @@ function ProfileEdit() {
         e.preventDefault();
         if (!validate()) return;
 
-        const formattedBirthday = `${new Date(formValues.birthday).toISOString().slice(0, 10)}T00:00:00`
-
+        // const formattedBirthday = `${new Date(formValues.birthday).toISOString().slice(0, 10)}T00:00:00`
+        const [year, month, day] = formValues.birthday.split("-");
+        const formattedBirthday = `${year}-${month}-${day}T00:00:00`;
+        
         const formData = {
             ...formValues,
             birthday: formattedBirthday

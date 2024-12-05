@@ -7,7 +7,7 @@ const getAccounts = async (req, res) => {
 		const accounts = await UserProfiles.findAll({
 			attributes: ['profileId', 'userName']
 		})
-		if (!accounts) res.status(500).json({message: 'Error Database Fetching'})
+		if (!accounts) return res.status(500).json({message: 'Error Database Fetching'})
 	
 		res.status(200).json(accounts)
 	

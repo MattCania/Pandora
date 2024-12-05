@@ -33,7 +33,7 @@ const getRecords = async (req, res) => {
     });
 
     // If request is successful but returns an empty record, return
-    if (!records) res.status(204).json({ message: "No records found" });
+    if (!records) return res.status(404).json({ message: "No records found" });
 
     res.status(200).json(records);
   } catch (err) {
@@ -51,7 +51,7 @@ const getSingleRecord = async (req, res) => {
 			where: {recordId: recordId}
 		})
 
-		if (!results) throw new Error("Result Unfound")
+    if (!records) return res.status(404).json({ message: "No records found" });
 
 		res.status(200).json(results);
 		
@@ -76,6 +76,7 @@ const createRecord = async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
     if (!results) throw new Error("Record Creation Failure");
 
     const newRecordId = results.recordId;
@@ -113,7 +114,7 @@ const createRecord = async (req, res) => {
 };
 
 const updateRecord = async (req, res) => {
-  const { recordType, recordName } = req.body;
+  const { recordType, recordName, userPermissions } = req.body;
   const recordId = req.params.recordId;
 
   try {
