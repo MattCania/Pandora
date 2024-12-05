@@ -5,66 +5,72 @@
 }
 
 .section {
-	height: 100vh;
-	width: 100vw;
+    height: 100vh;
+    width: 100vw;
     font-family: 'Heavitas', sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
 .navigation {
     background-color: white;
     display: flex;
     align-items: center;
-    justify-content: space-between; 
     padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.navigation .logo {
+/*.navigation .logo {
     flex-grow: 0.09; 
+}*/
+
+.navigation .logo img {
+    max-height: 50px;
 }
 
 .navigation .links {
+    margin-left: 1rem;
     display: flex;
     gap: 20px; 
-    flex-grow: 0;
-    font-size: 17px;
+    flex-grow: 1;
+    font-size: 1rem;
 }
 
 .navigation .links a {
     color: black;
     text-decoration: none;
-    margin-right: 20px; 
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navigation .links a:hover {
+    color: rgba(54, 175, 87, 1);
 }
 
 .navigation .logging {
     display: flex;
-    gap: 20px; 
-    margin-left: auto; 
+    gap: 15px; 
     align-items: center; 
 }
 
 .navigation .logging a {
-    display: inline-block; 
     font-weight: bold; 
-    font-size: 17px;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 0.3s;
 }
 
 .navigation .logging a:first-child {
-    text-decoration: none;
     color: rgba(54, 175, 87, 1); 
 }
 
 .navigation .logging a:last-child {
-    margin-left: 20px;
     color: white;
-    text-decoration: none;
-    border-radius: 10px;
     background-color: rgba(54, 175, 87, 1);
-    padding: 0.5rem 1.2rem;
-    display: inline-block;
-    text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
 }
 
 .navigation .logging a:last-child:hover {
@@ -73,41 +79,40 @@
 
 .heroContent {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
     align-items: center;
+    padding: 2rem;
 }
 
-.heroContent .leftContent{
-    color: Black;
-    margin-left: 1em;
+.heroContent .leftContent {
+    color: black;
 }
 
-.heroContent .leftContent h1:first-child {
-    font-size: 64px;
-    margin-bottom: -20px;
+.heroContent .leftContent h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin: 0;
 }
 
 .heroContent .leftContent h1:last-child {
-    font-size: 64px;
-    margin-bottom: 15px;
-    margin-top: -20px;
+    text-decoration: underline;
 }
 
-.heroContent .leftContent .subheader h2{
-    font-size: 20px;
-    margin-bottom: 1.4em;
+.heroContent .leftContent .subheader h2 {
+    font-size: 1rem;
+    margin: 1rem 0;
 }
 
-
-.heroContent .leftContent .loggingIn a {
-    margin-top: 3em;
+.heroContent .loggingIn a {
+    display: inline-block;
+    margin-top: 1rem;
     color: white;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background-color: rgba(54, 175, 87, 1);
-    padding: 0.5rem 1.2rem;
+    padding: 0.75rem 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
 .heroContent .leftContent .loggingIn a:hover {
@@ -128,7 +133,6 @@
     width: 80%;
     max-width: 500px;
     height: 75vh;
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     overflow: hidden; 
@@ -137,96 +141,44 @@
 .featuresCard h2 {
     background-color: #333; 
     color: white;
-    padding: 1rem 0; 
+    padding: 1rem; 
     margin: 0; 
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 24px; 
+    border-radius: 10px 10px 0 0;
+    font-size: 2.5rem; 
     text-align: center; 
-    width: 100%; 
-    box-sizing: border-box; 
-    position: relative; 
 }
 
 .featuresCard ul {
     list-style: none;
-    padding: 0;
+    padding: 1rem;
     margin: 0;
-
 }
 
 .featuresCard li {
     display: flex;
     align-items: center;
-    gap: 2rem; 
-    margin: 1rem 0;
+    gap: 1rem; 
+    margin-bottom: 1.5rem;
+    margin-left: 2rem;
 }
 
 .featuresCard li img {
-    width: 65px; 
-    height: 65px;
-    margin-left: 30px;
+    width: 50px; 
+    height: 50px;
 }
 
 .featuresCard li span {
-    font-weight: bold;
     color: #000000;
-    font-size: 25px;
+    font-size: 1.5rem;
     text-transform: uppercase; 
 }
 
 
-.lowerSection {
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-.halfLeft {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2rem;
-    background-color: #232323;
-    color: white;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-}
-
-.halfLeft h1 {
-    margin-top: -4rem;
-    font-size: 45px;
-    margin-bottom: 1rem;
-}
-
-.halfLeft h3 {
-    font-family: sans-serif;
-    font-size: 18px;
-    margin-right: 20px;
-}
-
-.halfRight {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ccc;
-}
-
-.halfRight img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-
-}
-
-/* Make navigation responsive */
 @media (max-width: 768px) {
     .navigation {
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    .navigation .logo {
-        margin-bottom: 1rem;
+        gap: 1rem;
     }
 
     .navigation .links {
@@ -241,88 +193,23 @@
     }
 }
 
-/* Adjust hero content for smaller screens */
+
 @media (max-width: 1024px) {
     .heroContent {
         grid-template-columns: 1fr;
     }
 
-    .heroContent .leftContent {
-        margin: 1em 2em;
-        text-align: center;
-    }
-
-    .heroContent .leftContent h1 {
-        font-size: 48px;
-    }
-
-    .heroContent .leftContent .subheader h2 {
-        font-size: 18px;
-    }
-
-    .heroContent .rightContent {
-        justify-content: center;
-    }
-
     .featuresCard {
-        width: 90%;
+        width: 100%;
         height: auto;
     }
 
     .featuresCard li img {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
     }
 
     .featuresCard li span {
-        font-size: 20px;
+        font-size: 0.9rem;
     }
 }
-
-/* Adjust lower section layout for smaller screens */
-@media (max-width: 768px) {
-    .lowerSection {
-        grid-template-columns: 1fr;
-    }
-
-    .halfLeft {
-        padding: 1rem;
-        text-align: center;
-    }
-
-    .halfLeft h1 {
-        font-size: 36px;
-    }
-
-    .halfLeft h3 {
-        font-size: 16px;
-    }
-
-    .halfRight img {
-        object-fit: contain;
-        height: auto;
-    }
-}
-
-/* Additional adjustments for very small screens */
-@media (max-width: 480px) {
-    .heroContent .leftContent h1 {
-        font-size: 36px;
-    }
-
-    .heroContent .leftContent .subheader h2 {
-        font-size: 16px;
-    }
-
-    .featuresCard li {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .featuresCard li span {
-        text-align: center;
-    }
-}
-
-
