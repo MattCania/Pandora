@@ -1,23 +1,26 @@
-const bcrypt = require("bcrypt");	// For comparing hashed and unhashed password
+const bcrypt = require("bcrypt");
 const { UserAccounts, UserProfiles } = require("../models");
 
 const handleLogin = async (req, res) => {
 	const { email, password } = req.body;
 
 	try {
-		const user = await UserAccounts.findOne({
+		// Gets User Account based on request form input
+		const account = await UserAccounts.findOne({
 			where: { email: email },
 		});
 
-		if (!user) {
-			throw new Error("Invalid Credentials");
-		}
+		// If Account returns empty or null, return an Unauthorized Error
+		if (!account) return res.status(401).json(new Error("Account does not exist"))
 		
-		const userId = user.userId
-		const hashedPassword = user.securedPassword;
+		// If account exist, get the user ID then has the password
+		const userId = account.userId
+		const hashedPassword = account.securedPassword;
+
+		// Checks if bcrypt (encrypted password) is matching with the input
 		const isMatch = await bcrypt.compare(password, hashedPassword);
 
-    	if (!isMatch) throw new Error("Invalid Credentials");
+    	if (!isMatch) return res.status(401).json(new Error("Email and Password does not match"));
 
 		const profile = await UserProfiles.findOne({
 			where:{ profileId: userId }
@@ -25,8 +28,8 @@ const handleLogin = async (req, res) => {
 
 		if (!profile) throw new Error("Error Email Profile")
 
-		req.session.userId = user.userId;
-		req.session.email = user.email;
+		req.session.userId = account.userId;
+		req.session.email = account.email;
 		req.session.username = profile.userName;
 		
 		return res.status(200).json({ message: "Successful Log In" });
