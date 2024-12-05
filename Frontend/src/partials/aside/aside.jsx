@@ -32,7 +32,7 @@ function Aside() {
 
 					<NavLink onClick={linkToggle} to="analytics" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faChartLine} />{!displayAside && "Analytics"}</NavLink>
 					<NavLink onClick={linkToggle} to="company" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBuilding} />{!displayAside && "Company"}</NavLink>
-					<NavLink onClick={linkToggle} to="banking" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBank} />{!displayAside && "Banking"}</NavLink>
+					{/*NavLink onClick={linkToggle} to="banking" className={({ isActive }) => isActive ? `${styles.active}` : ''} ><FontAwesomeIcon icon={faBank} />{!displayAside && "Banking"}</NavLink>*/}
 				</div>
 
 				<button className={styles.closeButton} onClick={toggleDisplay}>

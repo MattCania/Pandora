@@ -68,6 +68,7 @@
 .button {
     width: 350px;
     height: 40px;
+    margin-bottom: 20px;
     background-color: rgba(54, 175, 87, 1);
     border-radius: 10px;
     color: white;
