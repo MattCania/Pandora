@@ -9,14 +9,14 @@ const handleLogin = async (req, res) => {
 			where: { email: email },
 		});
 
-		if (!account) res.status(401).json({message: "Account does not exist"})
+		if (!account) return res.status(401).json({message: "Account does not exist"})
 		
 		const userId = account.userId
 		const hashedPassword = account.securedPassword;
 		
 		const isMatch = await bcrypt.compare(password, hashedPassword);
 
-    	if (!isMatch) res.status(401).json({message: "Password does not match"});
+    	if (!isMatch) return res.status(401).json({message: "Password does not match"});
 
 		const profile = await UserProfiles.findOne({
 			where:{ profileId: userId }

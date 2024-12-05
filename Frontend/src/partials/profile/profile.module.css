@@ -135,11 +135,55 @@
     padding: 4em;
 }
 
-/* For smaller screens, make the grid responsive */
 @media (max-width: 768px) {
-    .field {
-        grid-template-columns: 1fr; /* Single column for narrow screens */
+    .middle {
+        padding: 1rem;
+        width: 90%;
+    }
+
+    .head {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .head p {
+        font-size: 3rem;
+        padding: 1.5rem;
+    }
+
+    .edit {
+        margin: 1rem auto;
+    }
+
+    .upperSection, .lowerSection {
+        padding: 1.5rem;
+    }
+
+    .field label {
+        font-size: 0.9rem;
+    }
+
+    .field input {
+        font-size: 0.9rem;
     }
 }
 
+@media (max-width: 480px) {
+    .head p {
+        font-size: 2.5rem;
+        padding: 1rem;
+    }
+
+    .head h1 {
+        font-size: 1.5rem;
+    }
+
+    .head h2 {
+        font-size: 1.2rem;
+    }
+
+    .field {
+        grid-template-columns: 1fr;
+    }
+}
 

@@ -25,7 +25,7 @@ function Premium() {
                         <h3>• Experimental Features</h3>
                         <h3>• Early Access to future features</h3>
                     </ul>
-                    <button className={styles.button}>Give us 100$ dollars HEHE</button>
+                    <button className={styles.button}>Subscribe</button>
                 </div>
         </section>
     )
