@@ -150,6 +150,11 @@
 	transition: all 250ms;
 }
 
+.delete button:disabled{
+	background-color: var(--tertiary);
+	color: var(--textlight);
+}
+
 .row {
 	color: var(--textdark);
 	display: flex;
@@ -183,19 +188,87 @@
 	-webkit-backdrop-filter: blur(10px);
 }
 
+.createSection{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	height: 50%;
+	width: 40%;
+	background-color: var(--background-color);
+	border: 1px solid var(--textdark);
+	border-radius: 15px;
+
+}
+
+.container{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	border-radius: 15px;
+}
+
 .createForm{
 	display: flex;
 	justify-content: flex-start;
 	flex-direction: column;
 	align-items: center;
-	height: 50%;
-	width: 20%;
+	height: 100%;
+	width: 100%;
 	gap: 1em;
-	background-color: var(--background-color);
-	border: 1px solid var(--textdark);
-	border-radius: 15px;
-	box-shadow: 0px 2px 4px var(--textdark);
+	/*background-color: var(--background-color);
+	border: 1px solid var(--textdark); */
+	/* border-radius: 15px; */
+	/* box-shadow: 0px 2px 4px var(--textdark); */
 
+}
+
+.userSection{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	align-items: center;
+}
+
+.permissionTable{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 90%;
+	color: var(--textdark);
+}
+
+.permissionTable button{
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--secondary);
+	background-color: transparent;
+	height: 2em;
+	width: 2em;
+	border: 0;
+	outline: 0;
+	transition: all 250ms;
+}
+
+.permissionTable button:hover{
+	background-color: var(--primary);
+	transition: all 250ms;
+}
+
+.userSection h1{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	font-size: 2em;
+	width: 100%;
+	color: var(--textdark);
 }
 
 .createForm input, .createForm select, .createForm option{

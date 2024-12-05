@@ -5,7 +5,6 @@ const handleLogin = async (req, res) => {
 	const { email, password } = req.body;
 
 	try {
-		// Gets User Account based on request form input
 		const account = await UserAccounts.findOne({
 			where: { email: email },
 		});
@@ -26,7 +25,7 @@ const handleLogin = async (req, res) => {
 			where:{ profileId: userId }
 		})
 
-		if (!profile) throw new Error("Error Email Profile")
+		if (!profile) throw new Error("Database Profile Error");
 
 		req.session.userId = account.userId;
 		req.session.email = account.email;
@@ -34,11 +33,14 @@ const handleLogin = async (req, res) => {
 		
 		return res.status(200).json({ message: "Successful Log In" });
 	} catch (err) {
-		req.session.destroy();
-		return res.status(500).json({ message: "Server Error", error: err.message });
+		req.session.destroy((err) => {
+            if (err) {
+                return res.status(500).json({ message: "Error destroying session", error: err.message });
+            }
+            return res.status(500).json({ message: "Server Error", error: err.message });
+        });
 	}
 };
-
 
 module.exports = {
 	handleLogin,

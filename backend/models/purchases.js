@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'recordId',
         as: 'purchaseTransaction',
 				onDelete: "CASCADE",
+				onUpdate: 'CASCADE'
       })
     }
   }
@@ -141,11 +142,14 @@ module.exports = (sequelize, DataTypes) => {
    },
    createdAt: {
      type: DataTypes.DATE,
-     defaultValue: DataTypes.NOW
+     defaultValue: DataTypes.NOW,
+     allowNull: false
    },
    updatedAt: {
      type: DataTypes.DATE,
-     defaultValue: DataTypes.NOW
+     defaultValue: DataTypes.NOW,
+     allowNull: false,
+     onUpdate: DataTypes.NOW 
    }
   }, {
     sequelize,

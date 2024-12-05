@@ -17,6 +17,7 @@
   height: 100vh;
   width: 40%;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .formSection form{
@@ -26,10 +27,18 @@
   width: 100%;
 }
 
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+
 .logo {
   display: flex;
   width: 100%;
-  
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .container input[type="number"]::-webkit-outer-spin-button,

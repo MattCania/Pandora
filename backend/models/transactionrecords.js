@@ -12,27 +12,31 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       TransactionRecords.hasMany(models.RecordPermissions, {
         foreignKey: 'recordId',
-        as: 'transactionId',
-        onDelete: 'CASCADE'
+        as: 'recordPermissions',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       })
 
       TransactionRecords.hasMany(models.Expenses, {
         foreignKey: 'expenseId',
         as: 'expenseRecord',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       })
 
       TransactionRecords.hasMany(models.Purchases, {
         foreignKey: 'purchaseId',
         as: 'purchaseRecord',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       })
 
       TransactionRecords.belongsTo(models.UserAccounts, {
         foreignKey: 'creatorId',
         targetKey: 'userId',
         as: 'creatorAccount',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       })
 
     }
@@ -64,17 +68,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
+      allowNull: false
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+      onUpdate: DataTypes.NOW 
     }
   }, {
     sequelize,
     modelName: 'TransactionRecords',
     hooks:{
-      afterDestroy: async () => {
+      afterDestroy: async (instance) => {
         try {
           await sequelize.query(`ALTER TABLE TransactionRecords AUTO_INCREMENT = 1`);
         } catch (error) {
