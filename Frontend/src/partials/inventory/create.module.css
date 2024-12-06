@@ -1,0 +1,123 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+}
+
+.formContainer {
+    margin-top: 1em;
+    margin-bottom: 2em;
+    width: 40%;
+    background-color: #f9f9f9;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.form label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+}
+
+.tableContainer {
+    width: 80%;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.table th,
+.table td {
+    padding: 0.5em;
+    border: 1px solid #ddd;
+}
+
+.tableHeader {
+    background-color: #4caf50;
+    color: white;
+}
+
+.row:hover {
+    background-color: #f1f1f1;
+}
+
+.edit {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 0.3em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit:hover {
+    background-color: #45a049;
+}
+
+.delete {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0.3em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete:hover {
+    background-color: darkred;
+}
+
+.formButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button[type="reset"] {
+    background-color: red;
+}
+
+button[type="reset"]:hover {
+    background-color: darkred;
+}
+
+/* Ensure all text in the form and table is black */
+form label, 
+table, 
+table th, 
+table td, 
+button {
+    color: black;
+}
+
+
+h2 {
+    color: rgb(0, 0, 0);
+}

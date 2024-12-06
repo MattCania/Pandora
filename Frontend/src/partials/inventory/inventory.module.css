@@ -1,0 +1,353 @@
+.section {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	min-height: 150vh;
+	height: auto;
+}
+
+.subHeader {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	width: 98%;
+	height: 20vh;
+	margin: 1em 0;
+	background-color: var(--tertiary);
+	border-radius: 15px;
+
+}
+
+.subHeader h1 {
+	display: flex;
+	font-size: 2em;
+	margin: 0 1em;
+}
+
+
+.subSection {
+	display: flex;
+	flex-direction: column;
+	width: 98%;
+	border: 1px solid var(--textdark);
+	height: 80vh;
+	margin: 1em 0;
+	border-radius: 15px 15px 0 0;
+	/* overflow: hidden; */
+	overflow: hidden;
+	background-color: var(--background-color);
+}
+
+.displaySection {
+	display: flex;
+	height: 100%;
+	overflow: hidden;
+}
+
+.table {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.tableHeader {
+	background-color: var(--green);
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	height: 10%;
+	width: 100%;
+	font-weight: bold;
+}
+
+.tableBody {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.index {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 20%;
+	height: 100%;
+}
+
+.id {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 35%;
+	height: 100%;
+}
+
+.name {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+
+.creation {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 30%;
+}
+
+.access {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25%;
+	height: 100%;
+}
+
+.edit,
+.delete {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 20%;
+	text-align: center;
+	height: 100%;
+}
+
+.edit a,
+.delete button {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	outline: 0;
+	text-decoration: none;
+	transition: all 250ms;
+	background-color: var(--primary);
+	color: var(--textdark);
+}
+
+.edit a:hover {
+	color: var(--textlight);
+	background-color: var(--green);
+	transition: all 250ms;
+}
+
+.delete button:hover {
+	color: var(--textlight);
+	background-color: red;
+	transition: all 250ms;
+}
+
+.delete button:disabled{
+	background-color: var(--tertiary);
+	color: var(--textlight);
+}
+
+.row {
+	color: var(--textdark);
+	display: flex;
+	width: 100%;
+	height: 5vh;
+	justify-content: space-around;
+	transition: all 500ms;
+	border-bottom: 1px inset var(--textdark);
+}
+
+.row:hover {
+	cursor: pointer;
+	background-color: var(--primary);
+	color: var(--textdark);
+	transition: all 500ms;
+}
+
+.blur{
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.createSection{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	height: 56%;
+	width: 40%;
+	background-color: var(--background-color);
+	border: 1px solid var(--textdark);
+	border-radius: 15px;
+
+}
+
+.container{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	border-radius: 15px;
+}
+
+.createForm{
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	gap: 1em;
+	/*background-color: var(--background-color);
+	border: 1px solid var(--textdark); */
+	/* border-radius: 15px; */
+	/* box-shadow: 0px 2px 4px var(--textdark); */
+
+}
+
+.userSection{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	align-items: center;
+}
+
+.permissionTable{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 90%;
+	color: var(--textdark);
+}
+
+.permissionTable button{
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--secondary);
+	background-color: transparent;
+	height: 2em;
+	width: 2em;
+	border: 0;
+	outline: 0;
+	transition: all 250ms;
+}
+
+.permissionTable button:hover{
+	background-color: var(--primary);
+	transition: all 250ms;
+}
+
+.userSection h1{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	font-size: 2em;
+	width: 100%;
+	color: var(--textdark);
+}
+
+.createForm input, .createForm select, .createForm option{
+	width: 80%;
+	height: 3em;
+	padding: 0 4px;
+	color: var(--textdark);
+	background-color: transparent;
+	border-radius: 5px;
+	border: 1px solid var(--textdark);
+	box-shadow: 0px 2px 4px var(--textdark);
+}
+
+.buttonDiv{
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+
+.buttonDiv button{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	margin: 4px;
+	background-color: transparent;
+	color: var(--textdark);
+	border: none;
+	outline: none;
+	font-size: 1em;
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+	transition: all 500ms;
+}
+
+.buttonDiv button:hover{
+	background-color: var(--primary);
+	transition: all 500ms;
+}
+
+.createForm input[type="submit"] {
+	cursor: pointer;
+	height: 2em;
+	border-radius: 5px;
+	border: 0;
+	outline: 0;
+	background-color: var(--green);
+	font-size: 20px;
+	font-weight: bolder;
+	box-shadow: 0px 2px 4px var(--textdark);
+	transition: all 500ms;
+	color: var(--textlight);
+}
+
+.createForm .recordType{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.createForm h1{
+	font-size: 2em;
+	margin: 0;
+	color: var(--textdark);
+}
+
+.createForm textarea {
+	padding: 0 4px;
+	color: var(--textdark);
+	width: 80%;
+	height: 6em;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	background-color: transparent;
+	border-radius: 5px;
+	border: 1px solid var(--textdark);
+	box-shadow: 0px 2px 4px var(--textdark);
+	outline: none;
+	resize: none;
+}
