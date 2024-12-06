@@ -17,7 +17,8 @@ module.exports = {
         accessType: "Viewer",
       },
     ]);
-
+	console.log('seeding TransactionRecords')
+	
     await queryInterface.bulkInsert("TransactionRecords", [
       {
         creatorId: 1,
@@ -32,8 +33,8 @@ module.exports = {
         recordName: "Hardware Purchases",
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
-      {
+	},
+	{
         creatorId: 3,
         recordType: "Expenses",
         recordName: "Travel Expenses",
@@ -48,9 +49,10 @@ module.exports = {
         updatedAt: new Date(),
       },
     ]);
-
+	
+	console.log('seeding RecordPermissions')
     await queryInterface.bulkInsert("RecordPermissions", [
-      { recordId: 1, permittedUser: 1, accessLevel: 1 },
+		{ recordId: 1, permittedUser: 1, accessLevel: 1 },
       { recordId: 1, permittedUser: 3, accessLevel: 2 },
       { recordId: 2, permittedUser: 2, accessLevel: 1 },
       { recordId: 2, permittedUser: 4, accessLevel: 2 },
@@ -59,7 +61,8 @@ module.exports = {
       { recordId: 4, permittedUser: 3, accessLevel: 1 },
       { recordId: 4, permittedUser: 4, accessLevel: 2 },
     ]);
-
+	
+	console.log('seeding Transactions')
     // Insert Expenses
     const expenses = [];
     for (let i = 1; i <= 4; i++) {
@@ -110,13 +113,23 @@ module.exports = {
     }
     await queryInterface.bulkInsert("Purchases", purchases);
 
-    console.log("Inserting Transactions");
-    const inventoryTransactionsData = [
+   
+
+	console.log('seeding Inventory')
+    const inventoryData = [
       {
         inventoryId: 1,
         creatorId: 1,
 		inventoryName: 'Inventory Sample A',
         description: "Received additional raw materials",
+        description: "High-quality raw material for production",
+        category: "Raw Materials",
+        quantity: 100,
+        unitPrice: 50.0,
+        supplier: "Supplier A",
+        location: "Warehouse 1",
+        minQty: 10,
+        status: "In Stock",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -125,6 +138,13 @@ module.exports = {
         creatorId: 2,
 		inventoryName: 'Inventory Sample B',
         description: "Office chairs delivered to office",
+        category: "Furniture",
+        quantity: 20,
+        unitPrice: 150.0,
+        supplier: "Office Supplies Inc.",
+        location: "Main Office",
+        minQty: 5,
+        status: "In Stock",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -133,6 +153,13 @@ module.exports = {
         creatorId: 3,
 		inventoryName: 'Inventory Sample C',
         description: "Printer ink reordered",
+        category: "Office Supplies",
+        quantity: 50,
+        unitPrice: 25.0,
+        supplier: "Tech Supplies",
+        location: "Office Storage",
+        minQty: 10,
+        status: "Reserved",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -141,15 +168,21 @@ module.exports = {
         creatorId: 4,
 		inventoryName: 'Inventory Sample D',
         description: "Packaging boxes sent to production",
+        category: "Packaging Materials",
+        quantity: 200,
+        unitPrice: 2.5,
+        supplier: "Packaging Solutions",
+        location: "Warehouse 2",
+        minQty: 50,
+        status: "In Stock",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ];
-    await queryInterface.bulkInsert("Inventories", inventoryTransactionsData);
+    await queryInterface.bulkInsert("Inventories", inventoryData);
 
-    console.log("Inserting Permissions");
-    // Seed data for the "inventorypermissions" table
-    const inventoryPermissionsData = [
+     // Seed data for the "inventorypermissions" table
+     const inventoryPermissionsData = [
       {
         permissionId: 1,
         inventoryId: 1,
@@ -179,67 +212,6 @@ module.exports = {
       "InventoryPermissions",
       inventoryPermissionsData
     );
-
-    console.log("Inserting Inventory");
-    const inventoryData = [
-      {
-        inventoryRecord: 1,
-        name: "Raw Material A",
-        description: "High-quality raw material for production",
-        category: "Raw Materials",
-        quantity: 100,
-        unitPrice: 50.0,
-        supplier: "Supplier A",
-        location: "Warehouse 1",
-        minQty: 10,
-        status: "In Stock",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        inventoryRecord: 2,
-        name: "Office Chair",
-        description: "Ergonomic office chair",
-        category: "Furniture",
-        quantity: 20,
-        unitPrice: 150.0,
-        supplier: "Office Supplies Inc.",
-        location: "Main Office",
-        minQty: 5,
-        status: "In Stock",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        inventoryRecord: 3,
-        name: "Printer Ink",
-        description: "High-quality ink for printers",
-        category: "Office Supplies",
-        quantity: 50,
-        unitPrice: 25.0,
-        supplier: "Tech Supplies",
-        location: "Office Storage",
-        minQty: 10,
-        status: "Reserved",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        inventoryRecord: 4,
-        name: "Packaging Boxes",
-        description: "Boxes for product packaging",
-        category: "Packaging Materials",
-        quantity: 200,
-        unitPrice: 2.5,
-        supplier: "Packaging Solutions",
-        location: "Warehouse 2",
-        minQty: 50,
-        status: "In Stock",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ];
-    await queryInterface.bulkInsert("InventoryTransactions", inventoryData);
   },
 
   async down(queryInterface, Sequelize) {
@@ -248,7 +220,6 @@ module.exports = {
     await queryInterface.bulkDelete("TransactionRecords", null, {});
     await queryInterface.bulkDelete("RecordPermissions", null, {});
     await queryInterface.bulkDelete("Inventories", null, {});
-    await queryInterface.bulkDelete("InventoryTransactions", null, {});
     await queryInterface.bulkDelete("InventoryPermissions", null, {});
 
     await queryInterface.bulkDelete("Permissions", null, {});
@@ -266,9 +237,6 @@ module.exports = {
     );
     await queryInterface.sequelize.query(
       "ALTER TABLE RecordPermissions AUTO_INCREMENT = 1"
-    );
-    await queryInterface.sequelize.query(
-      "ALTER TABLE InventoryTransactions AUTO_INCREMENT = 1"
     );
     await queryInterface.sequelize.query(
       "ALTER TABLE Inventories AUTO_INCREMENT = 1"

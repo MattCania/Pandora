@@ -18,14 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       })
 
-      Inventories.hasMany(models.InventoryTransaction, {
-        foreignKey: 'inventoryRecord',
-        sourceKey: 'inventoryId',
-        as: 'inventoryRecordRef',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-      })
-
       Inventories.belongsTo(models.UserAccounts, {
         foreignKey: 'creatorId',
         targetKey: 'userId',
@@ -57,27 +49,105 @@ module.exports = (sequelize, DataTypes) => {
         len: [2, 100]
       } 
     },
-    description: {
+    description: { 
       type: DataTypes.TEXT,
       allowNull: false,
       defaultValue: "",
       validate: {
         notEmpty: true,
-        is: /^[a-zA-Z\s]*$/i,
         len: [0, 100],
       },
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
+    category: { 
+      type: DataTypes.ENUM(
+        "Raw Materials", "Finished Goods",
+        "Work-in-Progress", "Consumables",
+        "Office Supplies", "Machinery and Equipment",
+        "Furniture", "Electronics",
+        "Vehicles", "Health and Safety",
+        "Packaging Materials", "Perishable Goods",
+        "Non-Perishable Goods", "Tools",
+        "Miscellaneous"
+      ),
       allowNull: false,
-      onUpdate: DataTypes.NOW 
-    }
+      validate: {
+        notEmpty: true,
+      },
+    },
+    quantity: { 
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        min: 0,
+        isInt: true, 
+      },
+    },
+    unitPrice: { 
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      defaultValue: 0.0,
+      validate: {
+        notEmpty: true,
+        min: 0.0,
+        isInt: true, 
+      },
+    },
+    supplier: { 
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [2, 25],
+      },
+    },
+    location: { 
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [2, 100],
+      },
+    },
+    minQty: { 
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate:{
+        notEmpty: true,
+        min: 0,
+        isInt: true, 
+      }
+    },
+    status: {
+      type: DataTypes.ENUM(
+        "In Stock",
+        "Out of Stock",
+        "Reserved",
+        "On Order",
+        "In Transit",
+        "Backordered",
+        "Pending",
+        "Damaged",
+        "Quarantined",
+        "Returned",
+        "Ready for Dispatch",
+        "Under Maintenance",
+        "Expired",
+        "On Hold",
+        "Sold",
+        "Recalled",
+        "Available for Allocation"
+      ),
+    },
+    createdAt: { 
+      type: DataTypes.DATE,
+			  defaultValue: DataTypes.NOW,
+			  allowNull: false
+    },
+    updatedAt: { 
+      type: DataTypes.DATE,
+			  defaultValue: DataTypes.NOW,
+			  allowNull: false,
+        onUpdate: DataTypes.NOW 
+    } 
     
   }, {
     sequelize,

@@ -1,55 +1,127 @@
-import React, { useState, useEffect, useContext } from "react";
-import SubHeader from "../../components/overviews/subheader";
-import { useNavigate, Link, useParams } from "react-router-dom";
-import styles from './inventory.module.css'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import GetData from "../../hooks/GetData";
-// import { SessionContext } from "../../pages/home/home";
-import Loading from "../loading/loading";
+import { useParams, useNavigate } from "react-router-dom";
+import CreateInterface from "../../components/interface/createInterface";
+import { useEffect, useState } from "react";
 import PostRequest from "../../hooks/PostRequest";
-import GetSession from "../../hooks/GetSession";
-import Error from "../../components/error/error";
+import GetData from "../../hooks/GetData";
 
-
-function EditRecords() {
+function EditInventory() {
 	const navigate = useNavigate();
-	const { recordId } = useParams()
-	const user = GetSession()
-	const [isAuth, setAuth] = useState(false);
+	const { inventoryId } = useParams();
+
+	const [existingData, setExistingData] = useState({ results: {} });
+
+	if (!inventoryId) return <h1>Loading...</h1>;
+
+	const fetchInventoryInfo = async () => {
+		try {
+			const result = await GetData(`inventory/open/${inventoryId}`);
+			if (!result) throw new Error("Error Getting Inventory Data");
+			console.log(result);
+			setExistingData(result);
+		} catch (error) {
+			console.error("Error:", error);
+		}
+	};
 
 	useEffect(() => {
-		if (user) {
-			setAuth(true);
-		} else {
-			setAuth(false);
-		}
-	}, [user]);
+		fetchInventoryInfo();
+	}, []);
+
+	if (!existingData) return <h1>Loading...</h1>;
+
+	console.log("Existing Inventory Data:", existingData);
+
+	const inventoryInput = [
+		{
+			label: "Inventory Name",
+			type: "text",
+			id: "inventoryName",
+			name: "inventoryName",
+			placeholder: "Enter Inventory Name",
+		},
+		{
+			label: "Category",
+			type: "text",
+			id: "category",
+			name: "category",
+			placeholder: "Enter Category",
+		},
+		{
+			label: "Quantity",
+			type: "number",
+			id: "quantity",
+			name: "quantity",
+			placeholder: "Enter Quantity",
+		},
+		{
+			label: "Minimum Quantity",
+			type: "number",
+			id: "minQty",
+			name: "minQty",
+			placeholder: "Enter Minimum Quantity",
+		},
+		{
+			label: "Unit Price",
+			type: "number",
+			id: "unitPrice",
+			name: "unitPrice",
+			placeholder: "Enter Unit Price",
+		},
+		{
+			label: "Supplier",
+			type: "text",
+			id: "supplier",
+			name: "supplier",
+			placeholder: "Enter Supplier Name",
+		},
+		{
+			label: "Location",
+			type: "text",
+			id: "location",
+			name: "location",
+			placeholder: "Enter Location",
+		},
+		{
+			label: "Status",
+			type: "text",
+			id: "status",
+			name: "status",
+			placeholder: "Enter Status",
+		},
+		{
+			label: "Description",
+			type: "textarea",
+			id: "description",
+			name: "description",
+			placeholder: "Enter Description",
+		},
+	];
 
 	const [formValues, setFormValues] = useState({
-		recordType: '',
-		recordName: '',
+		inventoryName: existingData.inventoryName || "",
+		category: existingData.category || "",
+		quantity: existingData.quantity || "",
+		minQty: existingData.minQty || "",
+		unitPrice: existingData.unitPrice || "",
+		supplier: existingData.supplier || "",
+		location: existingData.location || "",
+		status: existingData.status || "",
+		description: existingData.description || "",
 	});
 
-	// const record = GetData(`/edit-record/${recordId}`);
-
-	// if (!record){
-	// 	return <Loading/>
-	// }
 	useEffect(() => {
-		const fetchRecord = async () => {
-			try {
-				const data = await GetData(`records/open/${recordId}`)
-				if (!data) throw new Error("Fetching Error")
-				setFormValues(data)
-			}
-			catch (err) {
-				return
-			}
-		}
-		fetchRecord()
-	}, [recordId]);
-
+		setFormValues({
+			inventoryName: existingData.inventoryName,
+			category: existingData.category,
+			quantity: existingData.quantity,
+			minQty: existingData.minQty,
+			unitPrice: existingData.unitPrice,
+			supplier: existingData.supplier,
+			location: existingData.location,
+			status: existingData.status,
+			description: existingData.description,
+		});
+	}, [existingData]);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -61,50 +133,45 @@ function EditRecords() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const formData = { ...formValues };
+
+		const formData = {
+			...formValues,
+		};
 
 		try {
-			const response = await PostRequest(`update-record/${recordId}`, formData)
-			if (!response) throw new Error("Updating Data Error");
-			navigate(-1)
+			if (
+				!formData.inventoryName || !formData.category || !formData.quantity ||
+				!formData.minQty || !formData.unitPrice || !formData.supplier ||
+				!formData.location || !formData.status || !formData.description
+			)
+				throw new Error("All fields must be filled out.");
+
+			const response = await PostRequest(`update-inventory/${inventoryId}`, formData);
+			if (!response) throw new Error("Error Updating Inventory");
+
+			navigate('/home/inventory');
 		} catch (error) {
 			console.error("Error:", error);
 		}
 	};
 
+	const onClose = () => {
+		navigate(-1);
+	};
+
 	return (
-		user && 
-		<section className={styles.blur}>
-
-			<section className={styles.createSection}>
-
-				<div className={styles.buttonDiv}>
-					<button type="button" onClick={() => navigate(-1)}><FontAwesomeIcon icon={faXmark} /></button>
-				</div>
-
-				<div className={styles.container}>
-
-					<form className={styles.createForm} onSubmit={handleSubmit}>
-						<h1>Update Record #{recordId}</h1>
-						<div className={styles.recordType}>
-							<select name="recordType" id="recordType" value={formValues.recordType} onChange={handleInputChange}>
-								<option value="" disabled>Record Type</option>
-								<option value="Expenses">Expneses</option>
-								<option value="Purchases">Purchases</option>
-							</select>
-						</div>
-						<input type="text" name="recordName" id="recordName" value={formValues.recordName} onChange={handleInputChange} placeholder="Record Name" />
-						<input type="submit" value="Update Record" />
-					</form>
-
-					<section className={styles.userSection}>
-
-					</section>
-				</div>
-			</section>
-		</section>
-	)
-
+		<div>
+			<CreateInterface
+				mainText={`Edit Inventory: ${inventoryId}`}
+				formInput={inventoryInput}
+				formValues={formValues}
+				inputChange={handleInputChange}
+				onClose={onClose}
+				onSubmit={handleSubmit}
+				buttonText="Update"
+			/>
+		</div>
+	);
 }
 
-export default EditRecords
+export default EditInventory;

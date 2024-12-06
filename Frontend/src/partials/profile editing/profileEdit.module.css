@@ -82,13 +82,23 @@
 }*/
 
 .edit {
+    cursor: pointer;
     width: 40px;
     height: 40px;
     margin-bottom: 1.5em;
+    background-color: var(--primary);
+    color: var(--textdark);
     margin-left: 3em;
-    color: black;
-    background-color: white;
     border-radius: 10px;
+    border: none;
+    outline: none;
+    transition: all 250ms;
+}
+
+.edit:hover{
+    background-color: var(--green);
+    transition: all 250ms;
+    color: var(--textlight);
 }
 
 .upperSection {
@@ -137,12 +147,23 @@
 }
 
 .submit {
+    cursor: pointer;
     margin: auto;
     border-radius: 10px;
     width: 90%;
     height: 40px;
     background-color: var(--green);
     font-weight: bolder;
+    border: 0;
+    outline: 0;
+	box-shadow: 0px 2px 4px var(--textdark);
+    transition: all 250ms;
+}
+
+.submit:hover{
+    background-color: var(--secondary);
+    transition: all 250ms;
+    color: var(--textlight);
 }
 
 /* For smaller screens, make the grid responsive */

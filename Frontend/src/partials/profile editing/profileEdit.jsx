@@ -97,7 +97,7 @@ function ProfileEdit() {
                     <div className={style.titleWrapper}>
                         <h1>Welcome,</h1>
                         <h2>{user.user.firstName} {user.user.lastName}</h2>
-                        <h3>Username: {user.profile.userName} || Email: {user.session.email}</h3>
+                        <h3>{user.session.email}</h3>
                     </div>
                 </div>
                 <Link to="../profile">

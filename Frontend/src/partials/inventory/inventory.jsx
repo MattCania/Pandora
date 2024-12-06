@@ -59,8 +59,8 @@ function Inventory() {
 	};
 
 	// Displaying Record Details
-	const openRecord = (recordId) => {
-		navigate(`${recordId}`)
+	const openRecord = (recordId, access) => {
+		navigate(`${recordId}/${access}`)
 	}
 
 	// Create new Record
@@ -116,34 +116,51 @@ function Inventory() {
 					<div className={styles.table}>
 						<div className={styles.tableHeader}>
 							<div className={styles.index}>#</div>
-							<div className={styles.id}>Inventory Id</div>
+							{/* <div className={styles.id}>Inventory Id</div> */}
+							<div className={styles.name2}>Stock Name</div>
 							<div className={styles.name}>Inventory Description</div>
-							<div className={styles.access}>Access Type</div>
+							<div className={styles.category}>Category</div>
+							<div className={styles.access}>Quantity</div>
+							<div className={styles.cell2}>Unit Price</div>
+							{/* <div className={styles.access}>Supplier</div> */}
+							{/* <div className={styles.access}>Location</div> */}
+							{/* <div className={styles.access}>Minimum Quantity</div> */}
+							<div className={styles.cell}>Status</div>
+							<div className={styles.cell}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
 							<div className={styles.edit}>Edit</div>
 							<div className={styles.delete}>Delete</div>
 						</div>
 						<div className={styles.tableBody}>
-							{filteredInventory.map((data, index) => (
+							{data.map((data, index) => (
 								<div
 									className={styles.row}
 									key={index}
 									onClick={() =>
 										openRecord(
 											data.inventoryId,
+											data.permissions[0].userAccess.accessType
 										)
 									}
 								>
 									<div className={styles.index}>{index + 1}</div>
-									<div className={styles.id}>{data.inventoryId}</div>
+									{/* <div className={styles.id}>{data.inventoryId}</div> */}
+									<div className={styles.name2}>{data.inventoryName}</div>
 									<div className={styles.name}>{data.description}</div>
-									<div className={styles.access}>{data.permissions[0].userAccess.accessType}</div>
+									<div className={styles.category}>{data.category}</div>
+									<div className={styles.access}>{data.quantity}</div>
+									<div className={styles.cell2}>{data.unitPrice}</div>
+									{/* <div className={styles.access}>{data.supplier}</div> */}
+									{/* <div className={styles.access}>{data.location}</div> */}
+									{/* <div className={styles.access}>{data.minQty}</div> */}
+									<div className={styles.cell}>{data.status}</div>
+									<div className={styles.cell}>{data.permissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}
 									</div>
 									<div className={styles.edit}>
 										<Link
-											to={`edit/${data.recordId}`}
+											to={`edit/${data.inventoryId}`}
 											onClick={(e) => e.stopPropagation()}
 										>
 											<FontAwesomeIcon icon={faEdit} />

@@ -45,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
 			inventoryId: {
 				type: DataTypes.INTEGER,
 				references: {
-					model: "TransactionRecords",
-					key: "recordId",
+					model: "Inventories",
+					key: "inventoryId",
 					onDelete: "CASCADE",
 				},
 			},
