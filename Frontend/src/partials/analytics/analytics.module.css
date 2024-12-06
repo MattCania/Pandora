@@ -49,56 +49,27 @@
     border-radius: 8px;
 }
 
-/* Transaction Tables */
-.transactionTables {
+/* Transactions Section */
+.transactionsSection {
     display: flex;
-    flex-direction: column; /* Stack tables vertically */
-    gap: 1.5em; /* Space between tables */
-}
-
-.tableWrapper {
-    background: #fff;
-    border: 1px solid #ddd;
+    flex-direction: column;
+    gap: 2em; /* Space between transactions */
     padding: 1em;
+    background-color: #f9f9f9;
     border-radius: 8px;
 }
 
-.tableWrapper h2 {
+.transactionsSection h2 {
     margin-bottom: 1em;
     font-size: 18px;
     font-weight: bold;
 }
 
-/* Responsive adjustments using media queries */
-@media (max-width: 1024px) {
-    .transactionSection {
-        flex-direction: column; /* Stack the sections vertically on smaller screens */
-        gap: 1.5em;
-    }
-
-    .transactionSection .subSection {
-        width: 90%;
-        max-width: none;
-    }
-}
-
-@media (max-width: 768px) {
-    .transactionSection {
-        gap: 1em; /* Reduce the gap for smaller screens */
-    }
-
-    .transactionSection .subSection {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .mainSection {
-        gap: 1em;
-    }
-
-    .transactionSection .subSection {
-        width: 100%;
-        max-width: none;
-    }
-}
+/* analytics.module.css */
+.recordsTable {
+    margin-top: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  

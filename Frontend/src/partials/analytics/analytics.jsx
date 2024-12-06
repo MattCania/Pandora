@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import InventoryOverview from "./homeInventory";
 import TransactionOverview from "./homeTransactions";
-import InventoryDisplay from "../inventoryD/inventoryD"; // Import the InventoryDisplay component
-import Transactions from "../transactions/transactions"; // Import the Transactions component
-import styles from "./analytics.module.css"; // For layout styling
+import InventoryDisplay from "./inventoryD";
+import Records from "./records";
+import styles from "./analytics.module.css";
 
 function Analytics() {
-  const expenseRecordId = 1; // Replace with dynamic record ID for expenses if necessary
-  const purchaseRecordId = 2; // Replace with dynamic record ID for purchases if necessary
+  const [expenseFilter, setExpenseFilter] = useState("");
+  const [purchaseFilter, setPurchaseFilter] = useState("");
+
+  // Handlers for filtering records
+  const handleExpenseFilterChange = (e) => {
+    setExpenseFilter(e.target.value);
+  };
+
+  const handlePurchaseFilterChange = (e) => {
+    setPurchaseFilter(e.target.value);
+  };
 
   return (
     <div className={styles.mainSection}>
@@ -33,16 +42,8 @@ function Analytics() {
 
       {/* Transactions Section */}
       <section className={styles.transactionsSection}>
-        <div className={styles.transactionTables}>
-          <div className={styles.tableWrapper}>
-            <h2>Expense Transactions</h2>
-            <Transactions transaction="expenses" recordId={expenseRecordId} />
-          </div>
-          <div className={styles.tableWrapper}>
-            <h2>Purchase Transactions</h2>
-            <Transactions transaction="purchases" recordId={purchaseRecordId} />
-          </div>
-        </div>
+        <h2>Expense Transactions</h2>
+        <Records recordType="Expenses" searchTerm={expenseFilter} />
       </section>
     </div>
   );
