@@ -85,8 +85,8 @@ function Records() {
 	};
 
 	// Displaying Record Details
-	const openRecord = (recordId, recordType) => {
-		navigate(`${recordType.toLowerCase()}/${recordId}`)
+	const openRecord = (recordId, recordType, access) => {
+		navigate(`${recordType.toLowerCase()}/${recordId}/${access}`)
 	}
 
 	// Create new Record
@@ -121,23 +121,6 @@ function Records() {
 			setRecordToDelete(null);
 		}
 	};
-
-	// Deletion of Record
-	const deleteRecord = async (e, recordId) => {
-		e.stopPropagation();
-
-		try {
-			const response = await DeleteRequest(`delete-record/${recordId}`)
-
-			if (!response) {
-				throw new Error("Failed to delete the record");
-			}
-
-			fetchRecords()
-		} catch (error) {
-			console.error("Error:", error);
-		}
-	}
 
 	return (
 		user && expenseData && purchaseData &&
@@ -174,7 +157,8 @@ function Records() {
 									onClick={() =>
 										openRecord(
 											data.recordId,
-											data.recordType
+											data.recordType,
+											data.recordPermissions[0].userAccess.accessType
 										)
 									}
 								>
@@ -185,19 +169,31 @@ function Records() {
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}
 									</div>
-									<div className={styles.edit}>
-										<Link
+
+										<div className={styles.edit}>
+										<Link className={data.recordPermissions[0].userAccess.accessType === "Viewer" ? styles.linkButton : ''}
 											to={`edit/${data.recordId}`}
-											onClick={(e) => e.stopPropagation()}
+											disabled={data.recordPermissions[0].userAccess.accessType === "Viewer"}
+											onClick={(e) => {
+												if (data.recordPermissions[0].userAccess.accessType === "Viewer") {
+													e.preventDefault();
+													e.stopPropagation();
+													return; // Block further execution
+												}
+												triggerDeletePrompt(e, data.recordId);
+											}}
 										>
-											<FontAwesomeIcon icon={faEdit} />
+											{data.recordPermissions[0].userAccess.accessType === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faEdit} />}
 										</Link>
 									</div>
 									<div className={styles.delete}>
 										<button
-										disabled={data.recordPermissions[0].userAccess.accessType === "Editor" ? true : false}
+										disabled={
+											data.recordPermissions[0].userAccess.accessType === "Editor" || 
+											data.recordPermissions[0].userAccess.accessType === "Viewer"
+										  }
 										onClick={(e) => {
-											if (data.recordPermissions[0].userAccess.accessType === "editor") {
+											if (data.recordPermissions[0].userAccess.accessType === "Editor" || data.recordPermissions[0].userAccess.accessType === "Viewer") {
 												e.preventDefault();
 												e.stopPropagation();
 												return; // Block further execution
@@ -205,7 +201,7 @@ function Records() {
 											triggerDeletePrompt(e, data.recordId);
 										}}
 										>
-											{data.recordPermissions[0].userAccess.accessType === 'Editor' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faTrash} />}
+											{data.recordPermissions[0].userAccess.accessType === 'Editor' || data.recordPermissions[0].userAccess.accessType === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faTrash} />}
 											
 										</button>
 									</div>
@@ -255,19 +251,37 @@ function Records() {
 										{new Date(data.createdAt).toLocaleDateString()}
 									</div>
 									<div className={styles.edit}>
-										<Link
+										<Link className={data.recordPermissions[0].userAccess.accessType === "Viewer" ? styles.linkButton : ''}
 											to={`edit/${data.recordId}`}
-											onClick={(e) => e.stopPropagation()}
+											onClick={(e) => {
+												if (data.recordPermissions[0].userAccess.accessType === "Viewer") {
+													e.preventDefault();
+													e.stopPropagation();
+													return; // Block further execution
+												}
+												triggerDeletePrompt(e, data.recordId);
+											}}
+											disabled={data.recordPermissions[0].userAccess.accessType === "Viewer"}
 										>
-											<FontAwesomeIcon icon={faEdit} />
+											{data.recordPermissions[0].userAccess.accessType === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faEdit} />}
 										</Link>
 									</div>
 									<div className={styles.delete}>
 										<button
-											disabled={data.recordPermissions[0].userAccess.accessType === 'Editor'}
-											onClick={(e) => triggerDeletePrompt(e, data.recordId)}
+										disabled={
+											data.recordPermissions[0].userAccess.accessType === "Editor" || 
+											data.recordPermissions[0].userAccess.accessType === "Viewer"
+										  }
+										  onClick={(e) => {
+											if (data.recordPermissions[0].userAccess.accessType === "Editor" || data.recordPermissions[0].userAccess.accessType === "Viewer") {
+												e.preventDefault();
+												e.stopPropagation();
+												return; // Block further execution
+											}
+											triggerDeletePrompt(e, data.recordId);
+										}}
 										>
-											<FontAwesomeIcon icon={faTrash} />
+											{data.recordPermissions[0].userAccess.accessType === 'Editor' || data.recordPermissions[0].userAccess.accessType === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faTrash} />}
 										</button>
 									</div>
 								</div>

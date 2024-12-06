@@ -1,10 +1,11 @@
+const { json } = require("body-parser");
 const {
   RecordPermissions,
   TransactionRecords,
   UserProfiles,
   Permissions,
 } = require("../models");
-const { Op, Sequelize } = require("sequelize");
+const { Op, Sequelize, where } = require("sequelize");
 
 
 // Gets all records based where the user is permitted
@@ -51,7 +52,7 @@ const getSingleRecord = async (req, res) => {
 			where: {recordId: recordId}
 		})
 
-    if (!records) return res.status(404).json({ message: "No records found" });
+    if (!results) return res.status(404).json({ message: "No records found" });
 
 		res.status(200).json(results);
 		
@@ -67,6 +68,8 @@ const getSingleRecord = async (req, res) => {
 const createRecord = async (req, res) => {
   const userId = req.session.userId;
   const { recordType, recordName, userPermissions } = req.body;
+
+  console.log(userPermissions)
 
   try {
     const results = await TransactionRecords.create({
@@ -89,17 +92,16 @@ const createRecord = async (req, res) => {
 
     if (!response) throw new Error("Record Creation Failure");
 
-    if (Array.isArray(userPermissions) && userPermissions.length > 0) {
-      const permissions = await Promise.all(userPermissions.map(async (userName) => {
+    if (Object.keys(userPermissions).length > 0 && userPermissions) {
+      const permissions = await Promise.all(Object.entries(userPermissions).map(async ([userName, accessLevel]) => {
         const user = await UserProfiles.findOne({ where: { userName: userName } });
 
         if (!user) {
           throw new Error(`User with userName ${userName} not found`);
         }
-
         return {
           recordId: newRecordId,
-          accessLevel: 3,
+          accessLevel: parseInt(accessLevel, 10),
           permittedUser: user.profileId,
         };
       }));
@@ -158,10 +160,92 @@ const deleteRecord = async (req, res) => {
   }
 };
 
+const getRecordPermissions = async (req, res) => {
+  const recordId = req.params.recordId;
+
+  try {
+    const recordUsers = await RecordPermissions.findAll({
+      where: {recordId: recordId},
+    })
+
+    if (!recordUsers) {
+      throw new Error("No record users found");
+    }
+
+
+    const usernames = await Promise.all(
+        recordUsers.map(async (record) => {
+          const user = await UserProfiles.findOne({
+            where: { profileId: record.permittedUser  },
+          });
+
+          if (!user) {
+            throw new Error(`User with userName ${record.permittedUser } not found`);
+          }
+
+          return user
+        })
+      );
+    
+    return res.status(200).json({usernames})
+
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+
+}
+
+const removePermission = async (req, res) => {
+  const userId = req.params.userId
+
+  try {
+    const result = RecordPermissions.destroy({
+      where: {permittedUser: userId}
+    })
+
+    if (!result) return res.status(400).json({message: "Error Deletion", result: result})
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+
+}
+
+const authenticateAccess = async (req, res) => {
+  const userId = req.session.userId
+  const recordId = req.params.recordId
+
+  try {
+    const result = await RecordPermissions.findAll({
+      where: {
+        permittedUser: userId,
+        recordId: recordId
+      }
+    })
+
+    if (result.length === 0) return res.status(404).json({message: 'User Permissions Unfound'})
+    if (!result) return res.status(400).json({message: 'User Unauthorized'})
+
+    return res.status(200).json({message: "Successfully Authenticated", result: results.accessLevel})
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+
+
+};
+
 module.exports = {
   getRecords,
   getSingleRecord,
   createRecord,
   updateRecord,
   deleteRecord,
+  getRecordPermissions,
+  removePermission,
+  authenticateAccess
 };

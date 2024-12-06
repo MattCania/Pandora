@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import GetData from '../../hooks/GetData'
 import styles from './transactions.module.css'
 import SubHeader from "../../components/overviews/subheader";
@@ -12,8 +12,7 @@ import DeleteRequest from "../../hooks/DeleteRequest";
 
 function Transactions() {
 	const navigate = useNavigate()
-	const { transaction, recordId } = useParams()
-
+	const { transaction, recordId, access } = useParams()
 	// console.log(transaction, recordId)
 	const [data, setData] = useState([])
 	const [record, setRecord] = useState([])
@@ -73,20 +72,8 @@ function Transactions() {
 		}
 	};
 
-	const deleteRecord = async (e, recordId) => {
-		e.stopPropagation();
-
-		try {
-			const response = await DeleteRequest(`delete-record/${recordId}`)
-
-			if (!response) {
-				throw new Error("Failed to delete the record");
-			}
-
-			fetchTransactions()
-		} catch (error) {
-			console.error("Error:", error);
-		}
+	const openTransaction = (type, id, access) => {
+		navigate(`/home/transaction/${type}/${id}/${access}`)
 	}
 
 	return (
@@ -110,14 +97,19 @@ function Transactions() {
 							<div className={styles.name}>Description</div>
 							<div className={styles.access}>Amount</div>
 							<div className={styles.creation}>Created At</div>
+							{access !== 'Viewer' &&
+							<>
 							<div className={styles.edit}>Edit</div>
 							<div className={styles.delete}>Delete</div>
+							</>
+							}
 						</div>
 						<div className={styles.tableBody}>
 							{data.map((data, index) => (
 								<div
 									className={styles.row}
 									key={index}
+									onClick={() => openTransaction(transaction, data.transactionId, access)}
 								>
 									<div className={styles.index}>{index + 1}</div>
 									<div className={styles.id}>{data.transactionId}</div>
@@ -127,18 +119,34 @@ function Transactions() {
 										{new Date(data.transactionDate).toLocaleDateString()}
 									</div>
 									<div className={styles.edit}>
-										<Link
+										<Link className={access !== 'Viewer' ? '' : styles.disabled}
+											onClick={(e) => {
+												if (access === 'Viewer'){
+													e.preventDefault();
+													e.stopPropagation();
+													return; // Block further execution
+												}
+												e.stopPropagation();
+											}}
 											to={`/home/transaction/edit/${transaction.toLowerCase().slice(0, -1)}/${data.transactionId}`}
-											onClick={(e) => e.stopPropagation()}
 										>
-											<FontAwesomeIcon icon={faEdit} />
+											{access === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faEdit}/>}
 										</Link>
 									</div>
 									<div className={styles.delete}>
 										<button
-											onClick={(e) => triggerDeletePrompt(e, data.transactionId)}
+										disabled={access !== 'Admin'}
+											onClick={(e) => 
+												{	
+												if (access === 'Editor' || access === 'Viewer'){
+													e.preventDefault();
+													e.stopPropagation();
+													return; // Block further execution
+												}
+													triggerDeletePrompt(e, data.transactionId)}
+												}
 										>
-											<FontAwesomeIcon icon={faTrash} />
+											{access === 'Editor' || access === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faTrash}/>}
 										</button>
 									</div>
 								</div>
