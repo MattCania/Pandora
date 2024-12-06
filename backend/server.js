@@ -92,7 +92,9 @@ const userRoute = require("./routes/profile");
 const transactionRoute = require('./routes/transactions')
 const accountRoute = require('./routes/accounts')
 const imageRoute = require('./routes/profileImage')
+const inventoryRoute = require('./routes/inventoryRoute')
 
+app.use('/api', inventoryRoute)
 app.use('/api', imageRoute)
 app.use('/api', accountRoute)
 app.use("/api", userRoute);

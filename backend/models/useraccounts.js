@@ -30,6 +30,13 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+      
+      UserAccounts.hasMany(models.Inventories, {
+        foreignKey: "creatorId",
+        as: "inventoryAccountRecord",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
 
       UserAccounts.hasOne(models.Admins, {
         foreignKey: "accountId",

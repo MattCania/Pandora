@@ -1,60 +1,52 @@
-import { useState } from "react";
-import GetSession from "../../hooks/GetSession";
-import PostRequest from '../../hooks/PostRequest'
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import GetData from '../../hooks/GetData'
+import SubHeader from "../../components/overviews/subheader";
+import Error from "../../components/error/error";
 
 function Test() {
-	const user = GetSession()
-	const [file, setFile] = useState(null)
+	let { transaction, transactionId} = useParams()
 
-	const handleInputChange = (e) => {
-		const { files } = e.target;
-		setFile(files[0]);
-	};
+	if (!transaction) transaction = 'expense'
+	if (!transactionId) transaction = 5
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		if (!file) {
-			alert("Please select a file to upload");
-			return;
-		  }
-		const formData = new FormData();
-		formData.append('image', file);
+	const [transactionData, setTransactionData] = useState([])
+
+	console.log((`get-${transaction}Transaction/${transactionId}`))
+	const fetchTransactionData = async () => {
 
 		try {
+			const result = await GetData(`get-${transaction}Transaction/${transactionId}`)
 
-			const tokenResponse = await fetch("/api/csurf-token");
-			if (!tokenResponse.ok) throw new Error("Failed to fetch CSRF token");
-
-			const tokenData = await tokenResponse.json()
-			const token = tokenData.csrfToken;
-
-			const response = await fetch('/api/upload', {
-				method: 'POST',
-				headers: {
-					"X-CSRF-Token": token
-				},
-				body: formData,
-				credentials: "include",
-			})
-			if (!response) throw new Error("Error Creation");
-			alert("Success");
+			if (!result) throw new Error("Error Fetching transaction")
+			
+			console.log(result)
+			setTransactionData(result)
 		} catch (error) {
-			console.error("Error:", error);
+			console.error(error)
+			return
 		}
-	};
+
+	}
+
+	useEffect(() => {
+		fetchTransactionData()
+	}, [])
+
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<label htmlFor="image">Image</label>
-			<input
-				type="file"
-				name="image"
-				id="image"
-				onChange={handleInputChange}
-			/>
-			<input type="submit" />
-		</form>
-	);
+		<section>
+
+		{transactionData.map((data, index) => (
+			<ul key={index}>
+				<li>{data.amount}</li>
+
+			</ul>
+		))}
+		</section>
+	)
 }
 
 export default Test;

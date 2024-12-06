@@ -12,11 +12,11 @@ import Error from "../../components/error/error";
 
 function CreateRecords() {
 	const navigate = useNavigate();
-	const [userPermissions, setUserPermissions] = useState([])
+	const [userPermissions, setUserPermissions] = useState({})
 	const [usernames, setUsernames] = useState([])
 	const user = GetSession()
 	const [isAuth, setAuth] = useState(false);
-	
+
 	useEffect(() => {
 		if (user) {
 			setAuth(true);
@@ -46,17 +46,29 @@ function CreateRecords() {
 		fetchUsernames()
 	}, [])
 
+	const handlePermissionChange = (username, newPermission) => {
+		setUserPermissions((prev) => ({
+			...prev,
+			[username]: newPermission,
+		}));
+	};
+
 	const handleAddUser = (event) => {
 		const selectedUser = event.target.value;
-		if (selectedUser && !userPermissions.includes(selectedUser)) {
-			setUserPermissions((prev) => [...prev, selectedUser]);
+		if (selectedUser && !userPermissions[selectedUser]) {
+			setUserPermissions((prev) => ({
+				...prev,
+				[selectedUser]: 4,
+			}));
 		}
 	};
 
 	const handleRemoveUser = (removedUser) => {
-		setUserPermissions((prevPermissions) =>
-			prevPermissions.filter((user) => user !== removedUser)
-		);
+		setUserPermissions((prevPermissions) => {
+			const updatedPermissions = { ...prevPermissions };
+			delete updatedPermissions[removedUser];
+			return updatedPermissions;
+		});
 	};
 
 	const [formValues, setFormValues] = useState({
@@ -88,7 +100,7 @@ function CreateRecords() {
 		}
 	};
 	return (
-		user && 
+		user &&
 		<section className={styles.blur}>
 			<section className={styles.createSection}>
 
@@ -113,21 +125,32 @@ function CreateRecords() {
 								Add User
 							</option>
 							{usernames?.map((option, index) => (
-								user.session.username !== option.userName && !userPermissions.includes(option.userName) &&
-								<option key={index} value={option.userName}>
-									{option.userName}
-								</option>
+								user.session.username !== option.userName && !userPermissions[option.userName] && (
+									<option key={index} value={option.userName}>
+										{option.userName}
+									</option>
+								)
 							))}
 						</select>
 						<input type="submit" value="Create Record" />
 					</form>
 					<section className={styles.userSection}>
 						<h1>Permitted Users</h1>
-						{userPermissions.map((user, index) => (
+						{Object.entries(userPermissions).map(([username, permission], index) => (
 							<div key={index} className={styles.permissionTable}>
-								<div>{user}</div>
-								<div>
-									<button onClick={() => { handleRemoveUser(user) }}>
+								<div>{username}</div>
+								<div className={styles.permissionTab}>
+									<select
+										name="permission"
+										id="permission"
+										value={permission}
+										onChange={(e) => handlePermissionChange(username, e.target.value)}
+									>
+										<option value={1}>Admin</option>
+										<option value={3}>Editor</option>
+										<option value={4}>Viewer</option>
+									</select>
+									<button onClick={() => handleRemoveUser(username)}>
 										<FontAwesomeIcon icon={faTrashCan} />
 									</button>
 								</div>

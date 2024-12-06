@@ -7,6 +7,15 @@
 	align-items: center;
 }
 
+@media (max-width: 768px) {
+	.footer{
+		flex-direction: column;
+		height: auto;
+		overflow: hidden;
+	}
+
+
+}
 .leftSide{
 	display: flex;
 	justify-content: space-between;

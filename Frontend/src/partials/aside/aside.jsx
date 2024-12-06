@@ -29,11 +29,17 @@ function useWindowSize() {
 
 function Aside() {
   const [displayAside, setDisplay] = useState(false);
+  const [disableClose, setDisableClose] = useState(false)
   const size = useWindowSize();
 
   useEffect(() => {
     if (size.width < 768) {
       setDisplay(true);
+      setDisableClose(true)
+    }
+    else{
+      setDisplay(false);
+      setDisableClose(false)
     }
   }, [size.width]);
 
@@ -91,12 +97,16 @@ function Aside() {
             {!displayAside && size.width > 768 && "Analytics"}
           </NavLink>
         </div>
+        { !disableClose &&
+
+
         <button className={styles.closeButton} onClick={toggleDisplay}>
           <FontAwesomeIcon
             icon={!displayAside ? faAngleLeft : faAngleRight}
             size="3x"
-          />
+            />
         </button>
+          }
       </section>
     </aside>
   );

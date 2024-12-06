@@ -2,50 +2,52 @@
 const {
   Model
 } = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => {
-  class InventoryTransaction extends Model {
+  class Inventories extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      
-      InventoryTransaction.belongsTo(models.Inventories, {
-				foreignKey: "inventoryRecord",
-				targetKey: "inventoryId",
-				as: "inventoryRecordId",
-				onDelete: "CASCADE",
-				onUpdate: 'CASCADE'
-			});
+      Inventories.hasMany(models.InventoryPermissions, {
+        foreignKey: 'inventoryId',
+        sourceKey: 'inventoryId',
+        as: 'permissions',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
+
+      Inventories.belongsTo(models.UserAccounts, {
+        foreignKey: 'creatorId',
+        targetKey: 'userId',
+        as: 'inventoryAccount',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
     }
   }
-  InventoryTransaction.init({
-    transactionId: { 
+  Inventories.init({
+    inventoryId: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+      autoIncrement:true
     },
-    inventoryRecord: {
+    creatorId:{
       type: DataTypes.INTEGER,
       references: {
-        model: "Inventories",
-        key: "inventoryId",
-        onDelete: "CASCADE",
+        model: 'UserAccounts',
+        key: 'userId',
       },
+      onDelete: 'CASCADE'
     },
-    name: { 
+    inventoryName: { 
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "",
       validate: {
         notEmpty: true,
-        is: /^[a-zA-Z\s]*$/i,
-        len: [0, 60],
-      },
+        len: [2, 100]
+      } 
     },
     description: { 
       type: DataTypes.TEXT,
@@ -53,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "",
       validate: {
         notEmpty: true,
-        is: /^[a-zA-Z\s]*$/i,
         len: [0, 100],
       },
     },
@@ -95,18 +96,14 @@ module.exports = (sequelize, DataTypes) => {
     supplier: { 
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
-        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 25],
       },
     },
     location: { 
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
-        is: /^[a-zA-Z0-9\s\-\']*$/i,
         len: [2, 100],
       },
     },
@@ -151,10 +148,11 @@ module.exports = (sequelize, DataTypes) => {
 			  allowNull: false,
         onUpdate: DataTypes.NOW 
     } 
+    
   }, {
     sequelize,
-    modelName: 'InventoryTransaction',
+    modelName: 'Inventories',
     timestamps: false,
   });
-  return InventoryTransaction;
+  return Inventories;
 };

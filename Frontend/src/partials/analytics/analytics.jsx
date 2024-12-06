@@ -1,7 +1,7 @@
 import React from "react";
-import InventoryOverview from "./homeInventory";
-import TransactionOverview from "./homeTransactions";
 import styles from "./analytics.module.css"; // For layout styling
+import InventoryOverview from "../../components/overviews/homeInventory";
+import TransactionOverview from "../../components/overviews/homeTransactions";
 function Analytics() {
   return (
     <div className={styles.mainSection}>
@@ -9,9 +9,6 @@ function Analytics() {
   <section className={styles.transactionSection}>
     <div className={styles.subSection}>
       <TransactionOverview type="expenses" />
-    </div>
-    <div className={styles.subSection}>
-      <TransactionOverview type="purchases" />
     </div>
   </section>
   {/* Inventory Overview */}
