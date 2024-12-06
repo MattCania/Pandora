@@ -21,10 +21,12 @@ function Create () {
 						<span>Transaction</span>
 					</button>
 					</Link>
+					<Link to='/home/inventory'>
 					<button>
 						<FontAwesomeIcon icon={faBox} size="2x" />
 						<span>Inventory</span>
 					</button>
+					</Link>
 				</div>
 			</body>
 		</section>

@@ -5,72 +5,105 @@
     color: black;
     gap: 40px;
     height: 100vh;
+    flex-wrap: wrap; 
 }
 
-.nonPremium {
+.nonPremium, .Premium {
     display: flex;
     background-color: white;
     border-radius: 20px;
-    width: 300px;
+    width: 300px; 
     height: 500px;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     overflow: hidden;
+    margin: 10px; 
 }
 
-.nonPremium h1 {
-    background-color: #333; 
+.nonPremium h1, .Premium h1 {
+    background-color: #333;
     color: white;
-    padding: 1rem 0; 
-    margin: 0; 
-    font-size: 24px; 
-    text-align: center; 
-    width: 100%; 
-    box-sizing: border-box; 
-    position: relative;
-    padding: 40px;
+    margin: 0;
+    font-size: 20px; 
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.5rem 0; 
 }
 
-.NonPremium h2, .NonPremium h3, .NonPremium ul {
-    margin: 5px 0; 
+.nonPremium h2, .Premium h2 {
+
 }
 
-.Premium {
-    display: flex;
-    background-color: white;
-    border-radius: 20px;
-    width: 500px;
-    height: 500px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+.nonPremium h3, .nonPremium ul, 
+.Premium h3, .Premium ul {
+    margin-bottom: 0.5rem;
+    font-size: 17px; 
 }
-
-.Premium h1 {
-    background-color: #333; 
-    color: white;
-    padding: 1rem 0; 
-    margin: 0; 
-    font-size: 24px; 
-    text-align: center; 
-    width: 100%; 
-    height: 16%;
-    box-sizing: border-box; 
-    position: relative;
-}
-/*
-.Premium h2, .Premium h3, .Premium ul {
-
-}*/
 
 .button {
-    width: 350px;
+    width: 80%; 
+    max-width: 350px; 
     height: 40px;
     margin-bottom: 20px;
     background-color: rgba(54, 175, 87, 1);
     border-radius: 10px;
     color: white;
     font-weight: bolder;
+    font-size: 16px; 
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .nonPremium, .Premium {
+        width: 80%; 
+        height: auto; 
+    }
+
+    .nonPremium h1, .Premium h1 {
+        font-size: 18px; 
+        padding: 1rem;
+    }
+
+    .button {
+        max-width: 300px; 
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        flex-direction: column; 
+        gap: 20px; 
+    }
+
+    .nonPremium, .Premium {
+        width: 90%; 
+    }
+
+    .nonPremium h1, .Premium h1 {
+        font-size: 16px; 
+        padding: 0.8rem;
+    }
+
+    .button {
+        max-width: 280px;
+        font-size: 14px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .nonPremium, .Premium {
+        width: 95%; 
+        height: auto;
+    }
+
+    .nonPremium h1, .Premium h1 {
+        font-size: 14px; 
+        padding: 0.6rem;
+    }
+
+    .button {
+        max-width: 250px;
+        font-size: 12px; 
+    }
 }
