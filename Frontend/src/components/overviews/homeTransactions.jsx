@@ -77,6 +77,7 @@ function TransactionOverview() {
 				<SubHeader text="Total Expenses" subText="as of 2024" />
 				<section className={styles.sectionChart}>
 
+					
 					<Line
 						data={{
 							labels: [
@@ -113,4 +114,4 @@ function TransactionOverview() {
 
 }
 
-export default TransactionOverview
+export default TransactionOverview;

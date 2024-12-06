@@ -74,7 +74,7 @@ function MoreSidebar() {
 
 			<section className={styles.links}>
 				<div>
-					<Link to="">Settings</Link>
+					<Link to="settings">Settings</Link>
 					<Link to="">Privacy Policy</Link>
 					<Link to="">Other Links</Link>
 					<Link to="/aboutus">About Us</Link>

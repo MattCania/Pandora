@@ -12,6 +12,8 @@ import CreateTransactions from '../../partials/transactions/createTransactions.j
 import EditTransactions from '../../partials/transactions/updateTransactions.jsx';
 import ProfileEdit from '../../partials/profile editing/profileEdit.jsx'
 import Premium from '../../partials/premium/premium.jsx';
+import Settings from '../../partials/settings/settings.jsx';
+import Analytics from '../../partials/analytics/analytics.jsx';
 
 
 function HomeRouter() {
@@ -33,6 +35,8 @@ function HomeRouter() {
         <Route path="profile/profileEdit" element={<ProfileEdit/>}/>
         <Route path="company" element={<Company/>}/>
         <Route path="/premium" element={<Premium/>}/>
+        <Route path="settings" element={<Settings/>}/>
+        <Route path="analytics" element={<Analytics/>} />
       </Routes>
 
   );
