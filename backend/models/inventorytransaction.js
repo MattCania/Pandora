@@ -11,20 +11,41 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
+      InventoryTransaction.belongsTo(models.Inventories, {
+				foreignKey: "inventoryRecord",
+				targetKey: "inventoryId",
+				as: "inventoryRecordId",
+				onDelete: "CASCADE",
+				onUpdate: 'CASCADE'
+			});
     }
   }
   InventoryTransaction.init({
-    inventoryId: { 
+    transactionId: { 
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     },
+    inventoryRecord: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Inventories",
+        key: "inventoryId",
+        onDelete: "CASCADE",
+      },
+    },
     name: { 
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "",
+      validate: {
+        notEmpty: true,
+        is: /^[a-zA-Z\s]*$/i,
+        len: [0, 60],
+      },
     },
     description: { 
       type: DataTypes.TEXT,
@@ -133,6 +154,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'InventoryTransaction',
+    timestamps: false,
   });
   return InventoryTransaction;
 };

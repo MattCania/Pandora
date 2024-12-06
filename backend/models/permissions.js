@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'accessInfo',
         onDelete: 'CASCADE'
       })
+      Permissions.hasMany(models.InventoryPermissions, {
+        foreignKey: 'accessLevel',
+        as: 'inventoryAccess',
+        onDelete: 'CASCADE'
+      })
     }
   }
   Permissions.init({

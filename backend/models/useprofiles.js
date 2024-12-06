@@ -24,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: "CASCADE",
     		    onUpdate: 'CASCADE'
 			});
+
+			UserProfiles.hasMany(models.InventoryPermissions, {
+				foreignKey: "permittedUser",
+				sourceKey: "profileId",
+				as: "inventoryProfileId",
+				onDelete: "CASCADE",
+    		    onUpdate: 'CASCADE'
+			});
 		}
 	}
 	UserProfiles.init(

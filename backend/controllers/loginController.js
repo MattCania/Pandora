@@ -5,12 +5,16 @@ const handleLogin = async (req, res) => {
 	const { email, password } = req.body;
 
 	try {
+
+		if (!email) throw new Error("Insert a proper Email")
+		if (!password) throw new Error("Insert a proper Password")
+
 		const account = await UserAccounts.findOne({
 			where: { email: email },
 		});
 
 		if (!account) return res.status(401).json({message: "Account does not exist"})
-		
+	
 		const userId = account.userId
 		const hashedPassword = account.securedPassword;
 		
