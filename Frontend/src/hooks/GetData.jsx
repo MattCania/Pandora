@@ -1,20 +1,16 @@
-
-async function GetData(source) {
+async function GetData(uri) {
 	try {
-		const response = await fetch(`/api/${source}`);
+		const response = await fetch(`/api/${uri}`);
 
-		if (!response.ok) {
-			throw new Error("Failed to fetch data");
-		}
+		if (!response.ok) throw new Error("Failed to fetch data");
+		
 		const data = await response.json();
 
-		console.log("Fetched Data:", data);
 		return data;
 	} catch (error) {
 		console.error("Error fetching data:", error);
 		return null
 	}
-
 }
 
 export default GetData

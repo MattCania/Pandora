@@ -6,12 +6,16 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import GetSession from "../../hooks/GetSession"
 import styles from './login.module.css'
 import Logo from '/src/assets/MainLogo.svg'
+
 import Loading from "../loading/loading";
+import PostRequest from "../../hooks/PostRequest";
 
 function Login() {
 	const navigate = useNavigate()
 	const [isAuth, setAuth] = useState(false)
 	const user = GetSession()
+
+	// if (!user) return <Loading/>
 
 	sessionStorage.clear()
 
@@ -55,21 +59,14 @@ function Login() {
 		}
 
 		try {
-			const response = await fetch("/api/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(formData),
-				credentials: "include",
-			})
+			const response = await PostRequest("/login", formData)
 
-			if (!response.ok) throw new Error("Invalid Credentials")
+			if (!response) throw new Error("Invalid Credentials")
 			navigate('/home')
 		} catch (error) {
 			setError(error.message)
 			setShowPrompt(true);
-			
+
 			console.error("Error:", error)
 
 			if (timeoutRef.current) {
@@ -87,12 +84,12 @@ function Login() {
 			<div className={styles.leftImage}></div>
 
 			<div className={styles.middleSection}>
-				<a href="/">
+				<a href="/landing">
 					<img className={styles.formLogo} src={Logo} alt="" draggable="false" />
 				</a>
 				<form className={styles.form}>
 
-				{showPrompt && <p style={{color: 'red', fontWeight: 'bold', margin: '0'}}>{errMessage}</p>}
+					{showPrompt && <p style={{ color: 'red', fontWeight: 'bold', margin: '0' }}>{errMessage}</p>}
 					<h3>Log In Account</h3>
 
 					<div className={styles.gmailDiv}>
@@ -117,7 +114,7 @@ function Login() {
 					<a href="/register">Dont have an Account?</a>
 					<a href="/recovery">Forgot Password?</a>
 				</div>
-				{user && <a href="/login">`User ${user.username} Already Logged in?`</a>}
+				{/* {user && <a href="/login">`User ${user.username} Already Logged in?`</a>} */}
 			</div>
 
 			<div className={styles.rightImage}></div>

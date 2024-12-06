@@ -1,0 +1,167 @@
+.section {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	min-height: 100vh;
+	height: auto;
+}
+
+.subHeader {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	width: 98%;
+	height: 16vh;
+	margin: 1em 0;
+	background-color: var(--tertiary);
+	border-radius: 15px;
+	box-shadow: 0px 2px 4px var(--textdark);
+
+}
+
+.subHeader h1 {
+	display: flex;
+	font-size: 2em;
+	margin: 0 1em;
+}
+
+.subSection {
+	display: flex;
+	flex-direction: column;
+	width: 98%;
+	border: 1px solid var(--textdark);
+	height: 80vh;
+	margin: 1em 0;
+	border-radius: 15px 15px 0 0;
+	/* overflow: hidden; */
+	overflow: hidden;
+	background-color: var(--background-color);
+}
+
+.displaySection {
+	display: flex;
+	height: 100%;
+	overflow: hidden;
+}
+.table {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.tableHeader {
+	background-color: var(--green);
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	height: 10%;
+	width: 100%;
+	font-weight: bold;
+}
+
+.tableBody {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.index {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 20%;
+	height: 100%;
+}
+
+.id {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 35%;
+	height: 100%;
+}
+
+.name {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+
+.creation {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 30%;
+}
+
+.access {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25%;
+	height: 100%;
+}
+
+.edit,
+.delete {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 20%;
+	text-align: center;
+	height: 100%;
+}
+
+.edit a,
+.delete button {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	outline: 0;
+	text-decoration: none;
+	transition: all 250ms;
+	background-color: var(--primary);
+	color: var(--textdark);
+}
+
+.edit a:hover {
+	color: var(--textlight);
+	background-color: var(--green);
+	transition: all 250ms;
+}
+
+.delete button:hover {
+	color: var(--textlight);
+	background-color: red;
+	transition: all 250ms;
+}
+
+.row {
+	color: var(--textdark);
+	display: flex;
+	width: 100%;
+	height: 5vh;
+	justify-content: space-around;
+	transition: all 500ms;
+	border-bottom: 1px inset var(--textdark);
+}
+
+.row:hover {
+	cursor: pointer;
+	background-color: var(--primary);
+	color: var(--textdark);
+	transition: all 500ms;
+}

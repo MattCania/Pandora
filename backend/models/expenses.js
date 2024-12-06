@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 				targetKey: "recordId",
 				as: "expenseTransaction",
 				onDelete: "CASCADE",
+				onUpdate: 'CASCADE'
 			});
 		}
 	}
@@ -81,6 +82,7 @@ module.exports = (sequelize, DataTypes) => {
 			transactionDate: {
 				type: DataTypes.DATE,
 				allowNull: false,
+				defaultValue: DataTypes.NOW,
 				validate: {
 					notEmpty: true,
 				},
@@ -88,8 +90,11 @@ module.exports = (sequelize, DataTypes) => {
 			description: {
 				type: DataTypes.TEXT,
 				allowNull: false,
+				defaultValue: "",
 				validate: {
-					notEmpty: true,
+				  notEmpty: true,
+				  is: /^[a-zA-Z\s]*$/i,
+				  len: [0, 100],
 				},
 			},
 			amount: {
@@ -98,6 +103,9 @@ module.exports = (sequelize, DataTypes) => {
 				defaultValue: 0.0,
 				validate: {
 					notEmpty: true,
+					isDecimal: true,
+					min: 0.0,
+					max: 9999999,
 				},
 			},
 			credit: {
@@ -106,6 +114,9 @@ module.exports = (sequelize, DataTypes) => {
 				defaultValue: 0.0,
 				validate: {
 					notEmpty: true,
+					isDecimal: true,
+					min: 0.0,
+					max: 9999999,
 				},
 			},
 			debit: { 
@@ -113,7 +124,10 @@ module.exports = (sequelize, DataTypes) => {
 			  allowNull: false,
 			  defaultValue: 0.00,
 			  validate: {
-				notEmpty: true
+				notEmpty: true,
+				isDecimal: true,
+				min: 0.0,
+				max: 9999999,
 			  } 
 			},
 			currency: {
@@ -158,11 +172,14 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			createdAt: {
 			  type: DataTypes.DATE,
-			  defaultValue: DataTypes.NOW
+			  defaultValue: DataTypes.NOW,
+			  allowNull: false
 			},
 			updatedAt: {
 			  type: DataTypes.DATE,
-			  defaultValue: DataTypes.NOW
+			  defaultValue: DataTypes.NOW,
+			  allowNull: false,
+			  onUpdate: DataTypes.NOW 
 			}
 		},
 		{

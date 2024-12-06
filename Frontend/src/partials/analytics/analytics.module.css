@@ -1,0 +1,86 @@
+/* Main Section */
+.mainSection {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    gap: 1.5em; /* Add space between the sections */
+}
+/* Transaction Section */
+.transactionSection {
+    display: flex;
+    justify-content: space-between;
+    gap: 2em; /* Increase gap if you want more space between the charts */
+    height: auto;
+    width: 100%; /* Ensure it takes full available width */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+/* Sub-sections (Individual Chart Containers) */
+.transactionSection .subSection {
+    flex: 1; /* Each section takes equal space, but will shrink or grow based on screen size */
+    max-width: 800px; /* Limit the max width of each sub-section */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+/* Inventory Section */
+.inventorySection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1; /* Make inventory section slightly smaller */
+    margin: 0 auto;
+    width: 100%; /* Take up full width */
+    height: auto;
+}
+/* Chart Section */
+.sectionChart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%; /* Width as a percentage, so it adapts to the container */
+    height: 80%; /* Adjust height as needed */
+    padding: 0;
+}
+/* Responsive adjustments using media queries */
+@media (max-width: 1024px) {
+    .transactionSection {
+        flex-direction: column; /* Stack the sections vertically on smaller screens */
+        gap: 1.5em; /* Adjust space between charts */
+    }
+    .transactionSection .subSection {
+        width: 90%; /* Let each sub-section take up most of the screen width */
+        max-width: none; /* Remove the max-width restriction */
+    }
+    .sectionChart {
+        width: 100%; /* Ensure the charts take full width of their container */
+        height: 60%; /* Reduce the height on smaller screens */
+    }
+}
+@media (max-width: 768px) {
+    .transactionSection {
+        gap: 1em; /* Reduce the gap for smaller screens */
+    }
+    .transactionSection .subSection {
+        width: 100%; /* Let each sub-section take up full width */
+    }
+    .sectionChart {
+        width: 100%; /* Ensure full-width on small screens */
+        height: 50%; /* Further reduce height on mobile devices */
+    }
+}
+@media (max-width: 480px) {
+    .mainSection {
+        gap: 1em; /* Reduce gap for very small screens */
+    }
+    .transactionSection .subSection {
+        width: 100%; /* Full width for each chart on very small screens */
+        max-width: none; /* Remove max-width on small devices */
+    }
+    .sectionChart {
+        width: 100%; /* Ensure charts are full-width */
+        height: 40%; /* Reduce chart height on very small screens */
+    }
+}

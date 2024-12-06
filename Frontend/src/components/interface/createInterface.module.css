@@ -1,0 +1,171 @@
+.blur {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	justify-content: space;
+	align-items: center;
+	min-width: 30%;
+	width: auto;
+	max-width: 80%;
+	min-height: 30%;
+	height: auto;
+	max-height: 90%;
+	border-radius: 15px;
+	border: 1px solid var(--textdark);
+	background-color: var(--background-color);
+	overflow: hidden;
+	gap: 1em;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	min-width: 50%;
+	width: auto;
+	max-width: 95%;
+	height: 100%;
+	max-height: 70vh;
+	overflow-x: auto;
+}
+
+.formSection{
+	display: flex;
+	justify-content: center;
+	align-items: start;
+	flex-wrap: wrap;
+	gap: 1em;
+	padding: 8px;
+	width: 100%;
+	height: 100%;
+	overflow-x: auto;
+}
+
+.inputDiv {
+	display: flex;
+	flex-direction: column;
+	height: auto;
+}
+
+.inputDiv label {
+	color: var(--textdark);
+	font-weight: bold;
+}
+
+.form input:not([type="submit"]),
+select {
+	padding: 0 4px;
+	color: var(--textdark);
+	width: calc(6em + 8vw);
+	height: 3em;
+	background-color: transparent;
+	border-radius: 5px;
+	border: 1px solid var(--textdark);
+	box-shadow: 0px 2px 4px var(--textdark);
+	outline: none;
+}
+
+.form textarea{
+	padding: 0 4px;
+	color: var(--textdark);
+	width: calc(8em + 20vw);
+	height: 6em;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	background-color: transparent;
+	border-radius: 5px;
+	border: 1px solid var(--textdark);
+	box-shadow: 0px 2px 4px var(--textdark);
+	outline: none;
+	resize: none;
+}
+
+
+.form select{
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none; 
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.form input[type="date"]::-webkit-calendar-picker-indicator,
+.form input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(60%);
+  border: 0;
+  outline: 0;
+}
+
+.dropdown select:focus {
+  outline: none;
+}
+
+.form input[type="submit"] {
+	cursor: pointer;
+	height: 1.5em;
+	width: 10em;
+	border-radius: 5px;
+	border: 0;
+	outline: 0;
+	margin: 8px;
+	background-color: var(--green);
+	font-size: 16px;
+	font-weight: bolder;
+	box-shadow: 0px 2px 4px var(--textdark);
+	transition: all 500ms;
+}
+
+.form input[type="submit"]:hover{
+	transition: all 500ms;
+	background-color: var(--secondary);
+	color: var(--background-color);
+}
+
+.submission button{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	height: 1.5em;
+	width: 1.5em;
+	border-radius: 5px;
+	border: 0;
+	outline: 0;
+	margin: 8px;
+	background-color: var(--secondary);
+	font-size: 16px;
+	font-weight: bolder;
+	box-shadow: 0px 2px 4px var(--textdark);
+	transition: all 500ms;
+}
+
+.submission button:hover {
+	background-color: red;
+	transition: all 500ms;
+}
+
+.form input::placeholder {
+	font-size: calc(10px + .25vw);
+}
+
+.submission{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}

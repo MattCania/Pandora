@@ -4,7 +4,8 @@ import { SessionContext } from "../../pages/home/home";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.css'
-import MoreSidebar from "../more/more";
+import MoreSidebar from '../more/more';
+
 
 
 function Header() {
@@ -19,7 +20,7 @@ function Header() {
 		setSidebar(showSidebar => !showSidebar)
 	}
 
-	const user = useContext(SessionContext);
+	const user = useContext(SessionContext)
 
 	if (!user) {
 		return <p>Loading user data...</p>;
@@ -31,10 +32,10 @@ function Header() {
 			<Link to="create" className={styles.createButton}><FontAwesomeIcon icon={faPlus} /></Link>
 
 			<section className={styles.section}>
-				<a href="" className={styles.ad}>
+				<Link to='premium' className={styles.ad}>
 					<FontAwesomeIcon icon={faCrown} color="gold" />
 					Premium
-				</a>
+				</Link>
 
 				{user.profile.organization &&
 					<div className={styles.organization}>
@@ -48,14 +49,13 @@ function Header() {
 					<button>
 						<FontAwesomeIcon icon={faBell} />
 					</button>
-					<button onClick={toggleSidebar}>
-						<FontAwesomeIcon icon={faBars} />
-					</button>
+						<button onClick={toggleSidebar}>
+							<FontAwesomeIcon icon={faBars} />
+						</button>
 				</div>
-
 			</section>
-			{showSidebar &&
-				<MoreSidebar />
+			{
+				showSidebar && <MoreSidebar/>
 			}
 		</header>
 	)

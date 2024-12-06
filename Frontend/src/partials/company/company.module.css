@@ -1,0 +1,108 @@
+.companySection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--background-color, #f9f9f9);
+    color: var(--text-color, #333);
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 2px solid var(--primary, #080707);
+}
+
+.backButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 10px;
+    color: var(--primary, #007bff);
+    transition: color 0.3s;
+}
+
+.backButton:hover {
+    color: var(--secondary, #0056b3);
+}
+
+.companyTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-color, #000000);
+}
+
+.profileContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 800px;
+    background: var(--light-bg, #fff);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detail {
+    margin-bottom: 15px;
+}
+
+.detail h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary, #007bff);
+    margin-bottom: 5px;
+    color: var(--text-color, #252323);
+}
+
+.detail p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--text-color, #000000);
+}
+
+.userTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: var(--light-bg, #fff);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userTable th, .userTable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color, #ddd);
+    color: var(--text-color, #333);
+}
+
+.userTable th {
+    background-color: var(--primary, #007bff);
+    color: black;
+    font-weight: bold;
+}
+
+.userTable tr:nth-child(even) {
+    background-color: var(--row-bg, #f2f2f2);
+}
+
+.userTable tr:hover {
+    background-color: var(--hover-bg, #e9e9e9);
+}
+
+.userTable td {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.userTable th {
+    font-size: 1rem;
+}

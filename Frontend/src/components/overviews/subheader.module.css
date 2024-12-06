@@ -48,3 +48,27 @@
 	color: var(--textlight);
 	transition: all 500ms;
 }
+
+.searchBar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1em;
+	width: 30%;
+	height: 50%;
+}
+
+.searchBar input[type = 'search']{
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	background-color: transparent;
+	border: solid 1px var(--secondary);
+	outline: none;
+	padding: 8px;
+	font-size: 16px;
+}
+
+.header ::placeholder{
+	font-size: 16px;
+}

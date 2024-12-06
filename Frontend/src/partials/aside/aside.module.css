@@ -7,6 +7,7 @@
 	height: 100vh;
 	transition: all 500ms;
 	border-right: 0.5px inset var(--secondary);
+	overflow: hidden;
 }
 
 .asideClose{
