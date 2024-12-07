@@ -91,13 +91,7 @@ function Login() {
 
 					{showPrompt && <p style={{ color: 'red', fontWeight: 'bold', margin: '0' }}>{errMessage}</p>}
 					<h3>Log In Account</h3>
-
-					<div className={styles.gmailDiv}>
-						<a href="" target="_blank">Google Sign In</a>
-						<span><FontAwesomeIcon icon={faGoogle} /></span>
-					</div>
-
-					<h4>or</h4>
+					
 					<input type="email" name="email" id="email" placeholder="Email" onChange={handleInputChange} required />
 
 					<div className={styles.passwordDiv}>

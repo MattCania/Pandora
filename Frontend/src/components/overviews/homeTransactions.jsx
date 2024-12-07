@@ -18,12 +18,10 @@ function TransactionOverview() {
       const records = await GetData(`records/${user.session.userId}`);
       if (!records) throw new Error("Records Null or Undefined");
 
-      // Define all months of the year
       const allMonths = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ];
 
-      // Aggregate data by month for chart
       const monthlyData = records.reduce((acc, record) => {
         const month = new Date(record.createdAt).toLocaleString("default", { month: "short" });
         if (!acc[month]) {
@@ -37,7 +35,6 @@ function TransactionOverview() {
         return acc;
       }, {});
 
-      // Create chart data, ensuring all months are represented
       const chartData = allMonths.map(month => ({
         month,
         purchases: monthlyData[month]?.purchases || 0,
@@ -58,7 +55,6 @@ function TransactionOverview() {
   const purchaseData = transactionData.map(data => data.purchases);
   const expenseData = transactionData.map(data => data.expenses);
 
-  // Purchases chart data
   const purchaseChartData = {
     labels: chartLabels,
     datasets: [
@@ -74,7 +70,6 @@ function TransactionOverview() {
     ],
   };
 
-  // Expenses chart data
   const expenseChartData = {
     labels: chartLabels,
     datasets: [

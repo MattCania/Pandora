@@ -35,7 +35,7 @@ function InventoryOverview() {
     );
   }
 
-  // Prepare data for charts
+
   const barChartData = {
     labels: inventoryData.map((item) => item.inventoryName),
     datasets: [
