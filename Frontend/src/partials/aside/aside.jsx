@@ -96,6 +96,14 @@ function Aside() {
             <FontAwesomeIcon icon={faChartLine} />
             {!displayAside && size.width > 768 && "Analytics"}
           </NavLink>
+          <NavLink
+            onClick={linkToggle}
+            to="company"
+            className={({ isActive }) => (isActive ? `${styles.active}` : "")}
+          >
+            <FontAwesomeIcon icon={faChartLine} />
+            {!displayAside && size.width > 768 && "Company"}
+          </NavLink>
         </div>
         { !disableClose &&
 
