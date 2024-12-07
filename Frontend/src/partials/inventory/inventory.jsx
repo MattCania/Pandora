@@ -26,7 +26,6 @@ function Inventory() {
 			if (inventory.length === 0 || !inventory) {
 				console.log('Empty Results')
 			}
-			console.log(inventory)
 
 			setData(inventory || [])
 		} catch (error) {

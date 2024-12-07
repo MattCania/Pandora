@@ -16,10 +16,12 @@ function SubHeader( {text, subText, buttonClick, searchUp, placeholder, inputCha
 					<input type="search" placeholder={placeholder} onChange={inputChange}/>
 				</section>
 			}
+			{
+			buttonClick && 
 			<button className={styles.createButton} onClick={buttonClick}>
 				<FontAwesomeIcon  icon={faAdd} />
 			</button>
-
+			}
 		</header>
 	)
 }

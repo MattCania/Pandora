@@ -10,6 +10,8 @@
 /* Transaction Section */
 .transactionSection {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     gap: 2em; /* Increase gap if you want more space between the charts */
     height: auto;
@@ -19,8 +21,9 @@
 /* Sub-sections (Individual Chart Containers) */
 .transactionSection .subSection {
     flex: 1; /* Each section takes equal space, but will shrink or grow based on screen size */
-    max-width: 800px; /* Limit the max width of each sub-section */
+    /* max-width: 800px; Limit the max width of each sub-section */
     display: flex;
+    width: 50em;
     justify-content: center;
     align-items: center;
     padding: 10px;

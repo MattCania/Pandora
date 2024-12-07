@@ -3,7 +3,7 @@ import SubHeader from "../../components/overviews/subheader";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import styles from './records.module.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan, faXmark } from "@fortawesome/free-solid-svg-icons";
 import GetData from "../../hooks/GetData";
 // import { SessionContext } from "../../pages/home/home";
 import Loading from "../loading/loading";
@@ -16,8 +16,12 @@ function EditRecords() {
 	const navigate = useNavigate();
 	const { recordId } = useParams()
 	const user = GetSession()
+	const [userPermissions, setUserPermissions] = useState({})
+	const [usernames, setUsernames] = useState([])
+	const [existingUsers, setExistingUsers] = useState([])
 	const [isAuth, setAuth] = useState(false);
 
+	
 	useEffect(() => {
 		if (user) {
 			setAuth(true);
@@ -30,26 +34,68 @@ function EditRecords() {
 		recordType: '',
 		recordName: '',
 	});
-
-	// const record = GetData(`/edit-record/${recordId}`);
-
-	// if (!record){
-	// 	return <Loading/>
-	// }
+	
 	useEffect(() => {
 		const fetchRecord = async () => {
 			try {
 				const data = await GetData(`records/open/${recordId}`)
 				if (!data) throw new Error("Fetching Error")
-				setFormValues(data)
+					setFormValues(data)
 			}
 			catch (err) {
+				console.error(err)
 				return
 			}
 		}
 		fetchRecord()
 	}, [recordId]);
 
+
+	useEffect(() => {
+		const fetchUsernames = async () => {
+			try {
+				const usernames = await GetData('get-profiles')
+
+				if (!usernames) {
+					console.log('No username found')
+					setUsernames([])
+					return
+				}
+
+				setUsernames(usernames)
+			}
+			catch (err) {
+				console.error('Fetching Usernames', err)
+			}
+		}
+
+		fetchUsernames()
+	}, [])
+
+	const handlePermissionChange = (username, newPermission) => {
+		setUserPermissions((prev) => ({
+			...prev,
+			[username]: newPermission,
+		}));
+	};
+
+	const handleAddUser = (event) => {
+		const selectedUser = event.target.value;
+		if (selectedUser && !userPermissions[selectedUser]) {
+			setUserPermissions((prev) => ({
+				...prev,
+				[selectedUser]: 4,
+			}));
+		}
+	};
+
+	const handleRemoveUser = (removedUser) => {
+		setUserPermissions((prevPermissions) => {
+			const updatedPermissions = { ...prevPermissions };
+			delete updatedPermissions[removedUser];
+			return updatedPermissions;
+		});
+	};
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -61,7 +107,10 @@ function EditRecords() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const formData = { ...formValues };
+		const formData = { 
+			...formValues,
+			...(userPermissions && { userPermissions: userPermissions }) 
+		};
 
 		try {
 			const response = await PostRequest(`update-record/${recordId}`, formData)
@@ -73,7 +122,7 @@ function EditRecords() {
 	};
 
 	return (
-		user && 
+		user &&
 		<section className={styles.blur}>
 
 			<section className={styles.createSection}>
@@ -94,11 +143,45 @@ function EditRecords() {
 							</select>
 						</div>
 						<input type="text" name="recordName" id="recordName" value={formValues.recordName} onChange={handleInputChange} placeholder="Record Name" />
+
+						<select name="usernames" defaultValue="" id="usernames" onChange={handleAddUser}>
+							<option value="" disabled>
+								Add User
+							</option>
+							{usernames?.map((option, index) => (
+								user.session.username !== option.userName && !userPermissions[option.userName] && (
+									<option key={index} value={option.userName}>
+										{option.userName}
+									</option>
+								)
+							))}
+						</select>
+
 						<input type="submit" value="Update Record" />
 					</form>
 
 					<section className={styles.userSection}>
-
+						<h1>Permitted Users</h1>
+						{Object.entries(userPermissions).map(([username, permission], index) => (
+							<div key={index} className={styles.permissionTable}>
+								<div>{username}</div>
+								<div className={styles.permissionTab}>
+									<select
+										name="permission"
+										id="permission"
+										value={permission}
+										onChange={(e) => handlePermissionChange(username, e.target.value)}
+									>
+										<option value={1}>Admin</option>
+										<option value={3}>Editor</option>
+										<option value={4}>Viewer</option>
+									</select>
+									<button onClick={() => handleRemoveUser(username)}>
+										<FontAwesomeIcon icon={faTrashCan} />
+									</button>
+								</div>
+							</div>
+						))}
 					</section>
 				</div>
 			</section>

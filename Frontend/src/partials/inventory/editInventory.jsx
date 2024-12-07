@@ -16,7 +16,6 @@ function EditInventory() {
 		try {
 			const result = await GetData(`inventory/open/${inventoryId}`);
 			if (!result) throw new Error("Error Getting Inventory Data");
-			console.log(result);
 			setExistingData(result);
 		} catch (error) {
 			console.error("Error:", error);
@@ -28,8 +27,6 @@ function EditInventory() {
 	}, []);
 
 	if (!existingData) return <h1>Loading...</h1>;
-
-	console.log("Existing Inventory Data:", existingData);
 
 	const inventoryInput = [
 		{

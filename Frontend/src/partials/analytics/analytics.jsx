@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./analytics.module.css"; // For layout styling
 import InventoryOverview from "../../components/overviews/homeInventory";
 import TransactionOverview from "../../components/overviews/homeTransactions";
+import Footer from '../footer/footer'
 function Analytics() {
   return (
     <div className={styles.mainSection}>
@@ -15,6 +16,7 @@ function Analytics() {
   <section className={styles.inventorySection}>
     <InventoryOverview />
   </section>
+  <Footer/>
 </div>
   );
 }
