@@ -1,174 +1,204 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import GetData from '../../hooks/GetData'
-import styles from './transactions.module.css'
+import GetData from "../../hooks/GetData";
+import styles from "./transactions.module.css";
 import SubHeader from "../../components/overviews/subheader";
-import Error from "../../components/error/error";
 import ConfirmPrompt from "../../components/prompts/confirmPrompt";
 import DeleteRequest from "../../hooks/DeleteRequest";
 
-
 function Transactions() {
-	const navigate = useNavigate()
-	const { transaction, recordId, access } = useParams()
-	// console.log(transaction, recordId)
-	const [data, setData] = useState([])
-	const [record, setRecord] = useState([])
+  const navigate = useNavigate();
+  const { transaction, recordId, access } = useParams();
+  const [data, setData] = useState([]);
+  const [record, setRecord] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-	// if (transactions !== 'expenses' && transactions !== 'purchases') navigate(-1)
-	const fetchTransactions = async () => {
-		try {
-			if (!transaction || !recordId) return
-			const transactionData = await GetData(`get-${transaction}/${recordId}`)
-			console.log(transactionData)
-			
-			if (!transactionData) {
-				throw new Error("Transactions Null or Undefined")
-			}
+  const fetchTransactions = async () => {
+    try {
+      if (!transaction || !recordId) return;
+      const transactionData = await GetData(`get-${transaction}/${recordId}`);
+      if (!transactionData) {
+        throw new Error("Transactions Null or Undefined");
+      }
 
-			const records = await GetData(`records/open/${recordId}`)
+      const records = await GetData(`records/open/${recordId}`);
+      if (!records) {
+        throw new Error("Records Data Unfound?");
+      }
+      setRecord(records);
+      setData(transactionData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-			if (!records) {
-				throw new Error("Records Data Unfound?")
-			}
-			console.log(records)
-			setRecord(records)
-			setData(transactionData)
-		} catch (error) {
-			console.error("Error fetching data:", error);
-		}
-	}
-	
-	useEffect(() => {
-		fetchTransactions();
-	}, [transaction])
+  useEffect(() => {
+    fetchTransactions();
+  }, [transaction]);
 
-	const [showConfirmPrompt, setShowConfirmPrompt] = useState(false);
-	const [transactionToDelete, setTransactionToDelete] = useState(null);
-	
-	const triggerDeletePrompt = (e, recordId) => {
-		e.stopPropagation();
-		setTransactionToDelete(recordId);
-		setShowConfirmPrompt(true);
-	};
-	
-	const confirmDeletion = async () => {
-		try {
-			if (!transactionToDelete) return;
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
 
-			const response = await DeleteRequest(`delete-${transaction.toLowerCase().slice(0, -1)}/${transactionToDelete}`);
-			if (!response) {
-				throw new Error("Failed to delete the transaction");
-			}
+  const filteredData = data.filter((item) => {
+    const transactionId = item.transactionId.toString();
+    const description = item.description.toLowerCase();
+    const amount = item.amount.toString();
+    const search = searchTerm.toLowerCase();
 
-			fetchTransactions();
-		} catch (error) {
-			console.error("Error:", error);
-		} finally {
-			setShowConfirmPrompt(false);
-			setTransactionToDelete(null);
-		}
-	};
+    return (
+      transactionId.includes(search) ||
+      description.includes(search) ||
+      amount.includes(search)
+    );
+  });
 
-	const openTransaction = (type, id, access) => {
-		navigate(`/home/transaction/${type}/${id}/${access}`)
-	}
+  const [showConfirmPrompt, setShowConfirmPrompt] = useState(false);
+  const [transactionToDelete, setTransactionToDelete] = useState(null);
 
-	return (
-		<section className={styles.section}>
-			<header className={styles.subHeader}>
-				<h1>Record: {record.recordName} </h1>
-			</header>
+  const triggerDeletePrompt = (e, transactionId) => {
+    e.stopPropagation();
+    setTransactionToDelete(transactionId);
+    setShowConfirmPrompt(true);
+  };
 
-			<section className={styles.subSection}>
-				<SubHeader
-					text="Expense Transaction Record"
-					searchUp={true}
-					placeholder="Search Records"
-					buttonClick={() => navigate(`/home/transaction/create/${transaction.toLowerCase()}/${recordId}`)}
-				/>
-				<section className={styles.displaySection}>
-					<div className={styles.table}>
-						<div className={styles.tableHeader}>
-							<div className={styles.index}>#</div>
-							<div className={styles.id}>Transaction Id</div>
-							<div className={styles.name}>Description</div>
-							<div className={styles.access}>Amount</div>
-							<div className={styles.creation}>Created At</div>
-							{access !== 'Viewer' &&
-							<>
-							<div className={styles.edit}>Edit</div>
-							<div className={styles.delete}>Delete</div>
-							</>
-							}
-						</div>
-						<div className={styles.tableBody}>
-							{data.map((data, index) => (
-								<div
-									className={styles.row}
-									key={index}
-									onClick={() => openTransaction(transaction, data.transactionId, access)}
-								>
-									<div className={styles.index}>{index + 1}</div>
-									<div className={styles.id}>{data.transactionId}</div>
-									<div className={styles.name}>{data.description}</div>
-									<div className={styles.access}>{data.amount}</div>
-									<div className={styles.creation}>
-										{new Date(data.transactionDate).toLocaleDateString()}
-									</div>
-									<div className={styles.edit}>
-										<Link className={access !== 'Viewer' ? '' : styles.disabled}
-											onClick={(e) => {
-												if (access === 'Viewer'){
-													e.preventDefault();
-													e.stopPropagation();
-													return; // Block further execution
-												}
-												e.stopPropagation();
-											}}
-											to={`/home/transaction/edit/${transaction.toLowerCase().slice(0, -1)}/${data.transactionId}`}
-										>
-											{access === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faEdit}/>}
-										</Link>
-									</div>
-									<div className={styles.delete}>
-										<button
-										disabled={access !== 'Admin'}
-											onClick={(e) => 
-												{	
-												if (access === 'Editor' || access === 'Viewer'){
-													e.preventDefault();
-													e.stopPropagation();
-													return; // Block further execution
-												}
-													triggerDeletePrompt(e, data.transactionId)}
-												}
-										>
-											{access === 'Editor' || access === 'Viewer' ? <FontAwesomeIcon icon={faBan}/> : <FontAwesomeIcon icon={faTrash}/>}
-										</button>
-									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				</section>
+  const confirmDeletion = async () => {
+    try {
+      if (!transactionToDelete) return;
 
-			</section>
-			{showConfirmPrompt && (
-				<ConfirmPrompt
-					mainText="Confirm Deletion"
-					subText={`Are you sure you want to delete Transaction ${transactionToDelete}?`}
-					cancelText="Cancel"
-					proceedText="Delete"
-					close={() => setShowConfirmPrompt(false)}
-					action={confirmDeletion}
-				/>
-			)}
-		</section>
-	)
+      const response = await DeleteRequest(
+        `delete-${transaction.toLowerCase().slice(0, -1)}/${transactionToDelete}`
+      );
+      if (!response) {
+        throw new Error("Failed to delete the transaction");
+      }
+
+      fetchTransactions();
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setShowConfirmPrompt(false);
+      setTransactionToDelete(null);
+    }
+  };
+
+  const openTransaction = (type, id, access) => {
+    navigate(`/home/transaction/${type}/${id}/${access}`);
+  };
+
+  return (
+    <section className={styles.section}>
+      <header className={styles.subHeader}>
+        <h1>Record: {record.recordName} </h1>
+      </header>
+
+      <section className={styles.subSection}>
+        <SubHeader
+          text="Expense Transaction Record"
+          searchUp={true}
+          placeholder="Search Transactions"
+          inputChange={handleSearchChange}
+          buttonClick={
+            access !== "Viewer"
+              ? () =>
+                  navigate(
+                    `/home/transaction/create/${transaction.toLowerCase()}/${recordId}`
+                  )
+              : null
+          }
+        />
+        <section className={styles.displaySection}>
+          <div className={styles.table}>
+            <div className={styles.tableHeader}>
+              <div className={styles.index}>#</div>
+              <div className={styles.id}>Transaction Id</div>
+              <div className={styles.name}>Description</div>
+              <div className={styles.access}>Amount</div>
+              <div className={styles.creation}>Created At</div>
+              {access !== "Viewer" && (
+                <>
+                  <div className={styles.edit}>Edit</div>
+                  <div className={styles.delete}>Delete</div>
+                </>
+              )}
+            </div>
+            <div className={styles.tableBody}>
+              {filteredData.map((data, index) => (
+                <div
+                  className={styles.row}
+                  key={index}
+                  onClick={() =>
+                    openTransaction(transaction, data.transactionId, access)
+                  }
+                >
+                  <div className={styles.index}>{index + 1}</div>
+                  <div className={styles.id}>{data.transactionId}</div>
+                  <div className={styles.name}>{data.description}</div>
+                  <div className={styles.access}>{data.amount}</div>
+                  <div className={styles.creation}>
+                    {new Date(data.transactionDate).toLocaleDateString()}
+                  </div>
+                  <div className={styles.edit}>
+                    <Link
+                      className={access !== "Viewer" ? "" : styles.disabled}
+                      onClick={(e) => {
+                        if (access === "Viewer") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          return; // Block further execution
+                        }
+                        e.stopPropagation();
+                      }}
+                      to={`/home/transaction/edit/${transaction
+                        .toLowerCase()
+                        .slice(0, -1)}/${data.transactionId}`}
+                    >
+                      {access === "Viewer" ? (
+                        <FontAwesomeIcon icon={faBan} />
+                      ) : (
+                        <FontAwesomeIcon icon={faEdit} />
+                      )}
+                    </Link>
+                  </div>
+                  <div className={styles.delete}>
+                    <button
+                      disabled={access !== "Admin"}
+                      onClick={(e) => {
+                        if (access === "Editor" || access === "Viewer") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          return; // Block further execution
+                        }
+                        triggerDeletePrompt(e, data.transactionId);
+                      }}
+                    >
+                      {access === "Editor" || access === "Viewer" ? (
+                        <FontAwesomeIcon icon={faBan} />
+                      ) : (
+                        <FontAwesomeIcon icon={faTrash} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </section>
+      {showConfirmPrompt && (
+        <ConfirmPrompt
+          mainText="Confirm Deletion"
+          subText={`Are you sure you want to delete Transaction ${transactionToDelete}?`}
+          cancelText="Cancel"
+          proceedText="Delete"
+          close={() => setShowConfirmPrompt(false)}
+          action={confirmDeletion}
+        />
+      )}
+    </section>
+  );
 }
 
-
-export default Transactions
+export default Transactions;

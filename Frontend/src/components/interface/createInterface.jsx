@@ -7,7 +7,6 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 function CreateInterface({ mainText, subText, formInput, formValues,  inputChange, onClose, onSubmit, customInput, buttonText}) {
 	if (Object.keys(formValues).length === 0) return <h1>Loading...</h1>;
-	console.log(formValues)
 	return (
 		<div className={interfaceStyle.blur}>
 			<section className={interfaceStyle.section}>

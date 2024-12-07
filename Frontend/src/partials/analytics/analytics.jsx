@@ -5,6 +5,7 @@ import InventoryDisplay from "../inventory/inventory";
 import Records from './transaction';
 import styles from "./analytics.module.css";
 
+import Footer from '../footer/footer'
 function Analytics() {
   const [expenseFilter, setExpenseFilter] = useState("");
   const [purchaseFilter, setPurchaseFilter] = useState("");

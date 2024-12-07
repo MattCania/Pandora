@@ -24,7 +24,6 @@ function Records() {
 		try {
 			if (!user) return
 			const records = await GetData(`records/${user.session.userId}`)
-			console.log(records)
 			if (!records) throw new Error("Records Null or Undefined")
 
 			setData(records)
@@ -239,7 +238,8 @@ function Records() {
 									onClick={() =>
 										openRecord(
 											data.recordId,
-											data.recordType
+											data.recordType,
+											data.recordPermissions[0].userAccess.accessType
 										)
 									}
 								>

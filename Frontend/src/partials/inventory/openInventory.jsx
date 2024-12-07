@@ -33,7 +33,6 @@ function OpenInventory() {
 	const fetchInventoryData = async () => {
 		try {
 			const result = await GetData(`inventory/open/${inventoryId}`);
-			console.log(result)
 			if (!result) throw new Error("Error fetching inventory data");
 
 			setInventoryData(result);

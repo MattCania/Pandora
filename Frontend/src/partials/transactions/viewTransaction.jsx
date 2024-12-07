@@ -38,7 +38,6 @@ function ViewTransaction() {
 
 			if (!result) throw new Error("Error Fetching transaction")
 
-			console.log(result.results)
 			setTransactionData(result.results)
 		} catch (error) {
 			console.error(error)
