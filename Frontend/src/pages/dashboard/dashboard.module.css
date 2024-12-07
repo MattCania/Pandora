@@ -1,4 +1,4 @@
-.section {
+    .section {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -33,12 +33,23 @@
     color: var(--textdark);
 }
 
-.firstSection, .secondSection {
+.firstSection {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 1em;
-    width: 98%;
+    width: 95%;
+    height: auto;
+    padding: 4px 0;
+    gap: 1em;
+}
+
+.secondSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+    width: 95%;
     height: auto;
     padding: 4px 0;
     gap: 1em;

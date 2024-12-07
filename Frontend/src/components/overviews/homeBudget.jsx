@@ -75,7 +75,7 @@ function BudgetOverview() {
 
   return (
     <section className={styles.budgetSection}>
-      <SubHeader text="Revenue" subText="as of 2024" />
+      <SubHeader text="Inventory Stocks" subText="as of 2024" />
       <section className={styles.sectionChart}>
         {inventoryData.length > 0 ? (
           <Doughnut data={inventoryDoughnutData} />

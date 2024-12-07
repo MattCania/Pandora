@@ -20,23 +20,21 @@ function Analytics() {
   };
 
   return (
-    <div className={styles.mainSection}>
-      {/* Transaction Overview: Total Expenses & Total Purchases */}
+    <div className={styles.section}>
+
+    <section className={styles.mainSection}>
+      <header className={styles.subHeader}>
+				<h1>Financial Analytics</h1>
+			</header>
       <section className={styles.transactionchart}>
           <TransactionOverview type="expenses" />
-      </section>
-
-      <section className={styles.transactionsection}>
-        <Records recordType="Expenses" searchTerm={expenseFilter} />
       </section>
 
       <section className={styles.inventorychart}>
         <InventoryOverview />
       </section>
-
-      <section className={styles.inventorysection}>
-        <InventoryDisplay />
-      </section>
+      <Footer/>
+    </section>
     </div>
   );
 }

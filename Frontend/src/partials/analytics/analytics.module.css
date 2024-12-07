@@ -1,11 +1,34 @@
+.section{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 120vh;
+}
 
+/* Main Section */
 .mainSection {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    height: 100%;
+    justify-content: start;
+    align-items: center;
+    height: 100vh;
     width: 100%;
-    gap: 1.5em; /* Add space between the sections */
+    overflow-x:hidden;
+    gap: 1em; /* Add space between the sections */
+}
+
+.inventorychart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+}
+
+.transactionchart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120%;
 }
 /* Transaction Section */
 .transactionSection {
@@ -15,27 +38,81 @@
     justify-content: space-between;
     gap: 2em; /* Increase gap if you want more space between the charts */
     height: auto;
-    width: 100%; /* Ensure it takes full available width */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 /* Sub-sections (Individual Chart Containers) */
 .transactionSection .subSection {
     flex: 1; /* Each section takes equal space, but will shrink or grow based on screen size */
+    max-width: 800px; /* Limit the max width of each sub-section */
     /* max-width: 800px; Limit the max width of each sub-section */
     display: flex;
     width: 50em;
     justify-content: center;
     align-items: center;
+    padding: 10px;
+}
+/* Inventory Section */
+.inventorySection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1; /* Make inventory section slightly smaller */
+    margin: 0 auto;
+    width: 100%; /* Take up full width */
+    height: auto;
+}
+/* Chart Section */
+.sectionChart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%; /* Width as a percentage, so it adapts to the container */
+    height: 80%; /* Adjust height as needed */
+    padding: 0;
+}
+.subHeader {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	width: 98%;
+	height: 20vh;
+	margin: 1em 0;
+    padding: 2em 1em;
+	background-color: var(--tertiary);
+	border-radius: 15px;
 }
 
-.transactionchart {
-    width: 1000px;
-    height: 1000px;
-    margin-bottom: 9rem;
+.subHeader h1 {
+	display: flex;
+	font-size: 2em;
+	margin: 0 1em;
 }
 
-.inventorychart {
-    width: 1000px;
-    height: 1000px;
-    margin-bottom: 9rem;
+/* Responsive adjustments using media queries */
+@media (max-width: 768px) {
+    .transactionSection {
+        gap: 1em; /* Reduce the gap for smaller screens */
+    }
+    .transactionSection .subSection {
+        width: 100%; /* Let each sub-section take up full width */
+    }
+    .sectionChart {
+        width: 100%; /* Ensure full-width on small screens */
+        height: 50%; /* Further reduce height on mobile devices */
+    }
+    .transactionchart{
+        width: 90%;
+    }
+}
+@media (max-width: 480px) {
+    .mainSection {
+        gap: 1em; /* Reduce gap for very small screens */
+    }
+    .transactionSection .subSection {
+        width: 100%; /* Full width for each chart on very small screens */
+        /* max-width: none; Remove max-width on small devices */
+    }
+    .sectionChart {
+        width: 100%; /* Ensure charts are full-width */
+        height: 40%; /* Reduce chart height on very small screens */
+    }
 }

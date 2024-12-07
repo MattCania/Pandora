@@ -6,16 +6,6 @@
 	justify-content: space-between;
 	align-items: center;
 }
-
-@media (max-width: 768px) {
-	.footer{
-		flex-direction: column;
-		height: auto;
-		overflow: hidden;
-	}
-
-
-}
 .leftSide{
 	display: flex;
 	justify-content: space-between;
@@ -80,4 +70,18 @@
 .rightSide ul li a:hover{
 	color: var(--green);
 	transition: all 250ms;
+}
+
+
+
+@media (max-width: 768px) {
+	.footer{
+		flex-direction: column;
+		height: 25em;
+		overflow: hidden;
+	}
+	.leftSide {
+		display: none;
+	}
+
 }
