@@ -11,7 +11,8 @@ import Footer from "../footer/footer";
 import DeleteRequest from "../../hooks/DeleteRequest";
 import CreateInterface from "../../components/interface/createInterface";
 import FilterRecords from "../../utils/recordFilter";
-import ConfirmPrompt from "../../components/prompts/confirmPrompt";
+import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
+import ConfirmDeletion from "../../components/prompts/confirmDeletion"
 
 function Records() {
 	const navigate = useNavigate()
@@ -96,6 +97,7 @@ function Records() {
 
 	const [showConfirmPrompt, setShowConfirmPrompt] = useState(false);
 	const [recordToDelete, setRecordToDelete] = useState(null);
+	const [showConfirmedPrompt, setShowConfirmedPrompt] = useState(false);
 
 	const triggerDeletePrompt = (e, recordId) => {
 		e.stopPropagation();
@@ -106,20 +108,25 @@ function Records() {
 	const confirmDeletion = async () => {
 		try {
 			if (!recordToDelete) return;
-
+	
 			const response = await DeleteRequest(`delete-record/${recordToDelete}`);
 			if (!response) {
 				throw new Error("Failed to delete the record");
 			}
+			fetchRecords(); 
+			setShowConfirmedPrompt(true);
 
-			fetchRecords();
+			setTimeout(() => {
+				setShowConfirmedPrompt(false);
+			}, 3000);
 		} catch (error) {
 			console.error("Error:", error);
 		} finally {
-			setShowConfirmPrompt(false);
-			setRecordToDelete(null);
+			setShowConfirmPrompt(false); 
+			setRecordToDelete(null); 
 		}
 	};
+	
 
 	return (
 		user && expenseData && purchaseData &&
@@ -143,6 +150,7 @@ function Records() {
 							<div className={styles.index}>#</div>
 							<div className={styles.id}>Record Id</div>
 							<div className={styles.name}>Record Name</div>
+							<div className={styles.cost}>Cost</div>
 							<div className={styles.access}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
 							<div className={styles.edit}>Edit</div>
@@ -164,6 +172,7 @@ function Records() {
 									<div className={styles.index}>{index + 1}</div>
 									<div className={styles.id}>{data.recordId}</div>
 									<div className={styles.name}>{data.recordName}</div>
+									<div className={styles.cost}>{data.cost}</div>
 									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}
@@ -293,24 +302,20 @@ function Records() {
 			</section>
 
 			{showConfirmPrompt && (
-				<ConfirmPrompt
-					mainText="Confirm Deletion"
-					subText={`Are you sure you want to delete record ${recordToDelete}?`}
-					cancelText="Cancel"
-					proceedText="Delete"
-					close={() => setShowConfirmPrompt(false)}
-					action={confirmDeletion}
-				/>
+					<ConfirmPrompt
+						mainText="Confirm Deletion"
+						subText={`Are you sure you want to delete record ${recordToDelete}?`}
+						cancelText="Cancel"
+						proceedText="Delete"
+						close={() => setShowConfirmPrompt(false)}
+						action={confirmDeletion}
+					/>
 			)}
 
-			{showConfirmPrompt && (
-				<ConfirmPrompt
-					mainText="Confirm Deletion"
-					subText={`Are you sure you want to delete record ${recordToDelete}?`}
-					cancelText="Cancel"
-					proceedText="Delete"
-					close={() => setShowConfirmPrompt(false)}
-					action={confirmDeletion}
+			{showConfirmedPrompt && (
+				<ConfirmDeletion
+					subText="The record has been successfully deleted!"
+					close={() => setShowConfirmedPrompt(false)}
 				/>
 			)}
 			<Footer />

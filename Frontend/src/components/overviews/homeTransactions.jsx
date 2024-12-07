@@ -114,7 +114,7 @@ function TransactionOverview() {
       y: {
         title: {
           display: true,
-          text: "Transactions",
+          text: "Records",
           font: { size: 14, weight: "bold" },
         },
         beginAtZero: true,
@@ -129,11 +129,11 @@ function TransactionOverview() {
         {transactionData.length > 0 ? (
           <>
             <div className={styles.subSection}>
-              <SubHeader text="Purchases" subText="As of 2024" />
+              <SubHeader text="Purchases Records" subText="As of 2024" />
               <Line data={purchaseChartData} options={options} />
             </div>
             <div className={styles.subSection}>
-              <SubHeader text="Expenses" subText="As of 2024" />
+              <SubHeader text="Expenses Records" subText="As of 2024" />
               <Line data={expenseChartData} options={options} />
             </div>
           </>

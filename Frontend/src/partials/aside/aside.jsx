@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { faAngleLeft, faAngleRight, faHouse, faFolderOpen, faBox,faChartLine, } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faAngleRight, faHouse, faFolderOpen, faBox,faChartLine, faBuilding } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Logo from "/src/assets/MainLogo.svg";
 import LogoMain from "/P.svg";
@@ -101,7 +101,7 @@ function Aside() {
             to="company"
             className={({ isActive }) => (isActive ? `${styles.active}` : "")}
           >
-            <FontAwesomeIcon icon={faChartLine} />
+            <FontAwesomeIcon icon={faBuilding} />
             {!displayAside && size.width > 768 && "Company"}
           </NavLink>
         </div>

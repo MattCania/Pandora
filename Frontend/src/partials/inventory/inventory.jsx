@@ -11,7 +11,7 @@ import Footer from "../footer/footer";
 import DeleteRequest from "../../hooks/DeleteRequest";
 import CreateInterface from "../../components/interface/createInterface";
 import FilterRecords from "../../utils/recordFilter";
-import ConfirmPrompt from "../../components/prompts/confirmPrompt";
+import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
 
 function Inventory() {
 	const navigate = useNavigate()

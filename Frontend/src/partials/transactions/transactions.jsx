@@ -5,7 +5,7 @@ import { faBan, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import GetData from "../../hooks/GetData";
 import styles from "./transactions.module.css";
 import SubHeader from "../../components/overviews/subheader";
-import ConfirmPrompt from "../../components/prompts/confirmPrompt";
+import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
 import DeleteRequest from "../../hooks/DeleteRequest";
 
 function Transactions() {

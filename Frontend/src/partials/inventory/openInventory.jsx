@@ -6,7 +6,7 @@ import GetData from '../../hooks/GetData';
 import MiniHeader from "../../components/subheader/miniheader";
 import inventoryStyle from './inventory.module.css';
 import transactionStyle from '../transactions/transactions.module.css'
-import ConfirmPrompt from "../../components/prompts/confirmPrompt";
+import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
 import DeleteRequest from "../../hooks/DeleteRequest";
 
 function OpenInventory() {

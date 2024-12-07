@@ -6,7 +6,7 @@ import GetData from '../../hooks/GetData'
 import SubHeader from "../../components/overviews/subheader";
 import Error from "../../components/error/error";
 import styles from './transactions.module.css'
-import ConfirmPrompt from "../../components/prompts/confirmPrompt";
+import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
 import DeleteRequest from "../../hooks/DeleteRequest";
 import MiniHeader from "../../components/subheader/miniheader";
 
