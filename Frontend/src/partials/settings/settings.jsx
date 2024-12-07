@@ -16,20 +16,6 @@ function Settings() {
                 <h1>Settings</h1>
             </header>
             <div className={styles.settingsContainer}>
-                {/* Profile Settings */}
-                <div className={styles.settingsGroup}>
-                    <h2>Profile</h2>
-                    <div className={styles.setting}>
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            id="username"
-                            type="text"
-                            value={username}
-                            onChange={handleUsernameChange}
-                            className={styles.input}
-                        />
-                    </div>
-                </div>
                 {/* Preferences */}
                 <div className={styles.settingsGroup}>
                     <h2>Preferences</h2>

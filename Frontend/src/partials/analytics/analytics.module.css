@@ -67,9 +67,11 @@
 
 /* analytics.module.css */
 .recordsTable {
-    margin-top: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 2em; /* Space between transactions */
+    padding: 1em;
+    background-color: #f9f9f9;
+    border-radius: 8px;
   }
   
