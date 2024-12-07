@@ -1,39 +1,150 @@
-import SubHeader from "./subheader"
-import styles from './overview.module.css'
-import { Chart as ChartJS, defaults } from 'chart.js/auto'
-import { Bar, Doughnut, Line } from 'react-chartjs-2'
+import React, { useEffect, useState, useContext } from "react";
+import { Bar, Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, BarElement, ArcElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+import { SessionContext } from "../../pages/home/home";
+import GetData from "../../hooks/GetData";
+import styles from "./overview.module.css";
+import SubHeader from "./subheader";
 
-defaults.responsive = true
-defaults.maintainAspectRatio = true 
+ChartJS.register(BarElement, ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-function InventoryOverview(){
-	return(
-		<section className={styles.inventorySection}>
-			<SubHeader text="Inventory Sales" subText="as of 2024"/>
-			<section className={styles.sectionChart}>
+function InventoryOverview() {
+  const user = useContext(SessionContext);
+  const [inventoryData, setInventoryData] = useState([]);
 
-					<Bar height={100}
-						data={{
-							labels: ["item 1", "item 2", "item 3", "item 4", "item 5", "item 6", "item 7", "item 8", "item 9", "item 10"],
-							datasets: [
-								{
-									label: "Store 1",
-									data: [10, 20, 15, 5, 25, 29, 50, 21, 5, 6],
-									backgroundColor: "rgb(100, 150, 250)"
-								},
-								{
-									label: "Store 2",
-									data: [15, 10, 25, 61, 23, 9, 19, 31, 15, 26],
-									backgroundColor: "rgb(250, 100, 100)"
-								},
-							]
-						}}
+  const fetchInventory = async () => {
+    try {
+      if (!user) return;
+      const inventory = await GetData(`inventory/${user.session.userId}`);
+      setInventoryData(inventory || []);
+    } catch (error) {
+      console.error("Error fetching inventory data:", error);
+    }
+  };
 
-					/>
-				</section>
-		</section>
-	)
+  useEffect(() => {
+    fetchInventory();
+  }, [user]);
 
+  if (!inventoryData || inventoryData.length === 0) {
+    return (
+      <div className={styles.loadingContainer}>
+        <p>Loading inventory data...</p>
+        <div className={styles.spinner}></div>
+      </div>
+    );
+  }
+
+  // Prepare data for charts
+  const barChartData = {
+    labels: inventoryData.map((item) => item.inventoryName),
+    datasets: [
+      {
+        label: "Quantity",
+        data: inventoryData.map((item) => item.quantity),
+        backgroundColor: "rgba(54, 162, 235, 0.6)",
+      },
+      {
+        label: "Unit Price",
+        data: inventoryData.map((item) => item.unitPrice),
+        backgroundColor: "rgba(255, 99, 132, 0.6)",
+      },
+    ],
+  };
+
+  const { labels: doughnutLabels, data: doughnutData } = inventoryData.reduce(
+    (acc, item) => {
+      const categoryIndex = acc.labels.indexOf(item.category);
+      if (categoryIndex === -1) {
+        acc.labels.push(item.category);
+        acc.data.push(1);
+      } else {
+        acc.data[categoryIndex] += 1;
+      }
+      return acc;
+    },
+    { labels: [], data: [] }
+  );
+
+  const doughnutChartData = {
+    labels: doughnutLabels,
+    datasets: [
+      {
+        label: "Category Distribution",
+        data: doughnutData,
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+        ],
+      },
+    ],
+  };
+
+  const barOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Inventory Items",
+          font: { size: 14, weight: "bold" },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Values",
+          font: { size: 14, weight: "bold" },
+        },
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+      },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+      },
+    },
+  };
+
+  const doughnutOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+      },
+    },
+  };
+
+  return (
+    <section className={styles.inventorySection}>
+      <SubHeader text="Inventory Overview" subText="As of 2024" />
+
+      <section className={styles.sectionChart}>
+        <Bar data={barChartData} options={barOptions} />
+      </section>
+    </section>
+  );
 }
 
-export default InventoryOverview
+export default InventoryOverview;

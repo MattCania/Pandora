@@ -1,22 +1,43 @@
-import React from "react";
-import styles from "./analytics.module.css"; // For layout styling
+import React, { useState } from "react";
 import InventoryOverview from "../../components/overviews/homeInventory";
 import TransactionOverview from "../../components/overviews/homeTransactions";
+import InventoryDisplay from "../inventory/inventory";
+import Records from './transaction';
+import styles from "./analytics.module.css";
+
 function Analytics() {
+  const [expenseFilter, setExpenseFilter] = useState("");
+  const [purchaseFilter, setPurchaseFilter] = useState("");
+
+  // Handlers for filtering records
+  const handleExpenseFilterChange = (e) => {
+    setExpenseFilter(e.target.value);
+  };
+
+  const handlePurchaseFilterChange = (e) => {
+    setPurchaseFilter(e.target.value);
+  };
+
   return (
     <div className={styles.mainSection}>
-  {/* Transaction Overview: Total Expenses & Total Purchases */}
-  <section className={styles.transactionSection}>
-    <div className={styles.subSection}>
-      <TransactionOverview type="expenses" />
+      {/* Transaction Overview: Total Expenses & Total Purchases */}
+      <section className={styles.transactionchart}>
+          <TransactionOverview type="expenses" />
+      </section>
+
+      <section className={styles.transactionsection}>
+        <Records recordType="Expenses" searchTerm={expenseFilter} />
+      </section>
+
+      <section className={styles.inventorychart}>
+        <InventoryOverview />
+      </section>
+
+      <section className={styles.inventorysection}>
+        <InventoryDisplay />
+      </section>
     </div>
-  </section>
-  {/* Inventory Overview */}
-  <section className={styles.inventorySection}>
-    <InventoryOverview />
-  </section>
-</div>
   );
 }
-export default Analytics;
 
+export default Analytics;

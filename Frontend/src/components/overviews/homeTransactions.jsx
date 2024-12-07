@@ -1,116 +1,156 @@
-import styles from './overview.module.css'
-import SubHeader from './subheader'
-import { Chart as ChartJS, defaults } from 'chart.js/auto'
-import { Bar, Doughnut, Line } from 'react-chartjs-2'
+import React, { useEffect, useState, useContext } from "react";
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend } from "chart.js";
+import { SessionContext } from "../../pages/home/home";
+import GetData from "../../hooks/GetData";
+import styles from './overview.module.css';
+import SubHeader from "./subheader";
 
-defaults.responsive = true
-defaults.maintainAspectRatio = true
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 
 function TransactionOverview() {
-	const chartData = {
-		label: "Yearly Expenses",
-		data: [450, 520, 480, 600, 530, 600, 550, 580, 620, 590, 480], // Total for each month (January to December)
-		backgroundColor: [
-			"rgb(255, 99, 132)",  // January - Red-ish
-			"rgb(54, 162, 235)",  // February - Blue
-			"rgb(75, 192, 192)",  // March - Teal
-			"rgb(255, 206, 86)",  // April - Yellow
-			"rgb(153, 102, 255)", // May - Purple
-			"rgb(255, 159, 64)",  // June - Orange
-			"rgb(201, 203, 207)", // July - Gray
-			"rgb(255, 99, 71)",   // August - Tomato Red
-			"rgb(144, 238, 144)", // September - Light Green
-			"rgb(100, 149, 237)", // October - Cornflower Blue
-			"rgb(220, 20, 60)",   // November - Crimson
-		],
-		borderColor: [
-			"rgb(220, 90, 120)",  // January - Slightly darker
-			"rgb(50, 150, 220)",  // February - Slightly darker
-			"rgb(70, 180, 180)",  // March - Slightly darker
-			"rgb(240, 190, 70)",  // April - Slightly darker
-			"rgb(140, 90, 240)",  // May - Slightly darker
-			"rgb(240, 140, 50)",  // June - Slightly darker
-			"rgb(180, 180, 180)", // July - Slightly darker
-			"rgb(240, 90, 60)",   // August - Slightly darker
-			"rgb(120, 220, 120)", // September - Slightly darker
-			"rgb(90, 130, 220)",  // October - Slightly darker
-			"rgb(200, 0, 50)",    // November - Slightly darkeraa
-		],
-		borderWidth: 2,
-	};
+  const user = useContext(SessionContext);
+  const [transactionData, setTransactionData] = useState([]);
 
-	const newChartData = {
-		label: "Yearly Purchases",
-		data: [520, 480, 510, 530, 560, 610, 590, 640, 600, 620, 550], // Total for each month (January to December)
-		backgroundColor: [
-			"rgb(244, 67, 54)",    // January - Red
-			"rgb(33, 150, 243)",   // February - Bright Blue
-			"rgb(0, 188, 212)",    // March - Cyan
-			"rgb(255, 193, 7)",    // April - Amber
-			"rgb(156, 39, 176)",   // May - Deep Purple
-			"rgb(76, 175, 80)",    // June - Green
-			"rgb(121, 85, 72)",    // July - Brown
-			"rgb(255, 87, 34)",    // August - Deep Orange
-			"rgb(139, 195, 74)",   // September - Light Green
-			"rgb(63, 81, 181)",    // October - Indigo
-			"rgb(233, 30, 99)",    // November - Pink
-		],
-		borderColor: [
-			"rgb(220, 60, 50)",    // January - Slightly darker
-			"rgb(30, 140, 230)",   // February - Slightly darker
-			"rgb(0, 170, 190)",    // March - Slightly darker
-			"rgb(240, 180, 0)",    // April - Slightly darker
-			"rgb(140, 30, 160)",   // May - Slightly darker
-			"rgb(60, 160, 70)",    // June - Slightly darker
-			"rgb(110, 75, 60)",    // July - Slightly darker
-			"rgb(240, 75, 30)",    // August - Slightly darker
-			"rgb(120, 180, 60)",   // September - Slightly darker
-			"rgb(50, 70, 170)",    // October - Slightly darker
-			"rgb(210, 20, 80)",    // November - Slightly darker
-		],
-		borderWidth: 2,
-	};
+  const fetchTransactions = async () => {
+    try {
+      if (!user) return;
+      const records = await GetData(`records/${user.session.userId}`);
+      if (!records) throw new Error("Records Null or Undefined");
 
-	return (
-		<section className={styles.transactionSection}>
-			<div className={styles.subSection}>
-				<SubHeader text="Total Expenses" subText="as of 2024" />
-				<section className={styles.sectionChart}>
+      // Define all months of the year
+      const allMonths = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
 
-					<Line
-						data={{
-							labels: [
-								"January", "February", "March", "April", "May", "June",
-								"July", "August", "September", "October", "November"
-							],
-							datasets: [chartData]
-						}}
+      // Aggregate data by month for chart
+      const monthlyData = records.reduce((acc, record) => {
+        const month = new Date(record.createdAt).toLocaleString("default", { month: "short" });
+        if (!acc[month]) {
+          acc[month] = { purchases: 0, expenses: 0 };
+        }
+        if (record.recordType === "Purchases") {
+          acc[month].purchases += 1;
+        } else if (record.recordType === "Expenses") {
+          acc[month].expenses += 1;
+        }
+        return acc;
+      }, {});
 
-					/>
-				</section>
-			</div>
+      // Create chart data, ensuring all months are represented
+      const chartData = allMonths.map(month => ({
+        month,
+        purchases: monthlyData[month]?.purchases || 0,
+        expenses: monthlyData[month]?.expenses || 0,
+      }));
 
-			<div className={styles.subSection}>
-				<SubHeader text="Total Purchases" subText="as of 2024" />
+      setTransactionData(chartData);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
 
-				<section className={styles.sectionChart}>
-					<Line
-						data={{
-							labels: [
-								"January", "February", "March", "April", "May", "June",
-								"July", "August", "September", "October", "November"
-							],
-							datasets: [newChartData]
-						}}
+  useEffect(() => {
+    fetchTransactions();
+  }, [user]);
 
-					/>
-				</section>
-			</div>
+  const chartLabels = transactionData.map(data => data.month);
+  const purchaseData = transactionData.map(data => data.purchases);
+  const expenseData = transactionData.map(data => data.expenses);
 
-		</section>
-	)
+  // Purchases chart data
+  const purchaseChartData = {
+    labels: chartLabels,
+    datasets: [
+      {
+        label: "Purchases",
+        data: purchaseData,
+        borderColor: "#36a2eb",
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+      },
+    ],
+  };
 
+  // Expenses chart data
+  const expenseChartData = {
+    labels: chartLabels,
+    datasets: [
+      {
+        label: "Expenses",
+        data: expenseData,
+        borderColor: "#ff6384",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+      },
+    ],
+  };
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
+      },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Month",
+          font: { size: 14, weight: "bold" },
+        },
+        grid: { color: "rgba(0, 0, 0, 0.1)" },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Transactions",
+          font: { size: 14, weight: "bold" },
+        },
+        beginAtZero: true,
+        grid: { color: "rgba(0, 0, 0, 0.1)" },
+      },
+    },
+  };
+
+  return (
+    <section className={styles.Section}>
+      <div className={styles.chartContainer}>
+        {transactionData.length > 0 ? (
+          <>
+            <div className={styles.subSection}>
+              <SubHeader text="Purchases" subText="As of 2024" />
+              <Line data={purchaseChartData} options={options} />
+            </div>
+            <div className={styles.subSection}>
+              <SubHeader text="Expenses" subText="As of 2024" />
+              <Line data={expenseChartData} options={options} />
+            </div>
+          </>
+        ) : (
+          <div className={styles.loadingContainer}>
+            <p>Loading transaction data...</p>
+            <div className={styles.spinner}></div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
 
-export default TransactionOverview
+export default TransactionOverview;
