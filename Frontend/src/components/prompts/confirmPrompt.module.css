@@ -132,12 +132,8 @@
 }
 
 .bodyCreated {
-    margin-bottom: 2rem;
-    height: 20%;
     text-align: center;
-    color: var(--green);
+    color: #28a745; /* Green color for success */
     font-size: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 20px;
 }

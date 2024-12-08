@@ -2,10 +2,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import CreateInterface from "../../components/interface/createInterface";
 import { useEffect, useState } from "react";
 import PostRequest from "../../hooks/PostRequest";
+import CreatedPrompt from "../../components/prompts/createdPrompt";
+
 
 function CreateTransactions() {
 	const navigate = useNavigate()
 	const {transaction, recordId} = useParams()
+	const [showPrompt, setShowPrompt] = useState(false);
+
 
 	if (!transaction || !recordId) return <h1>Loading...</h1>
 	
@@ -137,33 +141,40 @@ function CreateTransactions() {
 	// Example submit handler
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		const formData = {
-			...formValues,
-		};
-
+	
+		const formData = { ...formValues };
+	
 		try {
 			if (
 				!formData.orderNumber || !formData.account || !formData.category || !formData.paymentType ||
 				!formData.transactionDate || !formData.description || !formData.amount || !formData.currency ||
 				!formData.vendorCustomer || !formData.invoiceNumber
 			) throw new Error("All fields must be filled out.");
-			
-			const response = await PostRequest(`create-${transaction.slice(0, -1)}/${recordId}`, formData)
-			if (!response) throw new Error("Error Creation of Transaction")
-			navigate(`/home/records/${transaction}/${recordId}`)
+	
+			const response = await PostRequest(`create-${transaction.slice(0, -1)}/${recordId}`, formData);
+			if (!response) throw new Error("Error Creation of Transaction");
+	
+			setShowPrompt(true); // Show the prompt
 		} catch (error) {
 			console.error("Error:", error);
 		}
-
 	};
+	
 
 	const onClose = () => {
 		navigate(-1)
 	}
 
-	return(
+	const handleClosePrompt = () => {
+		setShowPrompt(false);
+		navigate(`/home/records/${transaction}/${recordId}`); // Redirect after closing the prompt
+	};
+	
+
+	return (
 		<div>
+			{showPrompt && <CreatedPrompt subText={`Transaction for ${transaction} created!`} close={handleClosePrompt} />}
+			
 			<CreateInterface 
 				mainText={`Create ${transaction}`} 
 				subText={`Record ${recordId}`} 
@@ -173,9 +184,9 @@ function CreateTransactions() {
 				onClose={onClose}
 				onSubmit={handleSubmit}
 			/>
-				
 		</div>
-	)
+	);
+	
 
 }
 
