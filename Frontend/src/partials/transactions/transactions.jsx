@@ -7,6 +7,7 @@ import styles from "./transactions.module.css";
 import SubHeader from "../../components/overviews/subheader";
 import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
 import DeleteRequest from "../../hooks/DeleteRequest";
+import ConfirmDeletion from "../../components/prompts/confirmDeletion"
 
 function Transactions() {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ function Transactions() {
 
   const [showConfirmPrompt, setShowConfirmPrompt] = useState(false);
   const [transactionToDelete, setTransactionToDelete] = useState(null);
+  const [showConfirmedPrompt, setShowConfirmedPrompt] = useState(false);
 
   const triggerDeletePrompt = (e, transactionId) => {
     e.stopPropagation();
@@ -66,23 +68,27 @@ function Transactions() {
 
   const confirmDeletion = async () => {
     try {
-      if (!transactionToDelete) return;
+        if (!transactionToDelete) return; 
 
-      const response = await DeleteRequest(
-        `delete-${transaction.toLowerCase().slice(0, -1)}/${transactionToDelete}`
-      );
-      if (!response) {
-        throw new Error("Failed to delete the transaction");
-      }
+        const response = await DeleteRequest(`delete-record/${transactionToDelete}`); 
+        if (!response) {
+            throw new Error("Failed to delete the record");
+        }
+        
+        fetchTransactions(); 
+        setShowConfirmedPrompt(true);
 
-      fetchTransactions();
+        setTimeout(() => {
+            setShowConfirmedPrompt(false);
+        }, 3000);
     } catch (error) {
-      console.error("Error:", error);
+        console.error("Error:", error);
     } finally {
-      setShowConfirmPrompt(false);
-      setTransactionToDelete(null);
+        setShowConfirmPrompt(false);
+        setTransactionToDelete(null); 
     }
-  };
+};
+	
 
   const openTransaction = (type, id, access) => {
     navigate(`/home/transaction/${type}/${id}/${access}`);
@@ -197,6 +203,12 @@ function Transactions() {
           action={confirmDeletion}
         />
       )}
+      {showConfirmedPrompt && (
+				<ConfirmDeletion
+					subText="The record has been successfully deleted!"
+					close={() => setShowConfirmedPrompt(false)}
+				/>
+			)}
     </section>
   );
 }

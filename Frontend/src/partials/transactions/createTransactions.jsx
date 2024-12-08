@@ -67,10 +67,10 @@ function CreateTransactions() {
 		},
 		{
 			label: "Currency",
-			type: "text",
+			type: "select",
 			id: "currency",
 			name: "currency",
-			placeholder: "Enter Currency (e.g., USD)",
+			options: ["PHP","USD","EUR","GBP","JPY","AUD","CAD","CHF","CNY","INR","SGD","HKD","NZD","ZAR","BRL","RUB","MXN","KRW","AED","SEK","NOK","DKK","THB","IDR","TRY","SAR","MYR","PLN","ILS","VND","CLP","COP"],
 		},
 		{
 			label: "Vendor/Customer",

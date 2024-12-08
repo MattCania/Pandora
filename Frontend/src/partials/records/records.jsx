@@ -12,7 +12,7 @@ import DeleteRequest from "../../hooks/DeleteRequest";
 import CreateInterface from "../../components/interface/createInterface";
 import FilterRecords from "../../utils/recordFilter";
 import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
-import ConfirmDeletion from "../../components/prompts/confirmDeletion"
+import ConfirmDeletion from "../../components/prompts/confirmDeletion";
 
 function Records() {
 	const navigate = useNavigate()

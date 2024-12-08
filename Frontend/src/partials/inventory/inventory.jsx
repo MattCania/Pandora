@@ -12,6 +12,7 @@ import DeleteRequest from "../../hooks/DeleteRequest";
 import CreateInterface from "../../components/interface/createInterface";
 import FilterRecords from "../../utils/recordFilter";
 import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
+import ConfirmDeletion from "../../components/prompts/confirmDeletion";
 
 function Inventory() {
 	const navigate = useNavigate()
@@ -70,6 +71,7 @@ function Inventory() {
 
 	const [showConfirmPrompt, setShowConfirmPrompt] = useState(false);
 	const [inventoryToDelete, setInventoryToDelete] = useState(null);
+	const [showConfirmedPrompt, setShowConfirmedPrompt] = useState(false);
 
 	const triggerDeletePrompt = (e, inventoryId) => {
 		e.stopPropagation();
@@ -79,21 +81,25 @@ function Inventory() {
 
 	const confirmDeletion = async () => {
 		try {
-			if (!inventoryToDelete) return;
+			if (!inventoryToDelete) return; 
 
 			const response = await DeleteRequest(`delete-record/${inventoryToDelete}`);
 			if (!response) {
 				throw new Error("Failed to delete the record");
 			}
-
 			fetchRecords();
+			setShowConfirmedPrompt(true); 
+			setTimeout(() => {
+				setShowConfirmedPrompt(false);
+			}, 3000);
 		} catch (error) {
-			console.error("Error:", error);
+			console.error("Error deleting inventory:", error);
 		} finally {
-			setShowConfirmPrompt(false);
-			setInventoryToDelete(null);
+			setShowConfirmPrompt(false); 
+			setInventoryToDelete(null); 
 		}
 	};
+
 
 	return (
 		user &&
@@ -196,6 +202,12 @@ function Inventory() {
 					proceedText="Delete"
 					close={() => setShowConfirmPrompt(false)}
 					action={confirmDeletion}
+				/>
+			)}
+			{showConfirmedPrompt && (
+				<ConfirmDeletion
+					subText="The record has been successfully deleted!"
+					close={() => setShowConfirmedPrompt(false)}
 				/>
 			)}
 			<Footer />
