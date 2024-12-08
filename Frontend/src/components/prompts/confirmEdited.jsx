@@ -9,7 +9,7 @@ function ConfirmEdited ({ subtext, close }) {
             <header className={styles.header}>
                 <button onClick={close}><FontAwesomeIcon icon={faX}/></button>
             </header>
-            <div className={styles.bodyDeleted}>
+            <div className={styles.bodyEdited}>
                 <h1><FontAwesomeIcon icon={faCheckCircle}/>{ subText ? subText : "Editing Successful"}</h1>
             </div>
         </section>
