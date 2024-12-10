@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import PostRequest from "../../hooks/PostRequest";
 import GetData from "../../hooks/GetData";
 import PutRequest from "../../hooks/PutRequest";
+import ConfirmEdited from "../../components/prompts/confirmEdited";
 
 function EditTransactions() {
 	const navigate = useNavigate()
 	const {transaction, transactionId} = useParams()
 	const [existingData, setExistingData] = useState({ results: {} })
+	const [showEdited, setShowEdited] = useState(false);
 
 	if (!transaction || !transactionId) return <h1>Loading...</h1>
 
@@ -198,8 +200,11 @@ function EditTransactions() {
 			
 			const response = await PostRequest(`update-expense/${transactionId}`, formData)
 			if (!response) throw new Error("Error Creation of Transaction")
-			// navigate(`/home/records/${transaction}/${recordId}`)
-			navigate(-1)
+			setShowEdited(true)
+			setTimeout(() => {
+				setShowEdited(false);
+				navigate(`/home/records/${transaction}/${transactionIddId}`);
+			}, 3000)
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -221,7 +226,11 @@ function EditTransactions() {
 				onSubmit={handleSubmit}
 				buttonText={'Update'}
 			/>
-				
+			{showEdited && (
+				<ConfirmEdited
+				subText = "The transaction has been successfully edited!"
+				close = {() =>  navigate(`/home/records/${transaction}/${transactionId}`)} />
+			)}	
 		</div>
 	)
 

@@ -60,7 +60,7 @@ function MoreSidebar() {
 
 			<hr />
 			<section className={styles.links}>
-				<div>
+				{/*<div>
 
 					<Link to="">Help & Support</Link>
 					<Link to="">Explore Tools</Link>
@@ -68,7 +68,7 @@ function MoreSidebar() {
 					<Link to="">Checkout Plans</Link>
 				</div>
 
-				<Link><FontAwesomeIcon icon={faStar} /> Whats New?</Link>
+				<Link><FontAwesomeIcon icon={faStar} /> Whats New?</Link>*/}
 			</section>
 			<hr />
 

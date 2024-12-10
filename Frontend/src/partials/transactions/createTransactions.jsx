@@ -2,10 +2,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import CreateInterface from "../../components/interface/createInterface";
 import { useEffect, useState } from "react";
 import PostRequest from "../../hooks/PostRequest";
+import CreatedPrompt from "../../components/prompts/createdPrompt";
 
 function CreateTransactions() {
 	const navigate = useNavigate()
 	const {transaction, recordId} = useParams()
+	const [showCreated, setShowCreated] = useState(false);
 
 	if (!transaction || !recordId) return <h1>Loading...</h1>
 	
@@ -50,20 +52,6 @@ function CreateTransactions() {
 			id: "amount",
 			name: "amount",
 			placeholder: "Enter Amount",
-		},
-		{
-			label: "Credit",
-			type: "number",
-			id: "credit",
-			name: "credit",
-			placeholder: "Enter Credit Amount",
-		},
-		{
-			label: "Debit",
-			type: "number",
-			id: "debit",
-			name: "debit",
-			placeholder: "Enter Debit Amount",
 		},
 		{
 			label: "Currency",
@@ -151,7 +139,11 @@ function CreateTransactions() {
 			
 			const response = await PostRequest(`create-${transaction.slice(0, -1)}/${recordId}`, formData)
 			if (!response) throw new Error("Error Creation of Transaction")
-			navigate(`/home/records/${transaction}/${recordId}`)
+			setShowCreated(true)
+			setTimeout(() => {
+				setShowCreated(false)
+				navigate(`/home/records/${transaction}/${recordId}`)
+			}, 3000)
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -173,7 +165,11 @@ function CreateTransactions() {
 				onClose={onClose}
 				onSubmit={handleSubmit}
 			/>
-				
+			{showCreated && (
+				<CreatedPrompt
+				subText = "The transaction has been succefully created!"
+				close = {() => navigate(`/home/records/${transaction}/${recordId}`)} />
+			)}
 		</div>
 	)
 

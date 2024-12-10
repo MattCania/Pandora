@@ -2,7 +2,7 @@ import styles from './confirmPrompt.module.css';
 import { faCheckCircle, faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function ConfirmEdited ({ subtext, close }) {
+function ConfirmEdited ({ subText, close }) {
     return (
         <div className={styles.blur}>
         <section className={styles.section}>
