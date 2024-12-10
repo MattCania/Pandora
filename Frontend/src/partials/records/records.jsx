@@ -150,7 +150,7 @@ function Records() {
 							<div className={styles.index}>#</div>
 							<div className={styles.id}>Record Id</div>
 							<div className={styles.name}>Record Name</div>
-							<div className={styles.cost}>Cost</div>
+							<div className={styles.cost}>Total Cost</div>
 							<div className={styles.access}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
 							<div className={styles.edit}>Edit</div>
@@ -234,6 +234,7 @@ function Records() {
 							<div className={styles.index}>#</div>
 							<div className={styles.id}>Record Id</div>
 							<div className={styles.name}>Record Name</div>
+							<div className={styles.cost}>Total Cost</div>
 							<div className={styles.access}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
 							<div className={styles.edit}>Edit</div>
@@ -255,6 +256,7 @@ function Records() {
 									<div className={styles.index}>{index + 1}</div>
 									<div className={styles.id}>{data.recordId}</div>
 									<div className={styles.name}>{data.recordName}</div>
+									<div className={styles.cost}>{data.cost}</div>
 									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}

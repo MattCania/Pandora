@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import CreateInterface from "../../components/interface/createInterface";
 import { useState } from "react";
 import PostRequest from "../../hooks/PostRequest";
+import CreatedPrompt from "../../components/prompts/createdPrompt";
 
 function CreateTransactions() {
   const navigate = useNavigate();
+  const [showCreated, setShowCreated] = useState(false);
 
   const [formValues, setFormValues] = useState({
     inventoryName: "",
@@ -125,7 +127,11 @@ function CreateTransactions() {
 
       const response = await PostRequest(`create-inventory`, formValues);
       if (!response) throw new Error("Error creating inventory item");
-	  else navigate(`/home/inventory`);
+	  setShowCreated(true);
+	  setTimeout(() => {
+		setShowCreated(false)
+		navigate(`/home/inventory`);
+	  }, 3000);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -145,6 +151,12 @@ function CreateTransactions() {
         onClose={onClose}
         onSubmit={handleSubmit}
       />
+	  {showCreated && (
+		<CreatedPrompt 
+		subtext = "The inventory creation has been succesfully created"
+		close = {() => navigate(`/home/inventory`)}
+		/>
+	  )}
     </div>
   );
 }

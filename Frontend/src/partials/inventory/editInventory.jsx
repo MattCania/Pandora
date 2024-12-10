@@ -3,10 +3,12 @@ import CreateInterface from "../../components/interface/createInterface";
 import { useEffect, useState } from "react";
 import PostRequest from "../../hooks/PostRequest";
 import GetData from "../../hooks/GetData";
+import ConfirmEdited from "../../components/prompts/confirmEdited";
 
 function EditInventory() {
 	const navigate = useNavigate();
 	const { inventoryId } = useParams();
+	const [showEdited, setShowEdited] = useState(false);
 
 	const [existingData, setExistingData] = useState({ results: {} });
 
@@ -164,7 +166,11 @@ function EditInventory() {
 			const response = await PostRequest(`update-inventory/${inventoryId}`, formData);
 			if (!response) throw new Error("Error Updating Inventory");
 
-			navigate('/home/inventory');
+			setShowEdited(true);
+			setTimeout(() => {
+				setShowEdited(false);
+				navigate('/home/inventory');
+			}, 3000)
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -185,6 +191,12 @@ function EditInventory() {
 				onSubmit={handleSubmit}
 				buttonText="Update"
 			/>
+			{showEdited && (
+				<ConfirmEdited 
+				subText="The inventory item has been successfully edited."
+				close = {() => navigate('/home/inventory')}
+				/>
+			)}
 		</div>
 	);
 }

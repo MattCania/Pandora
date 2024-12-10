@@ -9,6 +9,7 @@ import CreateInterface from "../../components/interface/createInterface";
 import GetSession from "../../hooks/GetSession";
 import GetData from '../../hooks/GetData'
 import Error from "../../components/error/error";
+import CreatedPrompt from '../../components/prompts/createdPrompt';
 
 function CreateRecords() {
 	const navigate = useNavigate();
@@ -16,6 +17,7 @@ function CreateRecords() {
 	const [usernames, setUsernames] = useState([])
 	const user = GetSession()
 	const [isAuth, setAuth] = useState(false);
+	const [showConfirmed, setShowConfirmed] = useState(false);
 
 	useEffect(() => {
 		if (user) {
@@ -84,21 +86,32 @@ function CreateRecords() {
 	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+	
 		const formData = {
 			...formValues,
 			...(userPermissions && { userPermissions: userPermissions })
 		};
-
+	
 		try {
-			if (!formData.recordType || !formData.recordName) throw new Error("Please Input a record type")
-			console.log(formData.recordType)
-			const response = await PostRequest("create-record", formData)
-			if (!response) throw new Error("Error Creation")
-			navigate('/home/records')
+			if (!formData.recordType || !formData.recordName) {
+				throw new Error("Please input a record type");
+			}
+			console.log("Form submitted:", formData);
+	
+			const response = await PostRequest("create-record", formData);
+			if (!response) {
+				throw new Error("Error during creation");
+			}
+			setShowConfirmed(true); 
+			setTimeout(() => {
+				setShowConfirmed(false);
+				navigate('/home/records')
+			}, 3000);
 		} catch (error) {
 			console.error("Error:", error);
 		}
 	};
+		
 	return (
 		user &&
 		<section className={styles.blur}>
@@ -159,6 +172,11 @@ function CreateRecords() {
 					</section>
 				</div>
 
+				{showConfirmed &&
+					(<CreatedPrompt
+						subText="The record has been successfully created"
+						close={() => navigate('/home/records')}/>
+				)}
 			</section>
 		</section>
 	)

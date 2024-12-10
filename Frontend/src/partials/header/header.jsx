@@ -32,10 +32,10 @@ function Header() {
 			<Link to="create" className={styles.createButton}><FontAwesomeIcon icon={faPlus} /></Link>
 
 			<section className={styles.section}>
-				<Link to='premium' className={styles.ad}>
+				{/*<Link to='premium' className={styles.ad}>
 					<FontAwesomeIcon icon={faCrown} color="gold" />
 					Premium
-				</Link>
+				</Link>*/}
 
 				{user.profile.organization &&
 					<div className={styles.organization}>
@@ -46,9 +46,9 @@ function Header() {
 				}
 
 				<div className={styles.options}>
-					<button>
+					{/*<button>
 						<FontAwesomeIcon icon={faBell} />
-					</button>
+					</button>*/}
 						<button onClick={toggleSidebar}>
 							<FontAwesomeIcon icon={faBars} />
 						</button>

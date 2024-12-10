@@ -10,6 +10,7 @@ import Loading from "../loading/loading";
 import PostRequest from "../../hooks/PostRequest";
 import GetSession from "../../hooks/GetSession";
 import Error from "../../components/error/error";
+import ConfirmEdited from "../../components/prompts/confirmEdited";
 
 
 function EditRecords() {
@@ -20,6 +21,7 @@ function EditRecords() {
 	const [usernames, setUsernames] = useState([])
 	const [existingUsers, setExistingUsers] = useState([])
 	const [isAuth, setAuth] = useState(false);
+	const [showEdited, setShowEdited] = useState(false);
 
 	
 	useEffect(() => {
@@ -107,20 +109,25 @@ function EditRecords() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const formData = { 
+		const formData = {
 			...formValues,
-			...(userPermissions && { userPermissions: userPermissions }) 
+			...(userPermissions && { userPermissions: userPermissions })
 		};
 
 		try {
+			if (!formData.recordType || !formData.recordName) throw new Error("Please Input a record type")
 			const response = await PostRequest(`update-record/${recordId}`, formData)
 			if (!response) throw new Error("Updating Data Error");
-			navigate(-1)
+			setShowEdited(true);
+			setTimeout(() => {
+				setShowEdited(false);
+				navigate('/home/records')
+			}, 3000);
 		} catch (error) {
 			console.error("Error:", error);
 		}
 	};
-
+	
 	return (
 		user &&
 		<section className={styles.blur}>
@@ -184,6 +191,11 @@ function EditRecords() {
 						))}
 					</section>
 				</div>
+				{showEdited && (
+					<ConfirmEdited
+					subText = "The record has been successfully edited!"
+					close ={() => navigate('/home/records')} />
+				)}
 			</section>
 		</section>
 	)
