@@ -7,13 +7,13 @@ import PutRequest from "../../hooks/PutRequest";
 
 function EditTransactions() {
 	const navigate = useNavigate()
-	const {transaction, transactionId} = useParams()
+	const { transaction, transactionId } = useParams()
 	const [existingData, setExistingData] = useState({ results: {} })
 
 	if (!transaction || !transactionId) return <h1>Loading...</h1>
 
 	const fetchTransactionInfo = async () => {
-		try{
+		try {
 			const result = await GetData(`get-${transaction.toLowerCase()}Transaction/${transactionId}`)
 			if (!result) throw new Error("Error Getting Data")
 			console.log(result)
@@ -28,33 +28,18 @@ function EditTransactions() {
 		fetchTransactionInfo()
 	}, [])
 
-	
+
 	if (!existingData) return <h1>Loading...</h1>
 	console.log("Existing Data:", existingData)
 
 
 	const transactionInput = [
 		{
-			label: "Order Number",
-			type: "text",
-			id: "orderNumber",
-			name: "orderNumber",
-			placeholder: "Enter Order Number",
-		},
-		{
 			label: "Account",
 			type: "select",
 			id: "account",
 			name: "account",
 			options: ["Revenue", "Expenses", "Equity", "Assets", "Liabilities"], // For dropdown
-		},
-		{
-			label: "Category",
-			type: "select",
-			id: "category",
-			value: existingData.results.category,
-			name: "category",
-			options: ["Income", "Expense", "Asset", "Liability", "Equity"], // For dropdown
 		},
 		{
 			label: "Payment Type",
@@ -75,20 +60,6 @@ function EditTransactions() {
 			id: "amount",
 			name: "amount",
 			placeholder: "Enter Amount",
-		},
-		{
-			label: "Credit",
-			type: "number",
-			id: "credit",
-			name: "credit",
-			placeholder: "Enter Credit Amount",
-		},
-		{
-			label: "Debit",
-			type: "number",
-			id: "debit",
-			name: "debit",
-			placeholder: "Enter Debit Amount",
 		},
 		{
 			label: "Currency",
@@ -119,57 +90,49 @@ function EditTransactions() {
 			placeholder: "Enter Tax Amount",
 		},
 		{
-			label: "Balance",
-			type: "number",
-			id: "balance",
-			name: "balance",
-			placeholder: "Enter Balance Amount",
-		},
-		{
 			label: "Description",
 			type: "textarea",
 			id: "description",
 			name: "description",
 			placeholder: "Enter Description",
 		},
+		{
+			label: "Status",
+			type: 'select',
+			id: 'status',
+			name: 'status',
+			options: ['Completed', 'Pending', 'Incompleted', 'Cancelled']
+		}
 	];
 
 	const [formValues, setFormValues] = useState({
-		orderNumber: existingData.orderNumber || "",
 		account: existingData.account || "",
-		category: existingData.category || "",
 		paymentType: existingData.paymentType || "",
 		transactionDate: existingData.transactionDate || "",
 		description: existingData.description || "",
-		amount: existingData.amount || "",
-		credit: existingData.credit || "",
-		debit: existingData.debit || "",
+		amount: existingData.amount || 0.00,
 		currency: existingData.currency || "",
 		vendorCustomer: existingData.vendorCustomer || "",
 		invoiceNumber: existingData.invoiceNumber || "",
-		tax: existingData.tax || "",
-		balance: existingData.balance || "",
+		tax: existingData.tax || 0.00,
+		status: existingData.status || "Completed"
 	});
 
 
 	useEffect(() => {
 		setFormValues({
-			orderNumber: existingData.results.orderNumber ,
-			account: existingData.results.account ,
-			category: existingData.results.category ,
-			paymentType: existingData.results.paymentType ,
-			transactionDate: existingData.results.transactionDate 
-            ? new Date(existingData.results.transactionDate).toISOString().slice(0, 16) // Format for datetime-local
-            : "",
-			description: existingData.results.description ,
-			amount: existingData.results.amount ,
-			credit: existingData.results.credit ,
-			debit: existingData.results.debit ,
-			currency: existingData.results.currency ,
-			vendorCustomer: existingData.results.vendorCustomer ,
-			invoiceNumber: existingData.results.invoiceNumber ,
-			tax: existingData.results.tax ,
-			balance: existingData.results.balance ,
+			account: existingData.results.account,
+			paymentType: existingData.results.paymentType,
+			transactionDate: existingData.results.transactionDate
+				? new Date(existingData.results.transactionDate).toISOString().slice(0, 16) // Format for datetime-local
+				: "",
+			description: existingData.results.description,
+			amount: existingData.results.amount,
+			currency: existingData.results.currency,
+			vendorCustomer: existingData.results.vendorCustomer,
+			invoiceNumber: existingData.results.invoiceNumber,
+			tax: existingData.results.tax,
+			status: existingData.results.status
 		});
 	}, [existingData]);
 
@@ -191,15 +154,14 @@ function EditTransactions() {
 
 		try {
 			if (
-				!formData.orderNumber || !formData.account || !formData.category || !formData.paymentType ||
-				!formData.transactionDate || !formData.description || !formData.amount || !formData.currency ||
+				!formData.account || !formData.category || !formData.paymentType ||
+				!formData.transactionDate || !formData.description || formData.amount < 0 || !formData.currency ||
 				!formData.vendorCustomer || !formData.invoiceNumber
 			) throw new Error("All fields must be filled out.");
-			
+
 			const response = await PostRequest(`update-expense/${transactionId}`, formData)
 			if (!response) throw new Error("Error Creation of Transaction")
-			// navigate(`/home/records/${transaction}/${recordId}`)
-			navigate(-1)
+			navigate(`/home/records/${transaction}/${recordId}`)
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -210,10 +172,10 @@ function EditTransactions() {
 		navigate(-1)
 	}
 
-	return(
+	return (
 		<div>
-			<CreateInterface 
-				mainText={`Edit ${transaction} Transaction ${transactionId}`} 
+			<CreateInterface
+				mainText={`Edit ${transaction} Transaction ${transactionId}`}
 				formInput={transactionInput}
 				formValues={formValues}
 				inputChange={handleInputChange}
@@ -221,7 +183,7 @@ function EditTransactions() {
 				onSubmit={handleSubmit}
 				buttonText={'Update'}
 			/>
-				
+
 		</div>
 	)
 

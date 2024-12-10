@@ -15,7 +15,7 @@ function BudgetOverview() {
   const fetchInventory = async () => {
     try {
       if (!user) return;
-      const inventory = await GetData(`inventory/${user.session.userId}`);
+      const inventory = await GetData(`inventory`);
       setInventoryData(inventory || []);
     } catch (error) {
       console.error("Error fetching inventory data:", error);

@@ -8,12 +8,10 @@ function CreateTransactions() {
 
   const [formValues, setFormValues] = useState({
     inventoryName: "",
+	type: "",
     category: "",
     quantity: "",
-    minQty: "",
     unitPrice: "",
-    supplier: "",
-    location: "",
     status: "",
     description: "",
   });
@@ -25,6 +23,16 @@ function CreateTransactions() {
 	  id: "inventoryName",
 	  name: "inventoryName",
 	  placeholder: "Enter Inventory Name",
+	},
+	{
+	  label: 'Stock Type',
+	  type: 'select',
+	  id: 'type',
+	  name: 'type',
+	  options: [
+		'Goods',
+		'Service'
+	  ]
 	},
 	{
 	  label: "Category",
@@ -57,32 +65,11 @@ function CreateTransactions() {
 	  placeholder: "Enter Quantity",
 	},
 	{
-	  label: "Minimum Quantity",
-	  type: "number",
-	  id: "minQty",
-	  name: "minQty",
-	  placeholder: "Enter Minimum Quantity",
-	},
-	{
 	  label: "Unit Price",
 	  type: "number",
 	  id: "unitPrice",
 	  name: "unitPrice",
 	  placeholder: "Enter Unit Price",
-	},
-	{
-	  label: "Supplier",
-	  type: "text",
-	  id: "supplier",
-	  name: "supplier",
-	  placeholder: "Enter Supplier Name",
-	},
-	{
-	  label: "Location",
-	  type: "text",
-	  id: "location",
-	  name: "location",
-	  placeholder: "Enter Location",
 	},
 	{
 	  label: "Status",

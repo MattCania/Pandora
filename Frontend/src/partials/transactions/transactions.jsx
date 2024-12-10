@@ -23,6 +23,7 @@ function Transactions() {
       if (!transactionData) {
         throw new Error("Transactions Null or Undefined");
       }
+      console.log(transactionData)
 
       const records = await GetData(`records/open/${recordId}`);
       if (!records) {

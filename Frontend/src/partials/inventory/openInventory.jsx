@@ -20,11 +20,9 @@ function OpenInventory() {
 		description: '',
 		inventoryId: '',
 		inventoryName: '',
-		location: '',
-		minQty: '',
 		quantity: '',
+		type: '',
 		status: '',
-		supplier: '',
 		unitPrice: ''
 	});
 
@@ -73,6 +71,10 @@ function OpenInventory() {
 						<input id="inventoryName" type="text" value={inventoryData.inventoryName} disabled />
 					</div>
 					<div className={transactionStyle.formDivs}>
+						<label htmlFor="type">Stock Type:</label>
+						<input id="type" type="text" value={inventoryData.type} disabled />
+					</div>
+					<div className={transactionStyle.formDivs}>
 						<label htmlFor="category">Category:</label>
 						<input id="category" type="text" value={inventoryData.category} disabled />
 					</div>
@@ -81,20 +83,8 @@ function OpenInventory() {
 						<input id="quantity" type="text" value={inventoryData.quantity} disabled />
 					</div>
 					<div className={transactionStyle.formDivs}>
-						<label htmlFor="minQty">Minimum Quantity:</label>
-						<input id="minQty" type="text" value={inventoryData.minQty} disabled />
-					</div>
-					<div className={transactionStyle.formDivs}>
 						<label htmlFor="unitPrice">Unit Price:</label>
 						<input id="unitPrice" type="text" value={inventoryData.unitPrice} disabled />
-					</div>
-					<div className={transactionStyle.formDivs}>
-						<label htmlFor="supplier">Supplier:</label>
-						<input id="supplier" type="text" value={inventoryData.supplier} disabled />
-					</div>
-					<div className={transactionStyle.formDivs}>
-						<label htmlFor="location">Location:</label>
-						<input id="location" type="text" value={inventoryData.location} disabled />
 					</div>
 					<div className={transactionStyle.formDivs}>
 						<label htmlFor="status">Status:</label>

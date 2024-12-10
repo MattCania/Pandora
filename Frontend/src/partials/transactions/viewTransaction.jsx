@@ -16,19 +16,15 @@ function ViewTransaction() {
 
 	const [transactionData, setTransactionData] = useState({
 		account: '',
-		category: '',
 		amount: '',
-		balance: '',
 		transactionDate: '',
 		paymentType: '',
 		currency: '',
-		orderNumber: '',
 		invoiceNumber: '',
 		vendorCustomer: '',
 		tax: '',
-		credit: '',
-		debit: '',
-		description: ''
+		description: '',
+		status: ''
 	});
 
 	const fetchTransactionData = async () => {
@@ -91,16 +87,8 @@ function ViewTransaction() {
 						<input id="account" type="text" value={transactionData.account} disabled />
 					</div>
 					<div className={styles.formDivs}>
-						<label htmlFor="category">Category:</label>
-						<input id="category" type="text" value={transactionData.category} disabled />
-					</div>
-					<div className={styles.formDivs}>
 						<label htmlFor="amount">Amount:</label>
 						<input id="amount" type="text" value={transactionData.amount} disabled />
-					</div>
-					<div className={styles.formDivs}>
-						<label htmlFor="balance">Balance:</label>
-						<input id="balance" type="text" value={transactionData.balance} disabled />
 					</div>
 					<div className={styles.formDivs}>
 						<label htmlFor="transactionDate">Transaction Date:</label>
@@ -120,10 +108,6 @@ function ViewTransaction() {
 						<input id="currency" type="text" value={transactionData.currency} disabled />
 					</div>
 					<div className={styles.formDivs}>
-						<label htmlFor="orderNumber">Order Number:</label>
-						<input id="orderNumber" type="text" value={transactionData.orderNumber} disabled />
-					</div>
-					<div className={styles.formDivs}>
 						<label htmlFor="invoiceNumber">Invoice Number:</label>
 						<input id="invoiceNumber" type="text" value={transactionData.invoiceNumber} disabled />
 					</div>
@@ -136,17 +120,10 @@ function ViewTransaction() {
 						<input id="tax" type="text" value={transactionData.tax} disabled />
 					</div>
 					<div className={styles.formDivs}>
-						<label htmlFor="credit">Credit:</label>
-						<input id="credit" type="text" value={transactionData.credit} disabled />
-					</div>
-					<div className={styles.formDivs}>
-						<label htmlFor="debit">Debit:</label>
-						<input id="debit" type="text" value={transactionData.debit} disabled />
-					</div>
-					<div className={styles.formDivs}>
 						<label htmlFor="description">Description:</label>
-						<input id="description" type="textarea" value={transactionData.description} disabled />
+						<textarea name="description" id="description" disabled value={transactionData.description} />
 					</div>
+
 				</section>
 
 

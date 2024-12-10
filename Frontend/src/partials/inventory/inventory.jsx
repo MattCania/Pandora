@@ -23,7 +23,7 @@ function Inventory() {
 	const fetchRecords = async () => {
 		try {
 			if (!user) return
-			const inventory = await GetData(`inventory/${user.session.userId}`)
+			const inventory = await GetData(`inventory`)
 			if (inventory.length === 0 || !inventory) {
 				console.log('Empty Results')
 			}
@@ -42,7 +42,6 @@ function Inventory() {
 		return <Loading />;
 	}
 
-	// Apply search term filtering
 	const filteredInventory = data.filter(inventory => {
 		const inventoryRecord = String(inventory.inventoryId);
 		const accessType = inventory.permissions[0].userAccess.accessType.toLowerCase();
@@ -58,12 +57,9 @@ function Inventory() {
 		setSearchTerm(e.target.value);
 	};
 
-	// Displaying Record Details
 	const openRecord = (recordId, access) => {
 		navigate(`${recordId}/${access}`)
 	}
-
-	// Create new Record
 
 	const navigateCreate = () => {
 		navigate('create')
@@ -125,6 +121,7 @@ function Inventory() {
 							<div className={styles.name2}>Stock Name</div>
 							<div className={styles.name}>Inventory Description</div>
 							<div className={styles.category}>Category</div>
+							<div className={styles.category}>Type</div>
 							<div className={styles.access}>Quantity</div>
 							<div className={styles.cell2}>Unit Price</div>
 							{/* <div className={styles.access}>Supplier</div> */}
@@ -137,7 +134,7 @@ function Inventory() {
 							<div className={styles.delete}>Delete</div>
 						</div>
 						<div className={styles.tableBody}>
-							{data.map((data, index) => (
+							{filteredInventory.map((data, index) => (
 								<div
 									className={styles.row}
 									key={index}
@@ -153,6 +150,7 @@ function Inventory() {
 									<div className={styles.name2}>{data.inventoryName}</div>
 									<div className={styles.name}>{data.description}</div>
 									<div className={styles.category}>{data.category}</div>
+									<div className={styles.category}>{data.type}</div>
 									<div className={styles.access}>{data.quantity}</div>
 									<div className={styles.cell2}>{data.unitPrice}</div>
 									{/* <div className={styles.access}>{data.supplier}</div> */}

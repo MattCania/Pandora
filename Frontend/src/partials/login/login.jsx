@@ -52,32 +52,30 @@ function Login() {
 	}
 
 	const handleSubmit = async (e) => {
-		e.preventDefault()
-
-		const formData = {
-			...formValues,
-		}
-
+		e.preventDefault();
+	  
+		const formData = { ...formValues };
+	  
 		try {
-			const response = await PostRequest("/login", formData)
-
-			if (!response) throw new Error("Invalid Credentials")
-			navigate('/home')
+		  const response = await PostRequest("/login", formData);
+		  if (response) {
+			navigate("/home");
+		  }
 		} catch (error) {
-			setError(error.message)
-			setShowPrompt(true);
-
-			console.error("Error:", error)
-
-			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current);
-			}
-
-			timeoutRef.current = setTimeout(() => {
-				setShowPrompt(false);
-			}, 2000);
+		  setError(error.message);
+		  setShowPrompt(true);
+	  
+		  console.error("Error:", error);
+	  
+		  if (timeoutRef.current) {
+			clearTimeout(timeoutRef.current);
+		  }
+	  
+		  timeoutRef.current = setTimeout(() => {
+			setShowPrompt(false);
+		  }, 2000);
 		}
-	}
+	  };
 
 	return (
 		<section className={styles.section}>
@@ -87,7 +85,7 @@ function Login() {
 				<a href="/landing">
 					<img className={styles.formLogo} src={Logo} alt="" draggable="false" />
 				</a>
-				<form className={styles.form}>
+				<form className={styles.form} onSubmit={handleSubmit}>
 
 					{showPrompt && <p style={{ color: 'red', fontWeight: 'bold', margin: '0' }}>{errMessage}</p>}
 					<h3>Log In Account</h3>
@@ -102,7 +100,7 @@ function Login() {
 					</div>
 
 
-					<input type="submit" value="Log In" onClick={handleSubmit} />
+					<input type="submit" value="Log In" />
 				</form>
 				<div className={styles.accountOptions}>
 					<a href="/register">Dont have an Account?</a>

@@ -11,25 +11,11 @@ function CreateTransactions() {
 	
 	const transactionInput = [
 		{
-			label: "Order Number",
-			type: "text",
-			id: "orderNumber",
-			name: "orderNumber",
-			placeholder: "Enter Order Number",
-		},
-		{
 			label: "Account",
 			type: "select",
 			id: "account",
 			name: "account",
 			options: ["Revenue", "Expenses", "Equity", "Assets", "Liabilities"], // For dropdown
-		},
-		{
-			label: "Category",
-			type: "select",
-			id: "category",
-			name: "category",
-			options: ["Income", "Expense", "Asset", "Liability", "Equity"], // For dropdown
 		},
 		{
 			label: "Payment Type",
@@ -50,20 +36,6 @@ function CreateTransactions() {
 			id: "amount",
 			name: "amount",
 			placeholder: "Enter Amount",
-		},
-		{
-			label: "Credit",
-			type: "number",
-			id: "credit",
-			name: "credit",
-			placeholder: "Enter Credit Amount",
-		},
-		{
-			label: "Debit",
-			type: "number",
-			id: "debit",
-			name: "debit",
-			placeholder: "Enter Debit Amount",
 		},
 		{
 			label: "Currency",
@@ -94,11 +66,11 @@ function CreateTransactions() {
 			placeholder: "Enter Tax Amount",
 		},
 		{
-			label: "Balance",
-			type: "number",
-			id: "balance",
-			name: "balance",
-			placeholder: "Enter Balance Amount",
+			label: "Status",
+			type: "select",
+			id: "status",
+			name: "status",
+			options: ['Completed', 'Pending', 'Incomplete', 'Cancelled']
 		},
 		{
 			label: "Description",
@@ -110,20 +82,16 @@ function CreateTransactions() {
 	];
 
 	const [formValues, setFormValues] = useState({
-		orderNumber: "",
 		account: "",
-		category: "",
 		paymentType: "",
 		transactionDate: "",
 		description: "",
 		amount: "",
-		credit: "",
-		debit: "",
 		currency: "",
 		vendorCustomer: "",
 		invoiceNumber: "",
-		tax: "",
-		balance: "",
+		tax: 0,
+		status: ""
 	});
 
 	const handleInputChange = (e) => {
@@ -144,14 +112,14 @@ function CreateTransactions() {
 
 		try {
 			if (
-				!formData.orderNumber || !formData.account || !formData.category || !formData.paymentType ||
-				!formData.transactionDate || !formData.description || !formData.amount || !formData.currency ||
+				!formData.account|| !formData.paymentType ||
+				!formData.transactionDate || !formData.description || formData.amount < 0 ||
 				!formData.vendorCustomer || !formData.invoiceNumber
 			) throw new Error("All fields must be filled out.");
 			
 			const response = await PostRequest(`create-${transaction.slice(0, -1)}/${recordId}`, formData)
 			if (!response) throw new Error("Error Creation of Transaction")
-			navigate(`/home/records/${transaction}/${recordId}`)
+			navigate(`/home/records/${recordId}`)
 		} catch (error) {
 			console.error("Error:", error);
 		}

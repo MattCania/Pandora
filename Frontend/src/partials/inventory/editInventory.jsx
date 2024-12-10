@@ -30,78 +30,99 @@ function EditInventory() {
 
 	const inventoryInput = [
 		{
-			label: "Inventory Name",
-			type: "text",
-			id: "inventoryName",
-			name: "inventoryName",
-			placeholder: "Enter Inventory Name",
+		  label: "Inventory Name",
+		  type: "text",
+		  id: "inventoryName",
+		  name: "inventoryName",
+		  placeholder: "Enter Inventory Name",
 		},
 		{
-			label: "Category",
-			type: "text",
-			id: "category",
-			name: "category",
-			placeholder: "Enter Category",
+		  label: 'Stock Type',
+		  type: 'select',
+		  id: 'type',
+		  name: 'type',
+		  options: [
+			'Goods',
+			'Service'
+		  ]
 		},
 		{
-			label: "Quantity",
-			type: "number",
-			id: "quantity",
-			name: "quantity",
-			placeholder: "Enter Quantity",
+		  label: "Category",
+		  type: "select",
+		  id: "category",
+		  name: "category",
+		  options: [
+			"Raw Materials",
+			"Finished Goods",
+			"Work-in-Progress",
+			"Consumables",
+			"Office Supplies",
+			"Machinery and Equipment",
+			"Furniture",
+			"Electronics",
+			"Vehicles",
+			"Health and Safety",
+			"Packaging Materials",
+			"Perishable Goods",
+			"Non-Perishable Goods",
+			"Tools",
+			"Miscellaneous",
+		  ],
 		},
 		{
-			label: "Minimum Quantity",
-			type: "number",
-			id: "minQty",
-			name: "minQty",
-			placeholder: "Enter Minimum Quantity",
+		  label: "Quantity",
+		  type: "number",
+		  id: "quantity",
+		  name: "quantity",
+		  placeholder: "Enter Quantity",
 		},
 		{
-			label: "Unit Price",
-			type: "number",
-			id: "unitPrice",
-			name: "unitPrice",
-			placeholder: "Enter Unit Price",
+		  label: "Unit Price",
+		  type: "number",
+		  id: "unitPrice",
+		  name: "unitPrice",
+		  placeholder: "Enter Unit Price",
 		},
 		{
-			label: "Supplier",
-			type: "text",
-			id: "supplier",
-			name: "supplier",
-			placeholder: "Enter Supplier Name",
+		  label: "Status",
+		  type: "select",
+		  id: "status",
+		  name: "status",
+		  options: [
+			"In Stock",
+			"Out of Stock",
+			"Reserved",
+			"On Order",
+			"In Transit",
+			"Backordered",
+			"Pending",
+			"Damaged",
+			"Quarantined",
+			"Returned",
+			"Ready for Dispatch",
+			"Under Maintenance",
+			"Expired",
+			"On Hold",
+			"Sold",
+			"Recalled",
+			"Available for Allocation",
+		  ],
 		},
 		{
-			label: "Location",
-			type: "text",
-			id: "location",
-			name: "location",
-			placeholder: "Enter Location",
+		  label: "Description",
+		  type: "textarea",
+		  id: "description",
+		  name: "description",
+		  placeholder: "Enter Description",
 		},
-		{
-			label: "Status",
-			type: "text",
-			id: "status",
-			name: "status",
-			placeholder: "Enter Status",
-		},
-		{
-			label: "Description",
-			type: "textarea",
-			id: "description",
-			name: "description",
-			placeholder: "Enter Description",
-		},
-	];
+	  ];
 
 	const [formValues, setFormValues] = useState({
 		inventoryName: existingData.inventoryName || "",
+		type: existingData.type || "",
 		category: existingData.category || "",
 		quantity: existingData.quantity || "",
-		minQty: existingData.minQty || "",
 		unitPrice: existingData.unitPrice || "",
-		supplier: existingData.supplier || "",
-		location: existingData.location || "",
 		status: existingData.status || "",
 		description: existingData.description || "",
 	});
@@ -109,12 +130,10 @@ function EditInventory() {
 	useEffect(() => {
 		setFormValues({
 			inventoryName: existingData.inventoryName,
+			type: existingData.type,
 			category: existingData.category,
 			quantity: existingData.quantity,
-			minQty: existingData.minQty,
 			unitPrice: existingData.unitPrice,
-			supplier: existingData.supplier,
-			location: existingData.location,
 			status: existingData.status,
 			description: existingData.description,
 		});
@@ -137,9 +156,8 @@ function EditInventory() {
 
 		try {
 			if (
-				!formData.inventoryName || !formData.category || !formData.quantity ||
-				!formData.minQty || !formData.unitPrice || !formData.supplier ||
-				!formData.location || !formData.status || !formData.description
+				!formData.inventoryName || !formData.type || !formData.category || !formData.quantity || !formData.unitPrice 
+				|| !formData.status || !formData.description
 			)
 				throw new Error("All fields must be filled out.");
 
