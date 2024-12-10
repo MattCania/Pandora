@@ -129,39 +129,31 @@ const getPurchaseTransaction = async (req, res) => {
 const createExpenses = async (req, res) => {
   const recordId = req.params.recordId;
   const {
-    orderNumber,
     account,
-    category,
     paymentType,
     transactionDate,
     description,
     amount,
-    credit,
-    debit,
     currency,
     vendorCustomer,
     invoiceNumber,
     tax,
-    balance,
+    status
   } = req.body;
 
   try {
     const creation = await Expenses.create({
       expenseId: recordId,
-      orderNumber: orderNumber,
       account: account,
-      category: category,
       paymentType: paymentType,
       transactionDate: transactionDate,
       description: description,
       amount: amount,
-      credit: credit || 0,
-      debit: debit || 0,
       currency: currency,
       vendorCustomer: vendorCustomer,
       invoiceNumber: invoiceNumber,
       tax: tax || 0,
-      balance: balance || 0,
+      status: status || 'Completed'
     });
 
     if (!creation) throw new Error("Error Creating Transaction");
@@ -176,39 +168,31 @@ const createExpenses = async (req, res) => {
 const createPurchases = async (req, res) => {
   const recordId = req.params.recordId;
   const {
-    orderNumber,
     account,
-    category,
     paymentType,
     transactionDate,
     description,
     amount,
-    credit,
-    debit,
     currency,
     vendorCustomer,
     invoiceNumber,
     tax,
-    balance,
+    status
   } = req.body;
 
   try {
     const creation = await Purchases.create({
       purchaseId: recordId,
-      orderNumber: orderNumber,
       account: account,
-      category: category,
       paymentType: paymentType,
       transactionDate: transactionDate,
       description: description,
       amount: amount,
-      credit: credit || 0,
-      debit: debit || 0,
       currency: currency,
       vendorCustomer: vendorCustomer,
       invoiceNumber: invoiceNumber,
       tax: tax || 0,
-      balance: balance || 0,
+      status: status || 'Completed'
     });
 
     if (!creation) throw new Error("Error Creating Transaction");

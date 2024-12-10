@@ -2,47 +2,26 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('expenses', {
+    await queryInterface.createTable('userwallets', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      transactionId: {
+      walletId: {
         type: Sequelize.INTEGER
       },
-      recordId: {
+      userId: {
         type: Sequelize.INTEGER
       },
-      account: {
-        type: Sequelize.STRING
-      },
-      paymentType: {
-        type: Sequelize.STRING
-      },
-      transactionDate: {
-        type: Sequelize.DATE
-      },
-      description: {
-        type: Sequelize.TEXT
-      },
-      amount: {
+      income: {
         type: Sequelize.DECIMAL
       },
-      currency: {
+      recurrance: {
         type: Sequelize.STRING
       },
-      vendorCustomer: {
-        type: Sequelize.STRING
-      },
-      invoiceNumber: {
-        type: Sequelize.STRING
-      },
-      status: {
-        type: Sequelize.STRING
-      },
-      tax: {
+      wallet: {
         type: Sequelize.DECIMAL
       },
       createdAt: {
@@ -56,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('expenses');
+    await queryInterface.dropTable('userwallets');
   }
 };

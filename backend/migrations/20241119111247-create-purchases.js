@@ -15,9 +15,6 @@ module.exports = {
       recordId: {
         type: Sequelize.INTEGER
       },
-      orderNumber: {
-        type: Sequelize.STRING
-      },
       account: {
         type: Sequelize.STRING
       },
@@ -33,9 +30,6 @@ module.exports = {
       amount: {
         type: Sequelize.DECIMAL
       },
-      credit: {
-        type: Sequelize.DECIMAL
-      },
       currency: {
         type: Sequelize.STRING
       },
@@ -49,9 +43,6 @@ module.exports = {
         type: Sequelize.STRING
       },
       tax: {
-        type: Sequelize.DECIMAL
-      },
-      balance: {
         type: Sequelize.DECIMAL
       },
       createdAt: {

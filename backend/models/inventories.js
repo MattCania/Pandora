@@ -58,16 +58,21 @@ module.exports = (sequelize, DataTypes) => {
         len: [0, 100],
       },
     },
+    type: {
+      type: DataTypes.ENUM(
+        'Goods', 'Service'
+      ),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     category: { 
       type: DataTypes.ENUM(
-        "Raw Materials", "Finished Goods",
-        "Work-in-Progress", "Consumables",
-        "Office Supplies", "Machinery and Equipment",
-        "Furniture", "Electronics",
-        "Vehicles", "Health and Safety",
-        "Packaging Materials", "Perishable Goods",
-        "Non-Perishable Goods", "Tools",
-        "Miscellaneous"
+        "Raw Materials", "Finished Goods","Work-in-Progress", "Consumables",
+        "Office Supplies", "Machinery and Equipment","Furniture", "Electronics",
+        "Vehicles", "Health and Safety","Packaging Materials", "Perishable Goods",
+        "Non-Perishable Goods", "Tools","Miscellaneous"
       ),
       allowNull: false,
       validate: {
@@ -93,49 +98,17 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true, 
       },
     },
-    supplier: { 
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [2, 25],
-      },
-    },
-    location: { 
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [2, 100],
-      },
-    },
-    minQty: { 
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate:{
-        notEmpty: true,
-        min: 0,
-        isInt: true, 
-      }
-    },
     status: {
       type: DataTypes.ENUM(
-        "In Stock",
-        "Out of Stock",
-        "Reserved",
-        "On Order",
-        "In Transit",
-        "Backordered",
-        "Pending",
-        "Damaged",
-        "Quarantined",
-        "Returned",
-        "Ready for Dispatch",
-        "Under Maintenance",
-        "Expired",
-        "On Hold",
-        "Sold",
-        "Recalled",
-        "Available for Allocation"
+        "In Stock","Out of Stock","Reserved","On Order",
+        "In Transit","Backordered","Pending","Damaged",
+        "Quarantined","Returned","Ready for Dispatch","Under Maintenance",
+        "Expired","On Hold","Sold","Recalled","Available for Allocation"
       ),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     createdAt: { 
       type: DataTypes.DATE,

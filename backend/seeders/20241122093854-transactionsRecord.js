@@ -3,186 +3,131 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    function getRandomDateTime() {
+      const year = Math.floor(Math.random() * (2050 - 2000 + 1)) + 2000;
+      const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
+      const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
+      const hour = String(Math.floor(Math.random() * 24)).padStart(2, "0");
+      const minute = String(Math.floor(Math.random() * 60)).padStart(2, "0");
+      return `${year}-${month}-${day}T${hour}:${minute}`;
+    }
+
+    console.log('Starting Seeders')
+
     await queryInterface.bulkInsert("Permissions", [
-      {
-        accessType: "Admin",
-      },
-      {
-        accessType: "Owner",
-      },
-      {
-        accessType: "Editor",
-      },
-      {
-        accessType: "Viewer",
-      },
+      { accessType: "Admin" },
+      { accessType: "Owner" },
+      { accessType: "Editor" },
+      { accessType: "Viewer" },
     ]);
-	console.log('seeding TransactionRecords')
-	
-    await queryInterface.bulkInsert("TransactionRecords", [
-      {
-        creatorId: 1,
-        recordType: "Expenses",
-        recordName: "Office Supplies",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        creatorId: 2,
-        recordType: "Purchases",
-        recordName: "Hardware Purchases",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-	},
-	{
-        creatorId: 3,
-        recordType: "Expenses",
-        recordName: "Travel Expenses",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        creatorId: 4,
-        recordType: "Purchases",
-        recordName: "Software Licenses",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
-	
-	console.log('seeding RecordPermissions')
+
+    console.log("Seeding Transaction Records...");
+
+    const recordNames = [
+      "Office Supplies", "Hardware Purchases", "Travel Expenses", "Software Licenses"
+    ]
+
+    const bulkRecords = []
+    for (let i = 0; i < 5; i++){
+      bulkRecords.push({
+        creatorId: Math.floor(Math.random() * 2) + 1,
+        recordType: Math.floor(Math.random() * 2) + 1 === 1 ? 'Expenses' : 'Purchases',
+        recordName: recordNames[Math.floor(Math.random() * recordNames.length)],
+        createdAt: getRandomDateTime(),
+        updatedAt: getRandomDateTime(),
+      })
+    }
+
+    await queryInterface.bulkInsert("TransactionRecords", bulkRecords);
+
+    console.log("seeding Record Permissions");
+
     await queryInterface.bulkInsert("RecordPermissions", [
-		{ recordId: 1, permittedUser: 1, accessLevel: 1 },
-      { recordId: 1, permittedUser: 3, accessLevel: 2 },
-      { recordId: 2, permittedUser: 2, accessLevel: 1 },
-      { recordId: 2, permittedUser: 4, accessLevel: 2 },
-      { recordId: 3, permittedUser: 1, accessLevel: 2 },
-      { recordId: 3, permittedUser: 2, accessLevel: 1 },
-      { recordId: 4, permittedUser: 3, accessLevel: 1 },
-      { recordId: 4, permittedUser: 4, accessLevel: 2 },
+      { recordId: 1, permittedUser: 1, accessLevel: 1 },
+      { recordId: 1, permittedUser: 2, accessLevel: 2 },
+      { recordId: 2, permittedUser: 1, accessLevel: 1 },
+      { recordId: 2, permittedUser: 2, accessLevel: 2 },
     ]);
-	
-	console.log('seeding Transactions')
+
+    console.log("Seeding Transactions");
     // Insert Expenses
     const expenses = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i < 100; i++) {
       expenses.push({
-        expenseId: i,
-        orderNumber: `ORD${i.toString().padStart(3, "0")}`,
+        expenseId: Math.floor(Math.random() * 2) + 1,
         account: "Expenses",
-        category: i % 2 === 0 ? "Travel" : "Office",
         paymentType: i % 3 === 0 ? "Credit Card" : "Cash",
         transactionDate: new Date(`2024-0${(i % 12) + 1}-01 10:00:00`),
         description: `Expense Description ${i}`,
-        amount: Math.floor(Math.random() * 1000 + 100),
-        credit: 0,
-        debit: 0,
+        amount: Math.floor(Math.random() * 1000 + 100) + 1,
         currency: "USD",
         vendorCustomer: `Vendor ${i}`,
         invoiceNumber: `INV${i.toString().padStart(3, "0")}`,
-        tax: Math.floor(Math.random() * 100),
-        balance: Math.floor(Math.random() * 1000),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        tax: Math.floor(Math.random() * 100) + 1,
+        createdAt: getRandomDateTime(),
+        updatedAt: getRandomDateTime(),
       });
     }
     await queryInterface.bulkInsert("Expenses", expenses);
 
     // Insert Purchases
     const purchases = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i < 100; i++) {
       purchases.push({
-        purchaseId: i,
-        orderNumber: `ORD${(i + 20).toString().padStart(3, "0")}`,
+        purchaseId: Math.floor(Math.random() * 2) + 1,
         account: "Liabilities",
-        category: i % 2 === 0 ? "Software" : "Hardware",
-        paymentType: i % 3 === 0 ? "Bank Transfer" : "Check",
-        transactionDate: new Date(`2024-0${(i % 12) + 1}-10 15:00:00`),
-        description: `Purchase Description ${i}`,
-        amount: Math.floor(Math.random() * 2000 + 200),
-        credit: 0,
-        debit: 0,
+        paymentType: i % 3 === 0 ? "Credit Card" : "Cash",
+        transactionDate: new Date(`2024-0${(i % 12) + 1}-01 10:00:00`),
+        description: `Expense Description ${i}`,
+        amount: Math.floor(Math.random() * 1000 + 100) + 1,
         currency: "USD",
-        vendorCustomer: `Customer ${i}`,
-        invoiceNumber: `INV${(i + 20).toString().padStart(3, "0")}`,
-        tax: Math.floor(Math.random() * 150),
-        balance: Math.floor(Math.random() * 2000),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        vendorCustomer: `Vendor ${i}`,
+        invoiceNumber: `INV${i.toString().padStart(3, "0")}`,
+        tax: Math.floor(Math.random() * 100) + 1,
+        createdAt: getRandomDateTime(),
+        updatedAt: getRandomDateTime(),
       });
     }
     await queryInterface.bulkInsert("Purchases", purchases);
 
-   
-
-	console.log('seeding Inventory')
-    const inventoryData = [
-      {
-        inventoryId: 1,
-        creatorId: 1,
-		inventoryName: 'Inventory Sample A',
-        description: "Received additional raw materials",
-        description: "High-quality raw material for production",
-        category: "Raw Materials",
-        quantity: 100,
-        unitPrice: 50.0,
-        supplier: "Supplier A",
-        location: "Warehouse 1",
-        minQty: 10,
-        status: "In Stock",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        inventoryId: 2,
-        creatorId: 2,
-		inventoryName: 'Inventory Sample B',
-        description: "Office chairs delivered to office",
-        category: "Furniture",
-        quantity: 20,
-        unitPrice: 150.0,
-        supplier: "Office Supplies Inc.",
-        location: "Main Office",
-        minQty: 5,
-        status: "In Stock",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        inventoryId: 3,
-        creatorId: 3,
-		inventoryName: 'Inventory Sample C',
-        description: "Printer ink reordered",
-        category: "Office Supplies",
-        quantity: 50,
-        unitPrice: 25.0,
-        supplier: "Tech Supplies",
-        location: "Office Storage",
-        minQty: 10,
-        status: "Reserved",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        inventoryId: 4,
-        creatorId: 4,
-		inventoryName: 'Inventory Sample D',
-        description: "Packaging boxes sent to production",
-        category: "Packaging Materials",
-        quantity: 200,
-        unitPrice: 2.5,
-        supplier: "Packaging Solutions",
-        location: "Warehouse 2",
-        minQty: 50,
-        status: "In Stock",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
+    const inventoryCategory = [
+      "Raw Materials","Finished Goods","Work-in-Progress","Consumables",
+      "Office Supplies","Machinery and Equipment","Furniture","Electronics",
+      "Vehicles","Health and Safety","Packaging Materials","Perishable Goods",
+      "Non-Perishable Goods","Tools","Miscellaneous",
     ];
+
+    const inventoryStatus = [
+      "In Stock","Out of Stock","Reserved","On Order",
+      "In Transit","Backordered","Pending","Damaged",
+      "Quarantined","Returned","Ready for Dispatch","Under Maintenance",
+      "Expired","On Hold","Sold","Recalled",
+      "Available for Allocation",
+    ];
+
+    console.log("Seeding Inventory");
+
+    const inventoryData = [];
+    for (let i = 0; i < 20; i++) {
+      inventoryData.push({
+        creatorId: Math.floor(Math.random() * 2) + 1,
+        inventoryName:
+          Math.floor(Math.random() * 2) + 1 === 1 ? `Stock ${i + 1}` : `Inventory ${i + 1}`,
+        description: `Inventory Description ${i}`,
+        type:
+          Math.floor(Math.random() * 2) + 1 === 1 ? `Goods` : `Service`,
+        category: inventoryCategory[Math.floor(Math.random() * inventoryCategory.length)],
+        quantity: Math.floor(Math.random() * 100),
+        unitPrice: Math.floor(Math.random() * 500),
+        status: inventoryStatus[Math.floor(Math.random() * inventoryStatus.length) + 1],
+        createdAt: getRandomDateTime(),
+        updatedAt: getRandomDateTime(),
+      });
+    }
     await queryInterface.bulkInsert("Inventories", inventoryData);
 
-     // Seed data for the "inventorypermissions" table
-     const inventoryPermissionsData = [
+    // Seed data for the "inventorypermissions" table
+    const inventoryPermissions = [
       {
         permissionId: 1,
         inventoryId: 1,
@@ -194,24 +139,9 @@ module.exports = {
         inventoryId: 2,
         permittedUser: 2,
         accessLevel: 2,
-      },
-      {
-        permissionId: 3,
-        inventoryId: 3,
-        permittedUser: 3,
-        accessLevel: 1,
-      },
-      {
-        permissionId: 4,
-        inventoryId: 4,
-        permittedUser: 4,
-        accessLevel: 3,
-      },
+      }
     ];
-    await queryInterface.bulkInsert(
-      "InventoryPermissions",
-      inventoryPermissionsData
-    );
+    await queryInterface.bulkInsert("InventoryPermissions", inventoryPermissions);
   },
 
   async down(queryInterface, Sequelize) {

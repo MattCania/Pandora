@@ -8,7 +8,7 @@ const { Op, Sequelize, where } = require("sequelize");
 
 // Get all inventory records the user has access to
 const getInventories = async (req, res) => {
-  const userId = req.params.user;
+  const userId = req.session.userId;
 
   try {
     const inventories = await Inventories.findAll({

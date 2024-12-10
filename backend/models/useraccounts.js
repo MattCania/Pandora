@@ -17,6 +17,13 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
 
+      UserAccounts.hasOne(models.UserWallet, {
+        foreignKey: 'userId',
+        as: 'walletId',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      })
+
       UserAccounts.hasOne(models.UserRoles, {
         foreignKey: "userId",
         as: "accountRole",
