@@ -118,27 +118,23 @@ const updateInventory = async (req, res) => {
   const { inventoryId } = req.params;
   const {
     inventoryName,
+	  type,
     category,
     quantity,
-    minQty,
     unitPrice,
-    supplier,
-    location,
     status,
     description,
-  } = req.body;
+	} = req.body;
 
   try {
     // Perform the update
     const [updated] = await Inventories.update(
       {
         inventoryName: inventoryName,
+        type:type,
         category:category,
         quantity:quantity,
-        minQty: minQty, 
         unitPrice: unitPrice,
-        supplier:supplier,
-        location: location,
         status: status, 
         description: description,
         updatedAt: new Date(), // To track updates
