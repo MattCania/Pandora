@@ -19,7 +19,6 @@ const handleRegister = async (req, res) => {
     contact,
     secondaryemail,
     organization,
-    country,
     currency,
     income,
     recurrance,
@@ -63,7 +62,6 @@ const handleRegister = async (req, res) => {
       currency: currency,
       secondaryEmail: secondaryemail || null,
       organization: organization || null,
-      country: country,
       createdAt: null,
       updatedAt: null,
     });
