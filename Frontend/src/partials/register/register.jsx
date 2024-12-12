@@ -37,7 +37,7 @@ function Register() {
 
   const validate = () => {
     let newErrors = {};
-    if (!formValues.income) newErrors.income = "Income field is required"
+    if (!formValues.income) newErrors.income = "Income field is required or go back to the last page"
     if (!formValues.firstname.trim()) newErrors.firstname = "First name is required.";
     if (!formValues.lastname.trim()) newErrors.lastname = "Last name is required.";
     if (!formValues.email.trim()) newErrors.email = "Email is required.";
