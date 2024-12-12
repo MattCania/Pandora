@@ -65,7 +65,7 @@
 
 .tableBody {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: center;
 	flex-direction: column;
 	height: 10%;
