@@ -166,8 +166,8 @@ function EditTransactions() {
 			setShowEdited(true)
 			setTimeout(() => {
 				setShowEdited(false);
-				navigate(`/home/records/${transaction}/${transactionIddId}`);
-			}, 3000)
+				navigate(`/home/records/${transaction}/${transactionId}`);
+			}, 3000);			
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -176,7 +176,7 @@ function EditTransactions() {
 
 	const onClose = () => {
 		fetchTransactionInfo()
-		navigate(`/home/records/${transaction}/${transactionIddId}`);
+		navigate(`/home/records`);
 	}
 
 	return (
@@ -193,7 +193,7 @@ function EditTransactions() {
 			{showEdited && (
 				<ConfirmEdited
 				subText = "The transaction has been successfully edited!"
-				close = {() =>  navigate(-2)} />
+				close = {() =>  navigate(`/home/records`)} />
 			)}	
 		</div>
 	)

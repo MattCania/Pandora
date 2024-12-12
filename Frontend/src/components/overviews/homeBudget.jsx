@@ -40,21 +40,6 @@ function BudgetOverview() {
     { labels: [], data: [] }
   );
 
-  const doughnutChartData = {
-    labels: ["Kitchenette", "Cafe", "Consulting", "Crypto Investments"],
-    datasets: [
-      {
-        label: "Expenses",
-        data: [20, 15, 5, 25],
-        backgroundColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
-        ],
-      },
-    ],
-  };
 
   const inventoryDoughnutData = {
     labels: inventoryChartData.labels,
@@ -80,7 +65,11 @@ function BudgetOverview() {
         {inventoryData.length > 0 ? (
           <Doughnut data={inventoryDoughnutData} />
         ) : (
-          <p>Loading inventory data...</p>
+          <div className={styles.loadingContainer}>
+            <p className={styles.placeholderText}>
+              No inventory data available. Please add inventory items to see the chart here.
+            </p>
+          <div className={styles.spinner}/></div>
         )}
       </section>
     </section>

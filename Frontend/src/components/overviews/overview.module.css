@@ -111,6 +111,11 @@
 	border-radius: 50%;
 	animation: spin 2s linear infinite;
   }
+
+  .placeholderText {
+	color: black;
+	text-align: center;
+  }
   
   
   @keyframes spin {
