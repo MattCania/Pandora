@@ -116,10 +116,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			birthday: {
 				type: DataTypes.DATEONLY,
-				allowNull: true,
-				validate: {
-					isDate: true,
-				},
+				allowNull: true
 			},
 			gender: {
 				type: DataTypes.ENUM("Male", "Female", "Other"),

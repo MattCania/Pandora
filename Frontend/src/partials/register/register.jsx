@@ -20,6 +20,8 @@ function Register() {
   const [walletForm, setWalletForm] = useState(false)
 
   const setWallet = () => {
+
+    validate
     setWalletForm(walletForm => !walletForm)
   }
 
@@ -44,16 +46,30 @@ function Register() {
     else if (formValues.password.length < 8) newErrors.password = "Password must be at least 8 characters.";
     if (formValues.password !== formValues.confirmpassword) newErrors.confirmpassword = "Passwords do not match.";
     if (!formValues.username.trim()) newErrors.username = "Username is required.";
-    if (formValues.contact && !/^\d{11}$/.test(formValues.contact)) newErrors.contact = "Invalid contact number.";
+    if (formValues.contact.length < 7 || !formValues.contact || formValues.contact.length > 15) newErrors.contact = "Invalid contact number.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  const [existingInput, setExistingInput] = useState({
+    firstname: "", lastname: "", email: "", password: "",
+    confirmpassword: "", username: "",
+    contact: "", organization: "",
+    currency: "" || 'USD',
+    country: "", recurrance: '' || 'Monthly',
+    income: 0.0
+  });
+
+
   const handleInputChange = (e) => {
     setErrors("")
     const { name, value } = e.target;
     setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    setExistingInput(prevValues => ({
       ...prevValues,
       [name]: value,
     }));
@@ -88,6 +104,15 @@ function Register() {
         <form onSubmit={walletForm ? handleSubmit : (e) => { e.preventDefault(); setWallet(); }}>
           {walletForm ?
             <section>
+
+              <div className={styles.selectionDiv}>
+                <select name="currency" id="currency" value={existingInput.currency} onChange={handleInputChange}>
+                  {currencyTypes.map((data, index) => (
+                    <option key={index} value={data}>{data}</option>
+                  ))
+                  }
+                </select>
+              </div>
               <input
                 type="text"
                 name="organization"
@@ -97,17 +122,8 @@ function Register() {
               />
 
               <div className={styles.selectionDiv}>
-                <select name="currency" id="currency" defaultValue={'USD'} onChange={handleInputChange}>
-                  {currencyTypes.map((data, index) => (
-                    <option key={index} value={data}>{data}</option>
-                  ))
-                  }
-                </select>
-              </div>
 
-              <div className={styles.selectionDiv}>
-
-                <select name="recurrance" id="recurrance" defaultValue={'Monthly'} onChange={handleInputChange}>
+                <select name="recurrance" id="recurrance" value={existingInput.recurrance} onChange={handleInputChange}>
                   {recurranceTypes.map((data, index) => (
                     <option key={index} value={data}>{data}</option>
                   ))
@@ -121,6 +137,7 @@ function Register() {
                 name="income"
                 id="income"
                 placeholder='Income'
+                value={existingInput.income}
                 onChange={handleInputChange}
               />
               {errors.income && <p className={styles.error}>{errors.income}</p>}
@@ -132,6 +149,7 @@ function Register() {
                 name="firstname"
                 id="firstname"
                 placeholder="First Name"
+                value={existingInput.firstname}
                 onChange={handleInputChange}
               />
               {errors.firstname && <p className={styles.error}>{errors.firstname}</p>}
@@ -141,6 +159,7 @@ function Register() {
                 name="lastname"
                 id="lastname"
                 placeholder="Last Name"
+                value={existingInput.lastname}
                 onChange={handleInputChange}
               />
               {errors.lastname && <p className={styles.error}>{errors.lastname}</p>}
@@ -150,6 +169,7 @@ function Register() {
                 name="contact"
                 id="contact"
                 placeholder="Contact Number"
+                value={existingInput.contact}
                 onChange={handleInputChange}
               />
               {errors.contact && <p className={styles.error}>{errors.contact}</p>}
@@ -161,6 +181,7 @@ function Register() {
                 name="country"
                 id="country"
                 placeholder="Country"
+                value={existingInput.country}
                 onChange={handleInputChange}
               />
 
@@ -171,6 +192,7 @@ function Register() {
                 name="email"
                 id="email"
                 placeholder="Email"
+                value={existingInput.email}
                 onChange={handleInputChange}
               />
               {errors.email && <p className={styles.error}>{errors.email}</p>}
@@ -180,6 +202,7 @@ function Register() {
                 name="username"
                 id="username"
                 placeholder="Username"
+                value={existingInput.username}
                 onChange={handleInputChange}
               />
               {errors.username && <p className={styles.error}>{errors.username}</p>}
@@ -190,6 +213,7 @@ function Register() {
                   name="password"
                   id="password"
                   placeholder="Password"
+                  value={existingInput.password}
                   onChange={handleInputChange}
                 />
                 <button type="button" onClick={setVisibility} className={styles.visibilityToggle}>
@@ -204,6 +228,7 @@ function Register() {
                   name="confirmpassword"
                   id="confirmpassword"
                   placeholder="Confirm Password"
+                  value={existingInput.confirmpassword}
                   onChange={handleInputChange}
                 />
 

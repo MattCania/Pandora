@@ -3,136 +3,122 @@
 const bcrypt = require("bcrypt");
 const { UserAccounts } = require("../models");
 
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-	async up(queryInterface, Sequelize) {
-		const salt = await bcrypt.genSalt(10);
-		const mattPass = await bcrypt.hash("matthewgab24", salt);
-		const royPass = await bcrypt.hash("josephroy123", salt);
+  async up(queryInterface, Sequelize) {
+    const salt = await bcrypt.genSalt(10);
+    const mattPass = await bcrypt.hash("matthewgab24", salt);
+    const royPass = await bcrypt.hash("josephroy123", salt);
 
-		await queryInterface.bulkInsert("UserAccounts", [
-			{
-				firstName: "Matthew Gabriel",
-				lastName: "Cania",
-				middleName: "Menor",
-				suffix: null,
-				email: "matthewgab24@gmail.com",
-				securedPassword: mattPass,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			{
-				firstName: "Joseph Roy",
-				lastName: "Laganzo",
-				middleName: "Largo",
-				suffix: null,
-				email: "josephroy@gmail.com",
-				securedPassword: royPass,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			// Additional users
-			{
-				firstName: "Jane",
-				lastName: "Doe",
-				middleName: "Marie",
-				suffix: null,
-				email: "jane.doe@example.com",
-				securedPassword: await bcrypt.hash("password123", salt),
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			{
-				firstName: "John",
-				lastName: "Smith",
-				middleName: "Andrew",
-				suffix: null,
-				email: "john.smith@example.com",
-				securedPassword: await bcrypt.hash("securePass456", salt),
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			{
-				firstName: "Alice",
-				lastName: "Johnson",
-				middleName: "Emily",
-				suffix: null,
-				email: "alice.johnson@example.com",
-				securedPassword: await bcrypt.hash("aliceSecure", salt),
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			
-		]);
+    console.log("seeding accounts");
+    await queryInterface.bulkInsert("UserAccounts", [
+      {
+        firstName: "Matthew Gabriel",
+        lastName: "Cania",
+        middleName: "Menor",
+        suffix: null,
+        email: "matthewgab24@gmail.com",
+        securedPassword: mattPass,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        firstName: "Joseph Roy",
+        lastName: "Laganzo",
+        middleName: "Largo",
+        suffix: null,
+        email: "josephroy@gmail.com",
+        securedPassword: royPass,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
 
-		const matt = await UserAccounts.findOne({
-			where: { firstName: "Matthew Gabriel" },
-		});
-		const roy = await UserAccounts.findOne({
-			where: { firstName: "Joseph Roy" },
-		});
+    const matt = await UserAccounts.findOne({
+      where: { firstName: "Matthew Gabriel" },
+    });
+    const roy = await UserAccounts.findOne({
+      where: { firstName: "Joseph Roy" },
+    });
 
-		const mattEmail = matt.email;
-		const royEmail = roy.email;
-		const mattId = matt.userId;
-		const royId = roy.userId;
+    const mattEmail = matt.email;
+    const royEmail = roy.email;
+    const mattId = matt.userId;
+    const royId = roy.userId;
 
-		await queryInterface.bulkInsert("Admins", [
-			{
-				accountId: mattId,
-				email: mattEmail,
-				password: "matthewgab24",
-			},
-			{
-				accountId: royId,
-				email: royEmail,
-				password: 'josephroy123',
-			},
-		]);
+    console.log("seeding ADMINS");
+    await queryInterface.bulkInsert("Admins", [
+      {
+        accountId: mattId,
+        email: mattEmail,
+        password: "matthewgab24",
+      },
+      {
+        accountId: royId,
+        email: royEmail,
+        password: "josephroy123",
+      },
+    ]);
 
-		await queryInterface.bulkInsert("UserProfiles", [
-			{
-				profileId: mattId,
-				userName: "MattCania",
-				contactNumber: "09108273132",
-				secondaryEmail: "caniamatthew24@gmail.com",
-				currency: "PHP",
-				organization: "Matt Books",
-				street: "crispulo st",
-				city: "caloocan",
-				state: "metro Manila",
-				postal: "1400",
-				birthday: "2005-07-24",
-				gender: "Male",
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			{
-				profileId: royId,
-				userName: "Patatas",
-				contactNumber: "091234567891",
-				secondaryEmail: null,
-				currency: "PHP",
-				organization: 'MattBooks',
-				street: null,
-				city: null,
-				state: null,
-				postal: null,
-				birthday: "2005-01-18",
-				gender: "Male",
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			
-		]);
-	},
-	async down(queryInterface, Sequelize) {
-		await queryInterface.bulkDelete("Admins", null, {});
-		await queryInterface.bulkDelete("UserProfiles", null, {});
-		await queryInterface.bulkDelete("UserAccounts", null, {});
-		await queryInterface.sequelize.query('ALTER TABLE UserAccounts AUTO_INCREMENT = 1')
-		await queryInterface.sequelize.query('ALTER TABLE UserProfiles AUTO_INCREMENT = 1')
-		await queryInterface.sequelize.query('ALTER TABLE Admins AUTO_INCREMENT = 1')
-	},
+    console.log("seeding Profiles");
+    await queryInterface.bulkInsert("UserProfiles", [
+      {
+        profileId: mattId,
+        userName: "MattCania",
+        contactNumber: "09108273132",
+        secondaryEmail: "caniamatthew24@gmail.com",
+        currency: "PHP",
+        organization: "Matt Books",
+        city: "caloocan",
+        state: "metro Manila",
+        birthday: "2005-07-24",
+        gender: "Male",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        profileId: royId,
+        userName: "Patatas",
+        contactNumber: "091234567891",
+        secondaryEmail: null,
+        currency: "PHP",
+        organization: "MattBooks",
+        city: null,
+        state: null,
+        birthday: "2005-01-18",
+        gender: "Male",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+    console.log("seeding Wallets");
+    await queryInterface.bulkInsert("UserWallets", [
+      {
+        userId: mattId,
+        income: 30000,
+        recurrance: "Monthly",
+        wallet: 30000,
+      },
+      {
+        userId: royId,
+        income: 50000,
+        recurrance: "Semi-Monthly",
+        wallet: 50000,
+      },
+    ]);
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete("Admins", null, {});
+    await queryInterface.bulkDelete("UserProfiles", null, {});
+    await queryInterface.bulkDelete("UserAccounts", null, {});
+    await queryInterface.sequelize.query(
+      "ALTER TABLE UserAccounts AUTO_INCREMENT = 1"
+    );
+    await queryInterface.sequelize.query(
+      "ALTER TABLE UserProfiles AUTO_INCREMENT = 1"
+    );
+    await queryInterface.sequelize.query(
+      "ALTER TABLE Admins AUTO_INCREMENT = 1"
+    );
+  },
 };

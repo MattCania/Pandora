@@ -29,11 +29,20 @@ const updateWallet = async (req, res) => {
 	const { recurrance, income, wallet } = req.body;
 
 	try{
+		const walletInfo = await fetchWalletInfo(userId)
+
+		let newWallet
+		if (wallet === walletInfo.income) {
+			newWallet = income
+		}
+		else{
+			newWallet = wallet
+		}
 		const result = await UserWallets.update(
     	  {
     	    recurrance: recurrance || "Monthly",
     	    income: Number(income) || 0,
-    	    wallet: Number(wallet) || 0,
+    	    wallet: Number(newWallet) || 0,
     	  },
     	  {
     	    where: { userId: userId },

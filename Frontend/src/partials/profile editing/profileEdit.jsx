@@ -26,8 +26,7 @@ function ProfileEdit() {
                 lastName: user.user.lastName || "",
                 middleName: user.user.middleName || "",
                 contactNumber: user.profile.contactNumber || "",
-                birthday: user.profile.birthday ? new Date(user.profile.birthday).toISOString().slice(0, 10) // Format for datetime-local
-                : "",
+                birthday: user.profile.birthday || null,
                 gender: user.profile.gender || "",
                 currency: user.profile.currency || "",
                 organization: user.profile.organization || "",
@@ -59,8 +58,10 @@ function ProfileEdit() {
 
         // const formattedBirthday = `${new Date(formValues.birthday).toISOString().slice(0, 10)}T00:00:00`
         const [year, month, day] = formValues.birthday.split("-");
-        const formattedBirthday = `${year}-${month}-${day}T00:00:00`;
-        
+        let formattedBirthday
+        if (formValues.birthday) formattedBirthday = `${year}-${month}-${day}`;
+        else formattedBirthday = null
+
         const formData = {
             ...formValues,
             birthday: formattedBirthday
@@ -128,7 +129,7 @@ function ProfileEdit() {
                                 <input type="text" name="contactNumber" value={formValues.contactNumber || ""} onChange={handleInputChange} />
                             </label>
                             <label>Birthday:
-                                <input type="date" name="birthday" value={formValues.birthday ? new Date(formValues.birthday).toISOString().slice(0,10) : ""} onChange={handleInputChange} />
+                                <input type="date" name="birthday" value={formValues.birthday || '0000-00-00'} onChange={handleInputChange} />
                             </label>
                             <label>Gender:
                                 <input type="text" name="gender" value={formValues.gender || ""} onChange={handleInputChange} />
