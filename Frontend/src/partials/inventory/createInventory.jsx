@@ -118,14 +118,16 @@ function CreateTransactions() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+	const formData = { ...formValues }
+
     try {
-      const requiredFields = Object.keys(formValues).filter((key) => formValues[key] === "");
+		const requiredFields = Object.keys(formValues).filter((key) => formValues[key] === "");
+		
+		if (requiredFields.length > 0) {
+			throw new Error(`Please fill out the required field(s): ${requiredFields.join(", ")}`);
+		}
 
-      if (requiredFields.length > 0) {
-        throw new Error(`Please fill out the required field(s): ${requiredFields.join(", ")}`);
-      }
-
-      const response = await PostRequest(`create-inventory`, formValues);
+      const response = await PostRequest(`create-inventory`, formData);
       if (!response) throw new Error("Error creating inventory item");
 	  setShowCreated(true);
 	  setTimeout(() => {

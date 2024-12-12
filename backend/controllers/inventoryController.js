@@ -63,15 +63,13 @@ const getSingleInventory = async (req, res) => {
 const createInventory = async (req, res) => {
 	const userId = req.session.userId;
 	const {
-	  inventoryName,
-	  description,
-	  category,
-	  quantity,
-	  unitPrice,
-	  supplier,
-	  location,
-	  minQty,
-	  status,
+    inventoryName,
+	  type,
+    category,
+    quantity,
+    unitPrice,
+    status,
+    description,
 	} = req.body;
   
 	try {
@@ -81,9 +79,7 @@ const createInventory = async (req, res) => {
 		!category ||
 		quantity === undefined ||
 		unitPrice === undefined ||
-		!supplier ||
-		!location ||
-		minQty === undefined
+    !type
 	  ) {
 		return res.status(400).json({ message: "Missing required fields" });
 	  }
@@ -96,9 +92,7 @@ const createInventory = async (req, res) => {
 		category,
 		quantity,
 		unitPrice,
-		supplier,
-		location,
-		minQty,
+    type,
 		status: status || "In Stock", // Default status if not provided
 		createdAt: new Date(),
 		updatedAt: new Date(),
