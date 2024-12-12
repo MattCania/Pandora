@@ -79,7 +79,7 @@ function Inventory() {
 		try {
 			if (!inventoryToDelete) return; 
 
-			const response = await DeleteRequest(`delete-record/${inventoryToDelete}`);
+			const response = await DeleteRequest(`delete-inventory/${inventoryToDelete}`);
 			if (!response) {
 				throw new Error("Failed to delete the record");
 			}
