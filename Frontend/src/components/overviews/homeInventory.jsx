@@ -26,14 +26,6 @@ function InventoryOverview() {
     fetchInventory();
   }, [user]);
 
-  if (!inventoryData || inventoryData.length === 0) {
-    return (
-      <div className={styles.loadingContainer}>
-        <p>Loading inventory data...</p>
-        <div className={styles.spinner}></div>
-      </div>
-    );
-  }
 
 
   const barChartData = {
