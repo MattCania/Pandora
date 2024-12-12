@@ -8,7 +8,7 @@ import ConfirmEdited from "../../components/prompts/confirmEdited";
 
 function EditTransactions() {
 	const navigate = useNavigate()
-	const { transaction, transactionId } = useParams()
+	const { transaction, transactionId, access } = useParams()
 	const [existingData, setExistingData] = useState({ results: {} })
 	const [showEdited, setShowEdited] = useState(false);
 
@@ -156,7 +156,7 @@ function EditTransactions() {
 
 		try {
 			if (
-				!formData.account || !formData.category || !formData.paymentType ||
+				!formData.account || !formData.paymentType ||
 				!formData.transactionDate || !formData.description || formData.amount < 0 || !formData.currency ||
 				!formData.vendorCustomer || !formData.invoiceNumber
 			) throw new Error("All fields must be filled out.");
@@ -175,7 +175,8 @@ function EditTransactions() {
 	};
 
 	const onClose = () => {
-		navigate(-1)
+		fetchTransactionInfo()
+		navigate(`/home/records/${transaction}/${transactionIddId}`);
 	}
 
 	return (
@@ -192,7 +193,7 @@ function EditTransactions() {
 			{showEdited && (
 				<ConfirmEdited
 				subText = "The transaction has been successfully edited!"
-				close = {() =>  navigate(`/home/records/${transaction}/${transactionId}`)} />
+				close = {() =>  navigate(-2)} />
 			)}	
 		</div>
 	)

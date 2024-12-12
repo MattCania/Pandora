@@ -77,6 +77,39 @@
     background-color: rgba(45, 142, 58, 1);
 }
 
+.logged{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    text-decoration: none;
+    color: var(--textdark);
+    height: 3em;
+    min-width: 16%;
+    width: auto;
+    border-radius: 10px;
+    border: 1px solid var(--textdark);
+    transition: all 500ms;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.logged:hover{
+    transition: all 500ms;
+    color: var(--textlight);
+    background-color: var(--green);
+    border: 1px solid var(--green);
+}
+
+.logged span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2em;
+    height: 2em;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+}
+
 .heroContent {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

@@ -26,18 +26,14 @@ function ProfileEdit() {
                 lastName: user.user.lastName || "",
                 middleName: user.user.middleName || "",
                 contactNumber: user.profile.contactNumber || "",
-                // birthday: user.profile.birthday ||  "",
                 birthday: user.profile.birthday ? new Date(user.profile.birthday).toISOString().slice(0, 10) // Format for datetime-local
                 : "",
                 gender: user.profile.gender || "",
-                jobTitle: user.profile.jobTitle || "",
+                currency: user.profile.currency || "",
                 organization: user.profile.organization || "",
-                department: user.profile.department || "",
                 secondaryEmail: user.profile.secondaryEmail || "",
-                street: user.profile.street || "",
                 city: user.profile.city || "",
                 state: user.profile.state || "",
-                postal: user.profile.postal || "",
                 country: user.profile.country || "",
             });
             setLoading(false);
@@ -142,29 +138,20 @@ function ProfileEdit() {
                     <div className={style.lowerSection}>
                         <h2>Profile Information</h2>
                         <div className={style.field}>
-                            <label>Job Title:
-                                <input type="text" name="jobTitle" value={formValues.jobTitle || ""} onChange={handleInputChange} />
-                            </label>
                             <label>Organization:
                                 <input type="text" name="organization" value={formValues.organization || ""} onChange={handleInputChange} />
                             </label>
-                            <label>Department:
-                                <input type="text" name="department" value={formValues.department || ""} onChange={handleInputChange} />
+                            <label>Currency:
+                                <input type="text" name="currency" value={formValues.currency || ""} onChange={handleInputChange} />
                             </label>
                             <label>Backup Email:
                                 <input type="email" name="secondaryEmail" value={formValues.secondaryEmail || ""} onChange={handleInputChange} />
-                            </label>
-                            <label>Street:
-                                <input type="text" name="street" value={formValues.street || ""} onChange={handleInputChange} />
                             </label>
                             <label>City:
                                 <input type="text" name="city" value={formValues.city || ""} onChange={handleInputChange} />
                             </label>
                             <label>State:
                                 <input type="text" name="state" value={formValues.state || ""} onChange={handleInputChange} />
-                            </label>
-                            <label>Postal:
-                                <input type="text" name="postal" value={formValues.postal || ""} onChange={handleInputChange} />
                             </label>
                             <label>Country:
                                 <input type="text" name="country" value={formValues.country || ""} onChange={handleInputChange} />

@@ -4,16 +4,27 @@ import styles from './register.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Logo from '/src/assets/MainLogo.svg'
+import PostRequest from '../../hooks/PostRequest'
 
 function Register() {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
-    firstname: "", lastname: "", middlename: "", suffix: "",
-    email: "", password: "", confirmpassword: "", username: "",
-    contact: "", secondaryemail: "", jobtitle: "", organization: "",
-    department: "", street: "", city: "", state: "", postal: "", birthday: "",
+    firstname: "", lastname: "", email: "", password: "",
+    confirmpassword: "", username: "",
+    contact: "", organization: "",
+    currency: "" || 'USD',
+    country: "", recurrance: '' || 'Monthly',
+    income: 0.0
   });
 
+  const [walletForm, setWalletForm] = useState(false)
+
+  const setWallet = () => {
+    setWalletForm(walletForm => !walletForm)
+  }
+
+  const currencyTypes = ["PHP", "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "SGD", "HKD", "NZD", "ZAR", "BRL", "RUB", "MXN", "KRW", "AED", "SEK", "NOK", "DKK", "THB", "IDR", "TRY", "SAR", "MYR", "PLN", "ILS", "VND", "CLP", "COP"]
+  const recurranceTypes = ['Monthly', 'Semi-Monthly', 'Annually', 'Quarterly']
   const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState(false);
 
@@ -24,6 +35,7 @@ function Register() {
 
   const validate = () => {
     let newErrors = {};
+    if (!formValues.income) newErrors.income = "Income field is required"
     if (!formValues.firstname.trim()) newErrors.firstname = "First name is required.";
     if (!formValues.lastname.trim()) newErrors.lastname = "Last name is required.";
     if (!formValues.email.trim()) newErrors.email = "Email is required.";
@@ -47,7 +59,7 @@ function Register() {
     }));
   };
 
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -55,14 +67,9 @@ function Register() {
     const formData = { ...formValues };
 
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-        credentials: "include",
-      });
 
-      if (!response.ok) throw new Error("Error Registration");
+      const response = await PostRequest('register', formData)
+      if (!response) throw new Error("Error Registration");
       navigate('/login');
     } catch (error) {
       console.error("Error:", error);
@@ -73,105 +80,147 @@ function Register() {
     <div className={styles.container}>
       <div className={styles.formSection}>
         <div className={styles.logo}>
-          <a href="/landing"> 
+          <a href="/landing">
             <img className={styles.formLogo} src={Logo} alt="" draggable="false" />
           </a>
         </div>
         <h3 className={styles.welcome}>Welcome to Pandora!</h3>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="firstname"
-            id="firstname"
-            placeholder="First Name"
-            onChange={handleInputChange}
-          />
-          {errors.firstname && <p className={styles.error}>{errors.firstname}</p>}
+        <form onSubmit={walletForm ? handleSubmit : (e) => { e.preventDefault(); setWallet(); }}>
+          {walletForm ?
+            <section>
+              <input
+                type="text"
+                name="organization"
+                id="organization"
+                placeholder="Organization"
+                onChange={handleInputChange}
+              />
 
-          <input
-            type="text"
-            name="lastname"
-            id="lastname"
-            placeholder="Last Name"
-            onChange={handleInputChange}
-          />
-          {errors.lastname && <p className={styles.error}>{errors.lastname}</p>}
+              <div className={styles.selectionDiv}>
+                <select name="currency" id="currency" defaultValue={'USD'} onChange={handleInputChange}>
+                  {currencyTypes.map((data, index) => (
+                    <option key={index} value={data}>{data}</option>
+                  ))
+                  }
+                </select>
+              </div>
 
-          <input
-            type="text"
-            name="middlename"
-            id="middlename"
-            placeholder="Middle Name"
-            onChange={handleInputChange}
-          />
+              <div className={styles.selectionDiv}>
 
-          <input
-            type="text"
-            name="suffix"
-            id="suffix"
-            placeholder="Suffix"
-            onChange={handleInputChange}
-          />
+                <select name="recurrance" id="recurrance" defaultValue={'Monthly'} onChange={handleInputChange}>
+                  {recurranceTypes.map((data, index) => (
+                    <option key={index} value={data}>{data}</option>
+                  ))
+                  }
 
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-            onChange={handleInputChange}
-          />
-          {errors.email && <p className={styles.error}>{errors.email}</p>}
+                </select>
+              </div>
 
-          <div className={styles.passwordContainer}>
-            <input
-              type={visible ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="Password"
-              onChange={handleInputChange}
-            />
-            <button type="button" onClick={setVisibility} className={styles.visibilityToggle}>
-              <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
-            </button>
-          </div>
-          {errors.password && <p className={styles.error}>{errors.password}</p>}
+              <input
+                type="number"
+                name="income"
+                id="income"
+                placeholder='Income'
+                onChange={handleInputChange}
+              />
+              {errors.income && <p className={styles.error}>{errors.income}</p>}
+            </section> :
 
-          <div className={styles.passwordContainer}>
-            <input
-              type={visible ? "text" : "password"}
-              name="confirmpassword"
-              id="confirmpassword"
-              placeholder="Confirm Password"
-              onChange={handleInputChange}
-            />
-            <button type="button" onClick={setVisibility} className={styles.visibilityToggle}>
-              <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
-            </button>
-          </div>
-          {errors.confirmpassword && <p className={styles.error}>{errors.confirmpassword}</p>}
+            <section>
+              <input
+                type="text"
+                name="firstname"
+                id="firstname"
+                placeholder="First Name"
+                onChange={handleInputChange}
+              />
+              {errors.firstname && <p className={styles.error}>{errors.firstname}</p>}
 
-          <input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="Username"
-            onChange={handleInputChange}
-          />
-          {errors.username && <p className={styles.error}>{errors.username}</p>}
+              <input
+                type="text"
+                name="lastname"
+                id="lastname"
+                placeholder="Last Name"
+                onChange={handleInputChange}
+              />
+              {errors.lastname && <p className={styles.error}>{errors.lastname}</p>}
 
-          <input
-            type="number"
-            name="contact"
-            id="contact"
-            placeholder="Contact Number"
-            onChange={handleInputChange}
-          />
-          {errors.contact && <p className={styles.error}>{errors.contact}</p>}
+              <input
+                type="number"
+                name="contact"
+                id="contact"
+                placeholder="Contact Number"
+                onChange={handleInputChange}
+              />
+              {errors.contact && <p className={styles.error}>{errors.contact}</p>}
 
-          {/* Additional fields omitted for brevity */}
+
+
+              <input
+                type="text"
+                name="country"
+                id="country"
+                placeholder="Country"
+                onChange={handleInputChange}
+              />
+
+
+
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email"
+                onChange={handleInputChange}
+              />
+              {errors.email && <p className={styles.error}>{errors.email}</p>}
+
+              <input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Username"
+                onChange={handleInputChange}
+              />
+              {errors.username && <p className={styles.error}>{errors.username}</p>}
+
+              <div className={styles.passwordContainer}>
+                <input
+                  type={visible ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  onChange={handleInputChange}
+                />
+                <button type="button" onClick={setVisibility} className={styles.visibilityToggle}>
+                  <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
+                </button>
+              </div>
+              {errors.password && <p className={styles.error}>{errors.password}</p>}
+
+              <div className={styles.passwordContainer}>
+                <input
+                  type={visible ? "text" : "password"}
+                  name="confirmpassword"
+                  id="confirmpassword"
+                  placeholder="Confirm Password"
+                  onChange={handleInputChange}
+                />
+
+                <button type="button" onClick={setVisibility} className={styles.visibilityToggle}>
+                  <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
+                </button>
+              </div>
+              {errors.confirmpassword && <p className={styles.error}>{errors.confirmpassword}</p>}
+            </section>
+
+          }
           <h4>By signing up, you agree to our terms and conditions.</h4>
           <div className={styles.reg}>
-            <input type="submit" value="Register" />
+            {walletForm &&
+              <input type='button' value='Back' onClick={setWallet} />
+            }
+            <input type='submit' value={walletForm ? "Register" : "Next"} />
           </div>
         </form>
       </div>

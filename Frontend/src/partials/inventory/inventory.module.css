@@ -56,7 +56,7 @@
 .tableHeader {
 	background-color: var(--green);
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	align-items: center;
 	height: 10%;
 	width: 100%;
@@ -65,7 +65,10 @@
 
 .tableBody {
 	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	flex-direction: column;
+	height: 10%;
 	height: 100%;
 	overflow-y: auto;
 }
@@ -119,31 +122,6 @@
 	align-items: center;
 	height: 100%;
 	width: 40%;
-}
-
-.access {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 25%;
-	height: 100%;
-}
-
-.cell{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 45%;
-	height: 100%;
-
-}
-.cell2{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 50%;
-	height: 100%;
-
 }
 
 .edit,
@@ -415,4 +393,53 @@
 	transition: all 500ms;
 	background-color: var(--secondary);
 	color: var(--background-color);
+}
+
+.cellsm{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 15%;
+}
+
+.cellmd{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25%;
+}
+
+.celllg{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 35%;
+}
+
+.cellxl{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+}
+
+.cell2xl{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 65%;
+}
+
+.cell4xl{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 75%;
+}
+
+.cellFull{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 }

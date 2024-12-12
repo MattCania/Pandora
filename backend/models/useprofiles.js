@@ -78,14 +78,6 @@ module.exports = (sequelize, DataTypes) => {
 					len: [3, 25],
 				},
 			},
-			jobTitle: {
-				type: DataTypes.STRING,
-				allowNull: true,
-				validate: {
-					is: /^[a-zA-Z0-9\s\-\']*$/i,
-					len: [3, 25],
-				},
-			},
 			organization: {
 				type: DataTypes.STRING,
 				allowNull: true,
@@ -94,21 +86,17 @@ module.exports = (sequelize, DataTypes) => {
 					len: [2, 50],
 				},
 			},
-			department: {
-				type: DataTypes.STRING,
-				allowNull: true,
-				validate: {
-					is: /^[a-zA-Z0-9\s\-\']*$/i,
-					len: [2, 50],
-				},
-			},
-			street: {
-				type: DataTypes.STRING,
-				allowNull: true,
-				validate: {
-					is: /^[a-zA-Z0-9\s\-\']*$/i,
-					len: [2, 50],
-				},
+			currency: {
+				type: DataTypes.ENUM(
+					"PHP","USD","EUR","GBP","JPY",
+					"AUD","CAD","CHF","CNY","INR",
+					"SGD","HKD","NZD","ZAR","BRL",
+					"RUB","MXN","KRW","AED","SEK",
+					"NOK","DKK","THB","IDR","TRY",
+					"SAR","MYR","PLN","ILS","VND",
+					"CLP","COP"),
+				allowNull: false,
+				defaultValue: 'USD',
 			},
 			city: {
 				type: DataTypes.STRING,
@@ -126,16 +114,8 @@ module.exports = (sequelize, DataTypes) => {
 					len: [2, 50],
 				},
 			},
-			postal: {
-				type: DataTypes.STRING,
-				allowNull: true,
-				validate: {
-					is: /^[a-zA-Z0-9\s\-\']*$/i,
-					len: [2, 50],
-				},
-			},
 			birthday: {
-				type: DataTypes.DATE,
+				type: DataTypes.DATEONLY,
 				allowNull: true,
 				validate: {
 					isDate: true,

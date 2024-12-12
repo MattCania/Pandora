@@ -9,7 +9,7 @@ import MoreSidebar from '../more/more';
 
 
 function Header() {
-	const [showSidebar, setSidebar] = useState(false);
+	const [showSidebar, setSidebar] = useState(true);
 	const [orgDropdown, setorgDropdown] = useState(false);
 
 	const toggleOrganization = () => {

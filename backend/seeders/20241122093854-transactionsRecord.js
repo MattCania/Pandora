@@ -142,6 +142,22 @@ module.exports = {
       }
     ];
     await queryInterface.bulkInsert("InventoryPermissions", inventoryPermissions);
+
+    await queryInterface.bulkInsert('UserWallets', [
+      {
+        userId: 1,
+        income: 15000.00,
+        recurrance: 'Semi-Monthly',
+        wallet: 15000.00
+      },
+      {
+        userId: 2,
+        income: 30000.00,
+        recurrance: 'Monthly',
+        wallet: 30000.00
+      }]
+    )
+
   },
 
   async down(queryInterface, Sequelize) {
@@ -151,10 +167,14 @@ module.exports = {
     await queryInterface.bulkDelete("RecordPermissions", null, {});
     await queryInterface.bulkDelete("Inventories", null, {});
     await queryInterface.bulkDelete("InventoryPermissions", null, {});
+    await queryInterface.bulkDelete("UserWallets", null, {});
 
     await queryInterface.bulkDelete("Permissions", null, {});
     await queryInterface.sequelize.query(
       "ALTER TABLE Permissions AUTO_INCREMENT = 1"
+    );
+    await queryInterface.sequelize.query(
+      "ALTER TABLE UserWallets AUTO_INCREMENT = 1"
     );
     await queryInterface.sequelize.query(
       "ALTER TABLE Expenses AUTO_INCREMENT = 1"

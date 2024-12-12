@@ -7,23 +7,31 @@ import SalesIcon from '../../assets/sales.png'
 import InventoryIcon from '../../assets/inventory.png'
 import ExpenseIcon from '../../assets/expense.png'
 import { Link } from 'react-router-dom'
+import GetSession from '../../hooks/GetSession';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Landing() {
-    
+    const user = GetSession()
+
     return (
         <section className={styles.section}>
             <div className={styles.navigation}>
-                    <div className={styles.logo}>
-                        <img src={Logo} alt="Pandora"/>
-                    </div>
-                    <div className={styles.links}>
-                        <a href="/aboutus">About Us</a>
-                        <a href="">Contact Us</a>
-                    </div>
-                    <div className={styles.logging}>
+                <div className={styles.logo}>
+                    <img src={Logo} alt="Pandora" />
+                </div>
+                <div className={styles.links}>
+                    <a href="/aboutus">About Us</a>
+                    <a href="">Contact Us</a>
+                </div>
+                {user ? (<a href='/home' className={styles.logged}><span><FontAwesomeIcon icon={faUser}/></span> {user.profile.userName}</a>) :
+                    (
+                        <div className={styles.logging}>
                         <a href="/login">Sign In</a>
                         <a href="/register">Sign Up</a>
-                </div>
+                        </div>
+                    )
+                }
             </div>
             <div className={styles.heroContent}>
                 <div className={styles.leftContent}>
@@ -34,8 +42,8 @@ function Landing() {
                     <div className={styles.subheader}>
                         <h2>Welcome to Pandora - your all-in-one financial bookkeeping management app! Stay on top of your finances while keeping track of your inventory with ease.</h2>
                     </div>
-                        <div className={styles.loggingIn}>
-                            <a href="/register">Get Started for Free</a>
+                    <div className={styles.loggingIn}>
+                        <a href="/register">Get Started for Free</a>
                     </div>
                 </div>
                 <div className={styles.rightContent}>

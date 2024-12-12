@@ -68,8 +68,8 @@ app.use(
 
 sequelize
   // .sync()
-  .sync({ force: true })
-  // .sync({ alter: true })
+  // .sync({ force: true })
+  .sync({ alter: true })
   .then(() => {
     console.log("Database synchronized successfully!");
   })
@@ -93,7 +93,9 @@ const transactionRoute = require('./routes/transactions')
 const accountRoute = require('./routes/accounts')
 const imageRoute = require('./routes/profileImage')
 const inventoryRoute = require('./routes/inventoryRoute')
+const walletRoute = require("./routes/wallet")
 
+app.use('/api', walletRoute)
 app.use('/api', inventoryRoute)
 app.use('/api', imageRoute)
 app.use('/api', accountRoute)

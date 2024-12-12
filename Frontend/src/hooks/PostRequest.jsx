@@ -15,10 +15,9 @@ async function PostRequest(uri, data) {
 			body: JSON.stringify(data),
 			credentials: "include",
 		})
-
+		console.log(response)
 		if (!response.ok) {
-			const errResponse = await response.json
-			throw new Error(errResponse.message || "Something Went Wrong")
+			throw new Error( "Post Request Went Wrong")
 		}
 
 		return response.json()

@@ -19,7 +19,7 @@
   overflow-x: hidden;
 }
 
-.formSection form{
+.formSection form section{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,11 +54,24 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0 !important;
 }
 
-.container input, .gender select {
+.container input {
   border-radius: 5px;
-  padding: 10px;
+  padding: 0 10px;
   width: 330px;
   height: 32px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: white;
+  color: #333; /* Darker text color */
+  border: 1px solid var(--textdark);
+  box-shadow: 0px 2px 4px var(--textdark);
+}
+
+.container select {
+  border-radius: 5px;
+  padding: 0 10px;
+  width: 330px !important;
+  height: 48px;
   margin-bottom: 10px;
   box-sizing: border-box;
   background-color: white;
@@ -89,13 +102,11 @@ input[type="number"]::-webkit-inner-spin-button {
 .passwordContainer {
   position: relative;
   width: 330px;
-  margin-bottom: 10px;
 }
 
 .passwordContainer input {
   width: 330px;
   border-radius: 5px;
-  padding: 10px;
   box-sizing: border-box;
   background-color: white;
   color: #333; /* Darker text color */
@@ -118,28 +129,27 @@ input[type="number"]::-webkit-inner-spin-button {
   color: var(--tertiary);
 }
 
-.gender {
-  background-color: white;
+.reg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 330px;
 }
 
-.gender select {
-  text-align: start;
-  height: 100%;
-  padding: 0;
-}
-
-
-.reg input[type="submit"] {
-  background-color: rgba(54, 175, 87, 1);
+.reg input{
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  background-color: var(--green);
+  flex: 1;
   cursor: pointer;
   color: white;
   font-size: 20px;
+  width: 100%;
   font-weight: bolder;
-  padding-bottom: 30px;
 }
 
-.reg input[type="submit"]:hover {
+.reg input:hover {
   transition: all 500ms;
   background-color: var(--secondary);
   color: var(--background-color);
@@ -174,9 +184,6 @@ input[type="number"]::-webkit-inner-spin-button {
     height: 10em;
   }
 
-  input, .gender select {
-    width: 100%;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -190,11 +197,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
   .imageSection img {
     height: 8em;
-  }
-
-  input, .gender select {
-    width: 100%;
-    height: 40px;
   }
 
   .reg input[type="submit"] {
@@ -216,12 +218,11 @@ input[type="number"]::-webkit-inner-spin-button {
     height: auto;
   }
 
-  input,
-  .gender select {
+  input{
     width: 100%;
   }
 
-  .reg input[type="submit"] {
+  .reg input {
     width: 100%;
   }
 }
@@ -231,8 +232,7 @@ input[type="number"]::-webkit-inner-spin-button {
     padding: 10px;
   }
 
-  input,
-  .gender select {
+  input{
     height: 40px;
   }
 

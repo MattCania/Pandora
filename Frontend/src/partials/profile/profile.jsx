@@ -23,6 +23,7 @@ function Profile() {
 			setAuth(false);
 		}
 	}, [user, loading]);
+    console.log(user)
     
     if(!user) {
         navigate('/login')
@@ -60,7 +61,7 @@ function Profile() {
                         <label>Contact:
                         <input type="text" value={user.profile.contactNumber || ""} readOnly /></label>
                         <label>Birthday:
-                        <input type="date" value={new Date(user.profile.birthday).toISOString().slice(0,10) || ""} readOnly /></label>
+                        <input type="date" value={user.profile.birthday ? new Date(user.profile.birthday).toISOString().slice(0,10) : ""} readOnly /></label>
                         <label>Gender:
                         <input type="text" value={user.profile.gender || ""} readOnly /></label>
                     </div>
@@ -68,22 +69,16 @@ function Profile() {
                 <div className={style.lowerSection}>
                     <h2>Profile Information</h2>
                     <div className={style.field}>
-                        <label>Job Title
-                        <input type="text" value={user.profile.jobTitle || ""} readOnly /></label>
                         <label>Organization:
                         <input type="text" value={user.profile.organization || ""} readOnly /></label>
-                        <label>Department:
-                        <input type="text" value={user.profile.department || ""} readOnly /></label>
+                        <label>Currency
+                        <input type="text" value={user.profile.currency || ""} readOnly /></label>
                         <label>Backup Email
-                        <input type="text" value={user.profile.department || ""} readOnly /></label>
-                        <label>Street
-                        <input type="text" value={user.profile.street || ""} readOnly /></label>
+                        <input type="text" value={user.profile.secondaryEmail || ""} readOnly /></label>
                         <label>City
                         <input type="text" value={user.profile.city || ""} readOnly /></label>
                         <label>State
                         <input type="text" value={user.profile.state || ""} readOnly /></label>
-                        <label>Postal
-                        <input type="text" value={user.profile.postal || ""} readOnly /></label>
                         <label>Country
                         <input type="text" value={user.profile.country || ""} readOnly /></label>
                     </div>  

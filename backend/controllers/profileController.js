@@ -26,24 +26,23 @@ const getUserDetails = async (req, res) =>{
 const updateProfile = async (req, res) => {
 	const userId = req.session.userId
 	const {
-		userName = "",
-		email = "",
-		suffix = "",
-		firstName = "",
-		lastName = "",
-		middleName = "",
-		contactNumber = "",
-		birthday = "",
-		gender = "",
-		jobTitle = "",
-		organization = "",
-		department = "",
-		secondaryEmail = "",
-		street = "",
-		city = "",
-		state = "",
-		postal = "",
-		country = ""
+		userName,
+		email,
+		suffix,
+		firstName,
+		lastName,
+		middleName,
+		contactNumber,
+		birthday,
+		gender,
+		currency,
+		organization,
+		secondaryEmail,
+		street,
+		city,
+		state,
+		postal,
+		country
 	} = req.body;
 
 	try {
@@ -71,9 +70,8 @@ const updateProfile = async (req, res) => {
 				contactNumber: contactNumber || null,
 				secondaryEmail: secondaryEmail || null,
 				country: country || null,
-				jobTitle: jobTitle || null,
+				currency: currency || null,
 				organization: organization || null,
-				department: department || null,
 				street: street || null,
 				city: city || null,
 				state: state || null,

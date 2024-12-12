@@ -1,17 +1,31 @@
+.section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    overflow: hidden;
+}
+
 .body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 .button {
     display: flex; 
     flex-direction: row; 
-    gap: 20px; 
+    gap: 2vw; 
 }
 
-.button button{
+.button a{
     display: flex;
     flex-direction: column; 
     align-items: center; 
@@ -20,16 +34,19 @@
     width: 300px;
     height: 300px;
     border-radius: 20px;
-    border: 1px solid black; 
+    text-decoration: none;
+    border: 1px solid var(--textdark); 
     background-color: rgb(255, 255, 255);
     color: black;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     font-weight: bolder;
     font-size: 25px;
     text-align: center; 
+    transition: all 250ms;
 }
 
-.button button:hover {
+.button a:hover {
+    transition: all 250ms;
     background-color: #383838;
     transform: scale(1.05);
     color: white; 

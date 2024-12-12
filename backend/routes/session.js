@@ -42,6 +42,8 @@ router.get('/user-info', isAuthenticated, async (req, res) => {
 		})
 
 		if (!profile) throw new Error("Error User Profile")
+			
+		console.log(profile)
 		
 		return res.status(200).json({ message: "Fetched User Details", session, user, profile});
 	} catch (err) {

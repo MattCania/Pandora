@@ -117,19 +117,12 @@ function Inventory() {
 					<div className={styles.table}>
 						<div className={styles.tableHeader}>
 							<div className={styles.index}>#</div>
-							{/* <div className={styles.id}>Inventory Id</div> */}
-							<div className={styles.name2}>Stock Name</div>
-							<div className={styles.name}>Inventory Description</div>
-							<div className={styles.category}>Category</div>
-							<div className={styles.category}>Type</div>
-							<div className={styles.access}>Quantity</div>
-							<div className={styles.cell2}>Unit Price</div>
-							{/* <div className={styles.access}>Supplier</div> */}
-							{/* <div className={styles.access}>Location</div> */}
-							{/* <div className={styles.access}>Minimum Quantity</div> */}
-							<div className={styles.cell}>Status</div>
-							<div className={styles.cell}>Access Type</div>
-							<div className={styles.creation}>Created At</div>
+							<div className={styles.cell2xl}>Stock Name</div>
+							<div className={styles.cellFull}>Inventory Description</div>
+							<div className={styles.cellmd}>Quantity</div>
+							<div className={styles.cell2xl}>Unit Price</div>
+							<div className={styles.cellFull}>Status</div>
+							<div className={styles.cell2xl}>Access Type</div>
 							<div className={styles.edit}>Edit</div>
 							<div className={styles.delete}>Delete</div>
 						</div>
@@ -146,21 +139,12 @@ function Inventory() {
 									}
 								>
 									<div className={styles.index}>{index + 1}</div>
-									{/* <div className={styles.id}>{data.inventoryId}</div> */}
-									<div className={styles.name2}>{data.inventoryName}</div>
-									<div className={styles.name}>{data.description}</div>
-									<div className={styles.category}>{data.category}</div>
-									<div className={styles.category}>{data.type}</div>
-									<div className={styles.access}>{data.quantity}</div>
-									<div className={styles.cell2}>{data.unitPrice}</div>
-									{/* <div className={styles.access}>{data.supplier}</div> */}
-									{/* <div className={styles.access}>{data.location}</div> */}
-									{/* <div className={styles.access}>{data.minQty}</div> */}
-									<div className={styles.cell}>{data.status}</div>
-									<div className={styles.cell}>{data.permissions[0].userAccess.accessType}</div>
-									<div className={styles.creation}>
-										{new Date(data.createdAt).toLocaleDateString()}
-									</div>
+									<div className={styles.cell2xl}>{data.inventoryName}</div>
+									<div className={styles.cellFull}>{data.description}</div>
+									<div className={styles.cellmd}>{data.quantity}</div>
+									<div className={styles.cell2xl}>{data.unitPrice}</div>
+									<div className={styles.cellFull}>{data.status}</div>
+									<div className={styles.cell2xl}>{data.permissions[0].userAccess.accessType}</div>
 									<div className={styles.edit}>
 										<Link
 											to={`edit/${data.inventoryId}`}

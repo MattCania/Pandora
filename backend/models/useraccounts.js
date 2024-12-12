@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
 
-      UserAccounts.hasOne(models.UserWallet, {
+      UserAccounts.hasOne(models.UserWallets, {
         foreignKey: 'userId',
         as: 'walletId',
         onDelete: "CASCADE",
@@ -96,8 +96,8 @@ module.exports = (sequelize, DataTypes) => {
       middleName: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "N/A",
         validate: {
-          notEmpty: true,
           is: /^[a-zA-Z\s]*$/i,
           len: [2, 25],
         },

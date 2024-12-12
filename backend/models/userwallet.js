@@ -37,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0.0,
         validate: {
-          isNumeric: true
+          isNumeric: true,
+          min: 0.0
         }
       },
       recurrance: {
@@ -45,23 +46,21 @@ module.exports = (sequelize, DataTypes) => {
           'Weekly', 'Semi-Monthly', 'Monthly', 'Quarterly', 'Annually'
         ),
         allowNull: false,
-        defaultValue: 'Monthly',
-        validate: {
-          isNumeric: true
-        }
+        defaultValue: 'Monthly'
       },
       wallet: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         defaultValue: 0.0,
         validate: {
-          isNumeric: true
+          isNumeric: true,
+          min: 0.0
         }
       },
     },
     {
       sequelize,
-      modelName: "UserWallet",
+      modelName: "UserWallets",
       timestamps: false
     }
   );

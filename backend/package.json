@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "accounting-js": "^1.1.1",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "compression": "^1.7.5",
@@ -18,7 +19,9 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
+    "currency.js": "^2.0.4",
     "debug": "^4.3.7",
+    "dinero.js": "^1.9.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",

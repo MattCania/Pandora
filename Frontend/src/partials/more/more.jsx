@@ -2,17 +2,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faStar } from "@fortawesome/free-solid-svg-icons"
 import { faGooglePlay, faApple } from "@fortawesome/free-brands-svg-icons"
 import { Link, useNavigate } from "react-router-dom"
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { SessionContext } from "../../pages/home/home"
 import fakeQr from '/fakeQr.svg'
 import styles from './more.module.css'
 import Loading from "../loading/loading"
+import Wallet from "../../components/wallet/wallet";
 
 function MoreSidebar() {
 	const navigate = useNavigate()
 	const user = useContext(SessionContext);
 
-	const middleInitial = user.user.middleName.charAt(0)
+	let middleInitial
+	if (user.user.middleInitial) middleInitial = user.user.middleName.charAt(0)
 
 	const handleLogout = async () => {
 		try {
@@ -35,7 +37,7 @@ function MoreSidebar() {
 			<section className={styles.accountSection}>
 				<button className={styles.profileButton}><FontAwesomeIcon icon={faUser} /></button>
 				<div className={styles.accountDiv}>
-					<h1>{user.user.lastName}, {user.user.firstName} {middleInitial}. </h1>
+					<h1>{user.user.lastName}, {user.user.firstName} {middleInitial && `${middleInitial}.`} </h1>
 					<p>{user.session.email}</p>
 
 					<div className={styles.accountButtons}>
@@ -60,15 +62,7 @@ function MoreSidebar() {
 
 			<hr />
 			<section className={styles.links}>
-				{/*<div>
-
-					<Link to="">Help & Support</Link>
-					<Link to="">Explore Tools</Link>
-					<Link to="">Contact Support</Link>
-					<Link to="">Checkout Plans</Link>
-				</div>
-
-				<Link><FontAwesomeIcon icon={faStar} /> Whats New?</Link>*/}
+				<Wallet/>
 			</section>
 			<hr />
 
