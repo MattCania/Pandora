@@ -48,12 +48,14 @@ function Transactions() {
     const transactionId = item.transactionId.toString();
     const description = item.description.toLowerCase();
     const amount = item.amount.toString();
+    const status = item.status.toLowerCase();
     const search = searchTerm.toLowerCase();
 
     return (
       transactionId.includes(search) ||
       description.includes(search) ||
-      amount.includes(search)
+      amount.includes(search) ||
+      status.includes(search)
     );
   });
 
@@ -123,6 +125,7 @@ function Transactions() {
               <div className={styles.id}>Transaction Id</div>
               <div className={styles.name}>Description</div>
               <div className={styles.access}>Amount</div>
+              <div className={styles.access}>Status</div>
               <div className={styles.creation}>Created At</div>
               {access !== "Viewer" && (
                 <>
@@ -144,6 +147,7 @@ function Transactions() {
                   <div className={styles.id}>{data.transactionId}</div>
                   <div className={styles.name}>{data.description}</div>
                   <div className={styles.access}>{data.amount}</div>
+                  <div className={styles.access}>{data.status}</div>
                   <div className={styles.creation}>
                     {new Date(data.transactionDate).toLocaleDateString()}
                   </div>

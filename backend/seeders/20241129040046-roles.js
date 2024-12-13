@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-      
+    console.log('seeding roles')
     await queryInterface.bulkInsert("Roles", [
       {
         roleName: 'Admin'
@@ -17,6 +17,7 @@ module.exports = {
         roleName: 'Viewer'
       },
     ])
+    console.log('seeding user roles')
     await queryInterface.bulkInsert("UserRoles", [
       {
         roleId: 1,

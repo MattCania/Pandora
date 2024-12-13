@@ -107,20 +107,49 @@ const walletAdd = async (req, res) => {
 }
 
 const walletSubtract = async (req, res) => {
-	const userId = req.session.userId
+	const userId = req.session.userId;
+	const { amount, tax, status } = req.body;
 
+	console.log({
+		tax: tax,
+		amount: amount,
+		status:status
+	})
 	try {
-		
+	  if (status !== 'Completed') {
+		return res.status(200).json({ message: 'Successfully checked if status is complete' });
+	  }
+  
+	  const walletInfo = await fetchWalletInfo(userId);
+  
+	  if (!walletInfo) {
+		throw new Error({ status: 400, message: 'Error subtracting value' });
+	  }
+  
+	  const newWalletAmount = walletInfo.wallet - (amount + tax);
+  
+	  // Corrected Sequelize update query
+	  const [updateResult] = await UserWallets.update(
+		{ wallet: newWalletAmount }, // values to update
+		{ where: { userId: userId } } // options with where clause
+	  );
+  
+	  if (updateResult === 0) {
+		throw new Error({ status: 400, message: 'No wallet found for the user or update failed' });
+	  }
+  
+	  return res.status(200).json({ message: 'Successfully Subtracted Values' });
+  
 	} catch (error) {
-		
-		return res.status(error.status).json({error: error.message})
+	  return res.status(error.status || 500).json({ error: error.message });
 	}
-
-}
+  };
+  
 
 module.exports = {
 	getWallet,
 	recurIncome,
 	recurIncomeCron,
-	updateWallet
+	updateWallet,
+	walletSubtract
 }

@@ -18,7 +18,7 @@ function EditTransactions() {
 		try {
 			const result = await GetData(`get-${transaction.toLowerCase()}Transaction/${transactionId}`)
 			if (!result) throw new Error("Error Getting Data")
-			console.log(result)
+			console.log('Result',result)
 			setExistingData(result)
 		}
 		catch (error) {

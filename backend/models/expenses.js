@@ -127,6 +127,11 @@ module.exports = (sequelize, DataTypes) => {
 			"Pending",
 			"Cancelled"
 		),
+    allowNull: false,
+    defaultValue: "Completed",
+    validate: {
+      notEmpty: true,
+    },
 	  },
       createdAt: {
         type: DataTypes.DATE,

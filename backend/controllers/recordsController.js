@@ -115,15 +115,11 @@ const createRecord = async (req, res) => {
   }
 };
 const updateRecord = async (req, res) => {
-  const { recordType, recordName, usersToAdd, usersToRemove } = req.body;
+  const { recordType, recordName, userPermissions } = req.body;
   const recordId = req.params.recordId;
 
-  console.log('Users to add:', usersToAdd);
-  console.log('Users to remove:', usersToRemove);
-
   try {
-    // Update the record in the database
-    const [rowsUpdated] = await TransactionRecords.update(
+    const results = await TransactionRecords.update(
       {
         recordType: recordType,
         recordName: recordName,
@@ -134,61 +130,28 @@ const updateRecord = async (req, res) => {
       }
     );
 
-    if (rowsUpdated === 0) {
-      throw new Error("Record not found or no changes made.");
-    }
+    const newRecordId = results.recordId;
 
-    // Add new users if any are provided
-    if (usersToAdd && Object.keys(usersToAdd).length > 0) {
-      const permissions = await Promise.all(
-        Object.entries(usersToAdd).map(async ([userName, accessLevel]) => {
-          const user = await UserProfiles.findOne({
-            where: { userName: userName },
-          });
+    if (!results) throw new Error("Record Update Failure");
 
-          if (!user) {
-            throw new Error(`User with userName ${userName} not found`);
-          }
+    if (Object.keys(userPermissions).length > 0 && userPermissions) {
+      const permissions = await Promise.all(Object.entries(userPermissions).map(async ([userName, accessLevel]) => {
+        const user = await UserProfiles.findOne({ where: { userName: userName } });
 
-          return {
-            recordId: recordId,
-            accessLevel: parseInt(accessLevel, 10),
-            permittedUser: user.profileId,
-          };
-        })
-      );
+        if (!user) {
+          throw new Error(`User with userName ${userName} not found`);
+        }
+        return {
+          recordId: recordId,
+          accessLevel: parseInt(accessLevel, 10),
+          permittedUser: user.profileId,
+        };
+      }));
 
-      // Create new permissions for users to be added
       await RecordPermissions.bulkCreate(permissions);
     }
 
-    // Remove users if any are provided
-    if (usersToRemove && usersToRemove.length > 0) {
-      const userIdsToRemove = await Promise.all(
-        usersToRemove.map(async (userName) => {
-          const user = await UserProfiles.findOne({
-            where: { userName },
-          });
-
-          if (!user) {
-            throw new Error(`User with userName ${userName} not found`);
-          }
-
-          return user.profileId;
-        })
-      );
-
-      // Delete permissions for users to be removed
-      await RecordPermissions.destroy({
-        where: {
-          recordId,
-          permittedUser: userIdsToRemove, // Array of user IDs to delete
-        },
-      });
-    }
-
-    // Send success response
-    res.status(200).json({ message: "Successful Record Changes" });
+    res.status(200).json({ message: "Successful Record Changes", results });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error", error: err.message });
@@ -298,39 +261,7 @@ const getExistingPermissions = async (req, res) => {
   }
 };
 
-const getRecordAmount = async (req, res) => {
-  const transaction = req.params.transaction
-  const recordId = req.params.recordId
 
-  try {
-    const expenses = await Expenses.findAll({
-      where: {expenseId: recordId},
-      attributes: ['amount']
-    })
-
-    const purchases = await Purchases.findAll({
-      where: {purchaseId: recordId},
-      attributes: ['amount']
-    })
-
-    const records = transaction === 'purchase' ? purchases : expenses
-
-    if (!records) return res.status(400).json({message: 'Records Unfound'})
-    console.log(records)
-
-    let sum = records.map((amount) => {
-      sum = newAmount + amount
-    })
-
-    console.log(sum)
-
-    return res.status(200).json(sum)
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Server Error", error: error.message });
-  }
-}
 
 const removePermission = async (req, res) => {
   const userId = req.params.userId;
@@ -418,6 +349,42 @@ const authenticateAccess = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+const getRecordAmount = async (req, res) => {
+  const transaction = req.params.transaction
+  const recordId = req.params.recordId
+
+  try {
+    let transactionResult
+    if (transaction.includes('expense')){
+      const expenses = await Expenses.findAll({
+        where: {expenseId: recordId},
+        attributes: ['amount']
+      })
+      transactionResult = expenses
+    }
+
+    if (transaction.includes('purchase')){
+      const purchases = await Purchases.findAll({
+        where: {purchaseId: recordId},
+        attributes: ['amount']
+      })
+      transactionResult = purchases
+    }
+
+    if (!transactionResult) return res.status(400).json({message: 'Records Unfound'}) 
+
+    let sum = transactionResult.reduce((acc, transaction) => {
+      return acc + Number(transaction.amount);
+    }, 0);
+
+    return res.status(200).json(sum)
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", error: error.message });
+  }
+}
 
 module.exports = {
   getRecords,

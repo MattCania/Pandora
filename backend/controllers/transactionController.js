@@ -133,6 +133,7 @@ const createExpenses = async (req, res) => {
   const {
     account,
     paymentType,
+    reccuring,
     transactionDate,
     description,
     amount,
@@ -151,6 +152,7 @@ const createExpenses = async (req, res) => {
       paymentType: paymentType,
       transactionDate: transactionDate,
       description: description,
+      reccuring: reccuring || null,
       amount: amount,
       currency: currency.currency,
       vendorCustomer: vendorCustomer,
@@ -160,19 +162,20 @@ const createExpenses = async (req, res) => {
     });
 
     if (!creation) throw new Error("Error Creating Transaction");
-
+    console.log("Wallet Setup")
     if (status === 'Completed'){
-      const wallet = UserWallets.findOne({ where: {userId: userId}})
+      const wallet = await UserWallets.findOne({ where: {userId: userId}})
+      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
       const subtractWallet = await UserWallets.update(
         {
-          where: {userId}
+          wallet: newAmount
         },
         {
-          wallet: wallet.wallet - amount
+          where: {userId: userId}
         }
       )
 
-      if (!subtractWallet.ok) throw new Error('Error Wallet Subtract')
+      if (!subtractWallet) throw new Error('Error Wallet Subtract')
     }
 
     return res.status(200).json({ message: "Successful Transaction Creation" });
@@ -190,6 +193,7 @@ const createPurchases = async (req, res) => {
     transactionDate,
     description,
     amount,
+    reccuring,
     vendorCustomer,
     invoiceNumber,
     tax,
@@ -205,6 +209,7 @@ const createPurchases = async (req, res) => {
       transactionDate: transactionDate,
       description: description,
       amount: amount,
+      reccuring: reccuring || null,
       currency: currency.currency,
       vendorCustomer: vendorCustomer,
       invoiceNumber: invoiceNumber,
@@ -215,19 +220,18 @@ const createPurchases = async (req, res) => {
     if (!creation) throw new Error("Error Creating Transaction");``
 
     if (status === 'Completed'){
-
-      const wallet = UserWallets.findOne({ where: {userId: userId}})
-      console.log(wallet)
+      const wallet = await UserWallets.findOne({ where: {userId: userId}})
+      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
       const subtractWallet = await UserWallets.update(
         {
-          where: {userId}
+          wallet: newAmount
         },
         {
-          wallet: wallet.wallet - amount
+          where: {userId: userId}
         }
       )
 
-      if (!subtractWallet.ok) throw new Error('Error Wallet Subtract')
+      if (!subtractWallet) throw new Error('Error Wallet Subtract')
     }
 
     return res.status(200).json({ message: "Successful Transaction Creation" });
@@ -241,19 +245,16 @@ const updateExpenses = async (req, res) => {
   const userId = req.session.userId
   const transactionId = req.params.transactionId;
   const {
-    orderNumber,
     account,
-    category,
     paymentType,
     transactionDate,
     description,
     amount,
-    credit,
-    debit,
+    reccuring,
     vendorCustomer,
     invoiceNumber,
     tax,
-    balance,
+    status
   } = req.body;
 
   try {
@@ -261,23 +262,33 @@ const updateExpenses = async (req, res) => {
 
     const [updateCount] = await Expenses.update(
       {
-        orderNumber,
         account,
-        category,
         paymentType,
         transactionDate,
         description,
         amount,
-        credit,
-        debit,
-        currency: currency.currency,
+        reccuring,
         vendorCustomer,
         invoiceNumber,
         tax,
-        balance,
+        status
       },
       { where: { transactionId  : transactionId } }
     );
+    if (currency.status !== 'Complete' && status === 'Completed'){
+      const wallet = await UserWallets.findOne({ where: {userId: userId}})
+      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      const subtractWallet = await UserWallets.update(
+        {
+          wallet: newAmount
+        },
+        {
+          where: {userId: userId}
+        }
+      )
+
+      if (!subtractWallet) throw new Error('Error Wallet Subtract')
+    }
 
     if (!updateCount) throw new Error("Error Updating Transaction");
 

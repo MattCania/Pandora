@@ -20,19 +20,32 @@ function Records() {
 	const [data, setData] = useState([])
 	const [purchaseTerm, setPurchaseTerm] = useState("");
 	const [expenseTerm, setExpenseTerm] = useState('')
+	const [currencyType, setCurrencyType] = useState('')
 
+	console.log(user)
 	const fetchRecords = async () => {
 		try {
-			if (!user) return
-			const records = await GetData(`records/${user.session.userId}`)
-			if (!records) throw new Error("Records Null or Undefined")
-
-			setData(records)
+		  if (!user) return;
+		  const currency = await user.profile.currency
+		  setCurrencyType(currency)
+		  const records = await GetData(`records/${user.session.userId}`);
+		  if (!records) throw new Error("Records Null or Undefined");
+		//   console.log('Records', records)
+		  const enrichedRecords = await Promise.all(records.map(async (record) => {
+			  const total = await GetData(
+				  `recordAmount/${record.recordType.toLowerCase()}/${record.recordId}`
+				);
+				return { ...record, totalCost: total };
+			}));
+			
+			// console.log('Enriched Records', enrichedRecords)
+		  setData(enrichedRecords);
 		} catch (error) {
-			console.error("Error fetching data:", error);
+		  console.error("Error fetching data:", error);
+		  return
 		}
-	}
-
+	  };
+	
 	useEffect(() => {
 		fetchRecords();
 	}, [user])
@@ -44,7 +57,7 @@ function Records() {
 	const expenseData = data.filter(record =>
 		record.recordType === "Expenses"
 	);
-
+	
 	const purchaseData = data.filter(record =>
 		record.recordType === "Purchases"
 	);
@@ -172,7 +185,7 @@ function Records() {
 									<div className={styles.index}>{index + 1}</div>
 									<div className={styles.id}>{data.recordId}</div>
 									<div className={styles.name}>{data.recordName}</div>
-									<div className={styles.cost}>{data.cost}</div>
+									<div className={styles.cost}>{currencyType}{(data.totalCost).toFixed(2) || (0).toFixed(2)}</div>
 									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}
@@ -180,7 +193,7 @@ function Records() {
 
 										<div className={styles.edit}>
 										<Link className={data.recordPermissions[0].userAccess.accessType === "Viewer" ? styles.linkButton : ''}
-											to={`edit/${data.recordId}`}
+											to={`edit/${data.recordPermissions[0].userAccess.accessType}/${data.recordId}`}
 											disabled={data.recordPermissions[0].userAccess.accessType === "Viewer"}
 											onClick={(e) => {
 												if (data.recordPermissions[0].userAccess.accessType === "Viewer") {
@@ -256,14 +269,14 @@ function Records() {
 									<div className={styles.index}>{index + 1}</div>
 									<div className={styles.id}>{data.recordId}</div>
 									<div className={styles.name}>{data.recordName}</div>
-									<div className={styles.cost}>{data.cost}</div>
+									<div className={styles.cost}>{currencyType}{(data.totalCost).toFixed(2) || (0).toFixed(2)}</div>
 									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}
 									</div>
 									<div className={styles.edit}>
 										<Link className={data.recordPermissions[0].userAccess.accessType === "Viewer" ? styles.linkButton : ''}
-											to={`edit/${data.recordId}`}
+											to={`edit/${data.recordPermissions[0].userAccess.accessType}/${data.recordId}`}
 											onClick={(e) => {
 												if (data.recordPermissions[0].userAccess.accessType === "Viewer") {
 													e.preventDefault();

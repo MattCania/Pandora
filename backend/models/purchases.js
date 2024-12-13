@@ -122,6 +122,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.ENUM("Completed", "Incomplete", "Pending", "Cancelled"),
+        allowNull: false,
+        defaultValue: "Completed",
+        validate: {
+          notEmpty: true,
+        },
       },
       createdAt: {
         type: DataTypes.DATE,

@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         type: DataTypes.INTEGER,
+        unique:true,
         references: {
           model: "UserAccounts",
           key: "userId",
@@ -54,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0.0,
         validate: {
           isNumeric: true,
-          min: 0.0
         }
       },
     },

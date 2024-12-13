@@ -27,7 +27,7 @@ function HomeRouter() {
         <Route path='create' element={<Create/>}/>
         <Route path="records" element={<Records/>}/>
         <Route path="records/create/" element={<CreateRecords/>}/>
-        <Route path='records/edit/:recordId' element={<EditRecords/>}/>
+        <Route path='records/edit/:access/:recordId' element={<EditRecords/>}/>
         <Route path="records/:transaction/:recordId/:access" element={<Transactions/>}/>
         <Route path="records/:transaction/:recordId" element={<CreateRecords />} />
         <Route path='transaction/create/:transaction/:recordId' element={<CreateTransactions/>}/>

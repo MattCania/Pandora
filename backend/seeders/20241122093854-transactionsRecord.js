@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     function getRandomDateTime() {
-      const year = Math.floor(Math.random() * (2050 - 2000 + 1)) + 2000;
+      const year = 2024
       const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
       const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
       const hour = String(Math.floor(Math.random() * 24)).padStart(2, "0");
@@ -50,7 +50,7 @@ module.exports = {
     ]);
 
     const randomRecurrance = ['Monthly', 'Semi-Monthly', 'Annually', 'Quarterly']
-    const statuses = ['Completed', 'Pending', 'Incompleted', 'Cancelled']
+    const statuses = ["Completed", "Incomplete", "Pending", "Cancelled"]
     console.log("Seeding Transactions");
     // Insert Expenses
     const expenses = [];
@@ -97,18 +97,17 @@ module.exports = {
     await queryInterface.bulkInsert("Purchases", purchases);
 
     const inventoryCategory = [
-      "Raw Materials","Finished Goods","Work-in-Progress","Consumables",
-      "Office Supplies","Machinery and Equipment","Furniture","Electronics",
-      "Vehicles","Health and Safety","Packaging Materials","Perishable Goods",
-      "Non-Perishable Goods","Tools","Miscellaneous",
+      "Raw Materials", "Finished Goods","Work-in-Progress", "Consumables",
+      "Office Supplies", "Machinery and Equipment","Furniture", "Electronics",
+      "Vehicles", "Health and Safety","Packaging Materials", "Perishable Goods",
+      "Non-Perishable Goods", "Tools","Miscellaneous"
     ];
 
     const inventoryStatus = [
       "In Stock","Out of Stock","Reserved","On Order",
       "In Transit","Backordered","Pending","Damaged",
       "Quarantined","Returned","Ready for Dispatch","Under Maintenance",
-      "Expired","On Hold","Sold","Recalled",
-      "Available for Allocation",
+      "Expired","On Hold","Sold","Recalled","Available for Allocation"
     ];
 
     console.log("Seeding Inventory");
@@ -125,10 +124,11 @@ module.exports = {
         category: inventoryCategory[Math.floor(Math.random() * inventoryCategory.length)],
         quantity: Math.floor(Math.random() * 100),
         unitPrice: Math.floor(Math.random() * 500),
-        status: inventoryStatus[Math.floor(Math.random() * inventoryStatus.length) + 1],
+        status: inventoryStatus[Math.floor(Math.random() * inventoryStatus.length)],
         createdAt: getRandomDateTime(),
         updatedAt: getRandomDateTime(),
       });
+      // console.log(inventoryData)
     }
     await queryInterface.bulkInsert("Inventories", inventoryData);
 
@@ -149,20 +149,6 @@ module.exports = {
     ];
     await queryInterface.bulkInsert("InventoryPermissions", inventoryPermissions);
 
-    await queryInterface.bulkInsert('UserWallets', [
-      {
-        userId: 1,
-        income: 15000.00,
-        recurrance: 'Semi-Monthly',
-        wallet: 15000.00
-      },
-      {
-        userId: 2,
-        income: 30000.00,
-        recurrance: 'Monthly',
-        wallet: 30000.00
-      }]
-    )
 
   },
 

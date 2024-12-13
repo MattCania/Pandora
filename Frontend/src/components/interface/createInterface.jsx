@@ -20,7 +20,7 @@ function CreateInterface({ mainText, subText, formInput, formValues,  inputChang
 							{data.type === "select" ? (
 								<select id={data.id} name={data.name} 
 								value={formValues[data.name] || ""} onChange={inputChange}>
-								<option value="" disabled>
+								<option value="">
 								  Select {data.label}
 								</option>
 								{data.options?.map((option, idx) => (

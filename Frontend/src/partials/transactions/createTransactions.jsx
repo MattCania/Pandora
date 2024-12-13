@@ -7,7 +7,7 @@ import CreatedPrompt from "../../components/prompts/createdPrompt";
 function CreateTransactions() {
 	const navigate = useNavigate();
 	const { transaction, recordId } = useParams();
-	const [showCreated, setShowCreated] = useState(false);d
+	const [showCreated, setShowCreated] = useState(false);
 	const [errors, setErrors] = useState({}); // To track errors for fields
 
 	if (!transaction || !recordId) return <h1>Loading...</h1>;
@@ -100,12 +100,13 @@ function CreateTransactions() {
 		const newErrors = {};
 		if (!formValues.account) newErrors.account = "Account is required.";
 		if (!formValues.paymentType) newErrors.paymentType = "Payment type is required.";
-		if (!formValues.transactionDate) newErrors.transactionDate = "Transaction date is required.";
 		if (!formValues.description) newErrors.description = "Description cannot be empty.";
 		if (!formValues.amount || formValues.amount <= 0) newErrors.amount = "Amount must be greater than zero.";
 		if (!formValues.vendorCustomer) newErrors.vendorCustomer = "Vendor/Customer name is required.";
 		if (!formValues.invoiceNumber) newErrors.invoiceNumber = "Invoice number is required.";
 		if (!formValues.status) newErrors.status = "Transaction status is required.";
+		if (!formValues.tax || formValues.tax < 0) newErrors.tax = "Tax must be a valid number.";
+		if (!formValues.transactionDate) newErrors.transactionDate = "Transaction date is required.";
 
 		setErrors(newErrors);
 		return Object.keys(newErrors).length === 0;
@@ -134,7 +135,9 @@ function CreateTransactions() {
 
 		try {
 			const response = await PostRequest(`create-${transaction.slice(0, -1)}/${recordId}`, formData);
+			console.log(response)
 			if (!response) throw new Error("Error in creating transaction");
+
 			setShowCreated(true);
 		} catch (error) {
 			console.error("Error:", error);
