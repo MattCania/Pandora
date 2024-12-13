@@ -207,6 +207,41 @@
   .saveButton:hover {
 	background-color: #1e7e34;
   }
+
+  .transactionTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+	color: black;
+}
+
+.transactionTable th, .transactionTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.transactionTable th {
+    background-color: #f4f4f4;
+}
+
+.buttonDiv {
+    margin-top: 20px;
+    text-align: right;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+button.active {
+    background-color: #28a745;
+}
   
 
   @keyframes spin {

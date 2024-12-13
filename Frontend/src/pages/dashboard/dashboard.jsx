@@ -5,9 +5,10 @@ import TransactionOverview from "../../components/overviews/homeTransactions";
 import InventoryOverview from "../../components/overviews/homeInventory";
 import BudgetOverview from "../../components/overviews/homeBudget";
 import Footer from "../../partials/footer/footer";
-import HomeWallet from "../../components/overviews/homewallet"
+import HomeWallet from "../../components/overviews/homewallet";
 import Loading from "../../partials/loading/loading";
 import GetSession from "../../hooks/GetSession";
+import HomeWalletHistory from "../../components/overviews/homeWalletHistory";
 
 function Dashboard() {
     const user = useContext(SessionContext);
@@ -26,6 +27,7 @@ function Dashboard() {
             <section className={styles.firstSection}>
                 <TransactionOverview />
                 <HomeWallet />
+                <HomeWalletHistory />
             </section>
 
             <section className={styles.secondSection}>
