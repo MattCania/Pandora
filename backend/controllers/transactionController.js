@@ -165,7 +165,8 @@ const createExpenses = async (req, res) => {
     console.log("Wallet Setup")
     if (status === 'Completed'){
       const wallet = await UserWallets.findOne({ where: {userId: userId}})
-      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      // const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      const newAmount = wallet.wallet - Number(amount) 
       const subtractWallet = await UserWallets.update(
         {
           wallet: newAmount
@@ -221,7 +222,8 @@ const createPurchases = async (req, res) => {
 
     if (status === 'Completed'){
       const wallet = await UserWallets.findOne({ where: {userId: userId}})
-      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      // const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      const newAmount = wallet.wallet - Number(amount) 
       const subtractWallet = await UserWallets.update(
         {
           wallet: newAmount
@@ -257,9 +259,8 @@ const updateExpenses = async (req, res) => {
     status
   } = req.body;
   try {
-    const currency = await UserProfiles.findOne({where: userId, attributes: ['currency']})
-    const prevValues = await Expenses.findAll({where: {transactionId: transactionId}, attributes: ['tax', 'amount']})
-    console.log("Previous Values", prevValues)
+    // const currency = await UserProfiles.findOne({where: userId, attributes: ['currency']})
+    const prevValues = await Expenses.findAll({where: {transactionId: transactionId}, attributes: ['tax', 'amount', 'status']})
     const [updateCount] = await Expenses.update(
       {
         account,
@@ -275,11 +276,14 @@ const updateExpenses = async (req, res) => {
       },
       { where: { transactionId  : transactionId } }
     );
-    if (currency.status !== 'Complete' && status === 'Completed' && Number(prevValues[0].tax) !== Number(tax) && Number(prevValues[0].amount) !== Number(amount)){
+    console.log("Previous Status", prevValues[0].status)
+    console.log("Current Stauts", status)
+    if (status === 'Completed' && prevValues[0].status !== 'Completed' ){
       console.log(`Previous Tax: ${prevValues[0].tax} and Current Tax: ${tax}`)
       console.log(`Previous Amount: ${prevValues[0].amount} and Current Amount: ${amount}`)
       const wallet = await UserWallets.findOne({ where: {userId: userId}})
-      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      // const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      const newAmount = wallet.wallet - Number(amount) 
       const subtractWallet = await UserWallets.update(
         {
           wallet: newAmount
@@ -317,8 +321,8 @@ const updatePurchases = async (req, res) => {
     status
   } = req.body;
   try {
-    const currency = await UserProfiles.findOne({where: userId, attributes: ['currency']})
-    const prevValues = await Purchases.findAll({where: {transactionId: transactionId}, attributes: ['tax', 'amount']})
+    // const currency = await UserProfiles.findOne({where: userId, attributes: ['currency']})
+    const prevValues = await Purchases.findAll({where: {transactionId: transactionId}, attributes: ['tax', 'amount', status]})
 
     const [updateCount] = await Expenses.update(
       {
@@ -335,11 +339,15 @@ const updatePurchases = async (req, res) => {
       },
       { where: { transactionId  : transactionId } }
     );
-    if (currency.status !== 'Complete' && status === 'Completed' && Number(prevValues[0].tax) !== Number(tax) && Number(prevValues[0].amount) !== Number(amount)){
+
+    const isComplete = status === 'Completed' && prevValues.status !== status
+
+    if (status === 'Completed' && prevValues[0].status !== 'Completed' ){
       console.log(`Previous Tax: ${prevValues[0].tax} and Current Tax: ${tax}`)
       console.log(`Previous Amount: ${prevValues[0].amount} and Current Amount: ${amount}`)
       const wallet = await UserWallets.findOne({ where: {userId: userId}})
-      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      // const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      const newAmount = wallet.wallet - Number(amount) 
       const subtractWallet = await UserWallets.update(
         {
           wallet: newAmount

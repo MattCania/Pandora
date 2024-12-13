@@ -19,11 +19,14 @@ function Inventory() {
 	const user = useContext(SessionContext);
 	const [data, setData] = useState([])
 	const [searchTerm, setSearchTerm] = useState("");
+	  const [currencyType, setCurrencyType] = useState('')
 
 	const fetchRecords = async () => {
 		try {
 			if (!user) return
 			const inventory = await GetData(`inventory`)
+			const currency = user.profile.currency
+			setCurrencyType(currency)
 			if (inventory.length === 0 || !inventory) {
 				console.log('Empty Results')
 			}
@@ -141,7 +144,7 @@ function Inventory() {
 									<div className={styles.cell2xl}>{data.inventoryName}</div>
 									<div className={styles.cellFull}>{data.description}</div>
 									<div className={styles.cellmd}>{data.quantity}</div>
-									<div className={styles.cell2xl}>{data.unitPrice}</div>
+									<div className={styles.cell2xl}>{currencyType} {Number(data.unitPrice).toFixed(2)}</div>
 									<div className={styles.cellFull}>{data.status}</div>
 									<div className={styles.edit}>
 										<Link

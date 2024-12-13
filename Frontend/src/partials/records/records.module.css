@@ -86,7 +86,13 @@
 	width: 35%;
 	height: 100%;
 }
-
+.amount{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40%;
+	height: 100%;
+}
 .name {
 	display: flex;
 	justify-content: center;

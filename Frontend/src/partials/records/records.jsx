@@ -22,7 +22,6 @@ function Records() {
 	const [expenseTerm, setExpenseTerm] = useState('')
 	const [currencyType, setCurrencyType] = useState('')
 
-	console.log(user)
 	const fetchRecords = async () => {
 		try {
 		  if (!user) return;
@@ -163,7 +162,7 @@ function Records() {
 							<div className={styles.index}>#</div>
 							<div className={styles.id}>Record Id</div>
 							<div className={styles.name}>Record Name</div>
-							<div className={styles.cost}>Total Cost</div>
+							<div className={styles.amount}>Total Cost</div>
 							<div className={styles.access}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
 							<div className={styles.edit}>Edit</div>
@@ -185,7 +184,7 @@ function Records() {
 									<div className={styles.index}>{index + 1}</div>
 									<div className={styles.id}>{data.recordId}</div>
 									<div className={styles.name}>{data.recordName}</div>
-									<div className={styles.cost}>{currencyType}{(data.totalCost).toFixed(2) || (0).toFixed(2)}</div>
+									<div className={styles.amount}>{currencyType} {(data.totalCost).toFixed(2) || (0).toFixed(2)}</div>
 									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}
@@ -247,7 +246,7 @@ function Records() {
 							<div className={styles.index}>#</div>
 							<div className={styles.id}>Record Id</div>
 							<div className={styles.name}>Record Name</div>
-							<div className={styles.cost}>Total Cost</div>
+							<div className={styles.amount}>Total Cost</div>
 							<div className={styles.access}>Access Type</div>
 							<div className={styles.creation}>Created At</div>
 							<div className={styles.edit}>Edit</div>
@@ -269,7 +268,7 @@ function Records() {
 									<div className={styles.index}>{index + 1}</div>
 									<div className={styles.id}>{data.recordId}</div>
 									<div className={styles.name}>{data.recordName}</div>
-									<div className={styles.cost}>{currencyType}{(data.totalCost).toFixed(2) || (0).toFixed(2)}</div>
+									<div className={styles.amount}>{currencyType} {(data.totalCost).toFixed(2) || (0).toFixed(2)}</div>
 									<div className={styles.access}>{data.recordPermissions[0].userAccess.accessType}</div>
 									<div className={styles.creation}>
 										{new Date(data.createdAt).toLocaleDateString()}

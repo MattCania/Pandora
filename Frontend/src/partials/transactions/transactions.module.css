@@ -109,7 +109,15 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 25%;
+	width: 50%;
+	height: 100%;
+}
+
+.amount{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40%;
 	height: 100%;
 }
 

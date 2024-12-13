@@ -8,22 +8,28 @@ import SubHeader from "../../components/overviews/subheader";
 import ConfirmPrompt from "../../components/prompts/confirmingPrompt";
 import DeleteRequest from "../../hooks/DeleteRequest";
 import ConfirmDeletion from "../../components/prompts/confirmDeletion"
+import GetSession from "../../hooks/GetSession";
 
 function Transactions() {
   const navigate = useNavigate();
+  const user = GetSession()
   const { transaction, recordId, access } = useParams();
   const [data, setData] = useState([]);
   const [record, setRecord] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");  
+  const [currencyType, setCurrencyType] = useState('')
 
   const fetchTransactions = async () => {
+    if (!user) return;
+    const currency = await user.profile.currency
+    setCurrencyType(currency)
     try {
       if (!transaction || !recordId) return;
       const transactionData = await GetData(`get-${transaction}/${recordId}`);
       if (!transactionData) {
         throw new Error("Transactions Null or Undefined");
       }
-      console.log(transactionData)
+      // console.log(transactionData)
 
       const records = await GetData(`records/open/${recordId}`);
       if (!records) {
@@ -38,7 +44,8 @@ function Transactions() {
 
   useEffect(() => {
     fetchTransactions();
-  }, [transaction]);
+  }, [transaction, user]);
+
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
@@ -72,18 +79,21 @@ function Transactions() {
   const confirmDeletion = async () => {
     try {
         if (!transactionToDelete) return; 
+        
+        console.log(transaction)
 
-        const response = await DeleteRequest(`delete-record/${transactionToDelete}`); 
+        const response = await DeleteRequest(`delete-${transaction.slice(0, -1)}/${transactionToDelete}`); 
         if (!response) {
             throw new Error("Failed to delete the record");
         }
+
         
         fetchTransactions(); 
         setShowConfirmedPrompt(true);
 
-        setTimeout(() => {
-            setShowConfirmedPrompt(false);
-        }, 3000);
+        // setTimeout(() => {
+        //     setShowConfirmedPrompt(false);
+        // }, 3000);
     } catch (error) {
         console.error("Error:", error);
     } finally {
@@ -97,7 +107,10 @@ function Transactions() {
     navigate(`/home/transaction/${type}/${id}/${access}`);
   };
 
+  // if (!filteredData) return <h1>Loading...</h1>
+
   return (
+    filteredData && data && user && 
     <section className={styles.section}>
       <header className={styles.subHeader}>
         <h1>Record: {record.recordName} </h1>
@@ -122,10 +135,10 @@ function Transactions() {
           <div className={styles.table}>
             <div className={styles.tableHeader}>
               <div className={styles.index}>#</div>
-              <div className={styles.id}>Transaction Id</div>
+              <div className={styles.access}>Transaction Id</div>
               <div className={styles.name}>Description</div>
-              <div className={styles.access}>Amount</div>
-              <div className={styles.access}>Status</div>
+              <div className={styles.amount}>Amount</div>
+              <div className={styles.creation}>Status</div>
               <div className={styles.creation}>Created At</div>
               {access !== "Viewer" && (
                 <>
@@ -144,10 +157,10 @@ function Transactions() {
                   }
                 >
                   <div className={styles.index}>{index + 1}</div>
-                  <div className={styles.id}>{data.transactionId}</div>
+                  <div className={styles.access}>{data.transactionId}</div>
                   <div className={styles.name}>{data.description}</div>
-                  <div className={styles.access}>{data.amount}</div>
-                  <div className={styles.access}>{data.status}</div>
+                  <div className={styles.amount}>{currencyType} {Number(data.amount).toFixed(2)}</div>
+                  <div className={styles.creation}>{data.status}</div>
                   <div className={styles.creation}>
                     {new Date(data.transactionDate).toLocaleDateString()}
                   </div>
