@@ -1,0 +1,141 @@
+.mainSection{
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	height: 100%;
+	width: 100%;
+}
+
+.budgetSection{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: calc(80%);
+	border-radius: 15px;
+	flex: 1;
+	width: 100%;
+	border: 1px solid var(--secondary);
+	padding-bottom: 4px;
+	overflow: hidden;
+	box-shadow: 0px 2px 2px var(--textdark);
+	background-color: var(--background-color);
+}
+
+.budgetSection header{
+	height: 5em !important;
+}
+
+.inventorySection{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+	height: 100%;
+	/* width: 70vw; */
+	width: 100%;
+	border-radius: 15px;
+	border: 1px solid var(--secondary);
+	overflow: hidden;
+	box-shadow: 0px 2px 2px var(--textdark);
+	background-color: var(--background-color);
+}
+
+.inventorySection header{
+	height: 5em !important;
+	/* border-radius: 15px 15px 0px 0px; */
+}
+
+.inventorySection header h1 {
+	font-size: 1.5em !important;
+}
+
+.inventorySection header p {
+	font-size: 1em !important;
+}
+
+.Section{
+	width: 50%;
+}
+
+.subSection{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	border: 1px solid var(--secondary);
+	border-radius: 15px;
+	overflow: hidden;
+	background-color: var(--background-color);
+	box-shadow: 0px 2px 2px var(--textdark);
+	/* width: 40vw; */
+	width: 100%;
+	
+}
+
+.sectionChart{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	padding: 3em;
+	height: 100%;
+}
+
+  .chartContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+  }
+  
+  .subSection h3 {
+	font-size: 20px;
+	font-weight: bold;
+	color: #333;
+  }
+  
+  .loadingContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  }
+  
+  .spinner {
+	margin-top: 10px;
+	width: 30px;
+	height: 30px;
+	border: 4px solid #f3f3f3;
+	border-top: 4px solid #3498db;
+	border-radius: 50%;
+	animation: spin 2s linear infinite;
+  }
+
+  .placeholderText {
+	color: black;
+	text-align: center;
+  }
+  
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+  
+
+  @media (max-width: 768px) {
+	.subSection{
+		width: 100%;
+	}
+	.inventorySection{
+		margin: auto;
+		width: 100%;
+	}
+	.budgetSection{
+		width: 100%;
+	}
+	.Section{
+		width: 100%;
+	}
+}

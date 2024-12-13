@@ -87,6 +87,11 @@
 	margin: 0 1em;
 }
 
+.purchaseExpenseChart {
+    margin: 20px 0;
+  }
+  
+
 /* Responsive adjustments using media queries */
 @media (max-width: 768px) {
     .transactionSection {
