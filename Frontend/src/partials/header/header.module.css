@@ -123,6 +123,9 @@
 }
 
 .options button{
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	height: 2em;
 	width: 2em;
 	background-color: transparent;

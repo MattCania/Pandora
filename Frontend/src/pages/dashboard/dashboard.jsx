@@ -28,7 +28,7 @@ function Dashboard() {
             <section className={styles.firstSection}>
                 <TransactionOverview />
                 <HomeWallet />
-                <HomeWalletHistory />
+                {/* <HomeWalletHistory /> */}
             </section>
 
             <section className={styles.secondSection}>

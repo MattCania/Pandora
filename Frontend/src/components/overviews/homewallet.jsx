@@ -69,15 +69,17 @@ function HomeWallet() {
               </label>
               <div className={styles.inputGroup}>
                 <span className={styles.currencySymbol}>{user.profile.currency}</span>
-                <input
-                  type="text"
-                  id="wallet"
-                  name="wallet"
-                  value={formValues.wallet}
-                  readOnly={!editMode}
-                  onChange={handleInputChange}
+                <h1
+                  // type="text"
+                  // id="wallet"
+                  // name="wallet"
+                  // value={formValues.wallet}
+                  // readOnly={!editMode}
+                  // onChange={handleInputChange}
                   className={`${styles.walletInput} ${editMode ? styles.editable : ""}`}
-                />
+                >
+                  {Number(formValues.wallet).toFixed(2)}
+                </h1>
               </div>
             </div>
           </form>
