@@ -8,6 +8,7 @@ import Footer from "../../partials/footer/footer";
 import HomeWallet from "../../components/overviews/homewallet"
 import Loading from "../../partials/loading/loading";
 import GetSession from "../../hooks/GetSession";
+import PaidUnpaidOverview from "../../partials/Paid && Unpaid/PaidUnpaid"; // Import the new component
 
 function Dashboard() {
     const user = useContext(SessionContext);
@@ -30,6 +31,11 @@ function Dashboard() {
 
             <section className={styles.secondSection}>
                 <InventoryOverview />
+            </section>
+
+            {/* New Paid and Unpaid Doughnut Chart */}
+            <section className={styles.paidUnpaidChart}>
+                <PaidUnpaidOverview />
             </section>
 
             <section className={styles.footerSection}>
