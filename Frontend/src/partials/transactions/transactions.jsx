@@ -79,10 +79,9 @@ function Transactions() {
   const confirmDeletion = async () => {
     try {
         if (!transactionToDelete) return; 
-        
-        console.log(transaction)
+  
 
-        const response = await DeleteRequest(`delete-${transaction.slice(0, -1)}/${transactionToDelete}`); 
+        const response = await DeleteRequest(`delete-${transaction.toLowerCase().slice(0, -1)}/${transactionToDelete}`); 
         if (!response) {
             throw new Error("Failed to delete the record");
         }

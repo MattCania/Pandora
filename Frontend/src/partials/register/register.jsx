@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styles from './register.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import Logo from '/src/assets/MainLogo.svg';
-import PostRequest from '../../hooks/PostRequest';
+import Logo from '/src/assets/MainLogo.svg'
+import PostRequest from '../../hooks/PostRequest'
 
 function Register() {
   const navigate = useNavigate();
@@ -15,17 +15,27 @@ function Register() {
     recurrance: "Monthly", income: ""
   });
 
+  const [walletForm, setWalletForm] = useState(false)
+
+  const setWallet = () => {
+
+    validate
+    setWalletForm(walletForm => !walletForm)
+  }
+
+  const currencyTypes = ["PHP", "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "SGD", "HKD", "NZD", "ZAR", "BRL", "RUB", "MXN", "KRW", "AED", "SEK", "NOK", "DKK", "THB", "IDR", "TRY", "SAR", "MYR", "PLN", "ILS", "VND", "CLP", "COP"]
+  const recurranceTypes = ['Monthly', 'Semi-Monthly', 'Annually', 'Quarterly']
   const [errors, setErrors] = useState({});
-  const [walletForm, setWalletForm] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const currencyTypes = ["PHP", "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "SGD", "HKD", "NZD", "ZAR", "BRL", "RUB", "MXN", "KRW", "AED", "SEK", "NOK", "DKK", "THB", "IDR", "TRY", "SAR", "MYR", "PLN", "ILS", "VND", "CLP", "COP"];
-  const recurranceTypes = ['Monthly', 'Semi-Monthly', 'Annually', 'Quarterly'];
+  const setVisibility = () => {
+    setVisible(prev => !prev);
+  };
 
-  const setVisibility = () => setVisible(prev => !prev);
 
   const validate = () => {
-    const newErrors = {};
+    let newErrors = {};
+    if (!formValues.income) newErrors.income = "Income field is required or go back to the last page"
     if (!formValues.firstname.trim()) newErrors.firstname = "First name is required.";
     if (!formValues.lastname.trim()) newErrors.lastname = "Last name is required.";
     if (!formValues.email.trim()) newErrors.email = "Email is required.";
@@ -44,28 +54,39 @@ function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const [existingInput, setExistingInput] = useState({
+    firstname: "", lastname: "", email: "", password: "",
+    confirmpassword: "", username: "",
+    contact: "", organization: "",
+    currency: "" || 'USD',
+    country: "", recurrance: '' || 'Monthly',
+    income: 0.0
+  });
+
+
   const handleInputChange = (e) => {
+    setErrors("")
     const { name, value } = e.target;
-    setFormValues(prevValues => ({ ...prevValues, [name]: value }));
-    setErrors(prevErrors => ({ ...prevErrors, [name]: "" }));
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    setExistingInput(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
 
-  const handleNext = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      setWalletForm(true);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (!validate()) return;
+    if (!validate()) return;
 
     const formData = { ...formValues }
 
     try {
       const response = await PostRequest('register', formData);
-      console.log(response)
+      // console.log(response)
       if (!response) throw new Error("Registration failed.");
       navigate('/login');
     } catch (error) {
@@ -78,92 +99,112 @@ function Register() {
       <div className={styles.formSection}>
         <div className={styles.logo}>
           <a href="/landing">
-            <img className={styles.formLogo} src={Logo} alt="Logo" draggable="false" />
+            <img className={styles.formLogo} src={Logo} alt="" draggable="false" />
           </a>
         </div>
         <h3 className={styles.welcome}>Welcome to Pandora!</h3>
-        <form onSubmit={walletForm ? handleSubmit : handleNext}>
-          {walletForm ? (
+        <form onSubmit={walletForm ? handleSubmit : (e) => { e.preventDefault(); setWallet(); }}>
+          {walletForm ?
             <section>
+
               <div className={styles.selectionDiv}>
-                <select name="currency" value={formValues.currency} onChange={handleInputChange}>
-                  {currencyTypes.map((currency, index) => (
-                    <option key={index} value={currency}>{currency}</option>
-                  ))}
+                <select name="currency" id="currency" value={existingInput.currency} onChange={handleInputChange}>
+                  {currencyTypes.map((data, index) => (
+                    <option key={index} value={data}>{data}</option>
+                  ))
+                  }
                 </select>
               </div>
               <input
                 type="text"
                 name="organization"
+                id="organization"
                 placeholder="Organization"
-                value={formValues.organization}
                 onChange={handleInputChange}
               />
-              {errors.organization && <p className={styles.error}>{errors.organization}</p>}
+
               <div className={styles.selectionDiv}>
-                <select name="recurrance" value={formValues.recurrance} onChange={handleInputChange}>
-                  {recurranceTypes.map((type, index) => (
-                    <option key={index} value={type}>{type}</option>
-                  ))}
+
+                <select name="recurrance" id="recurrance" value={existingInput.recurrance} onChange={handleInputChange}>
+                  {recurranceTypes.map((data, index) => (
+                    <option key={index} value={data}>{data}</option>
+                  ))
+                  }
+
                 </select>
               </div>
+
               <input
                 type="number"
                 name="income"
-                placeholder="Income"
-                value={formValues.income}
+                id="income"
+                placeholder='Income'
+                value={existingInput.income}
                 onChange={handleInputChange}
               />
               {errors.income && <p className={styles.error}>{errors.income}</p>}
-            </section>
-          ) : (
+            </section> :
+
             <section>
               <input
                 type="text"
                 name="firstname"
+                id="firstname"
                 placeholder="First Name"
-                value={formValues.firstname}
+                value={existingInput.firstname}
                 onChange={handleInputChange}
               />
               {errors.firstname && <p className={styles.error}>{errors.firstname}</p>}
+
               <input
                 type="text"
                 name="lastname"
+                id="lastname"
                 placeholder="Last Name"
-                value={formValues.lastname}
+                value={existingInput.lastname}
                 onChange={handleInputChange}
               />
               {errors.lastname && <p className={styles.error}>{errors.lastname}</p>}
+
+              
               <input
                 type="text"
                 name="username"
+                id="username"
                 placeholder="Username"
-                value={formValues.username}
+                value={existingInput.username}
                 onChange={handleInputChange}
               />
               {errors.username && <p className={styles.error}>{errors.username}</p>}
+
               <input
                 type="number"
                 name="contact"
+                id="contact"
                 placeholder="Contact Number"
-                value={formValues.contact}
+                value={existingInput.contact}
                 onChange={handleInputChange}
               />
               {errors.contact && <p className={styles.error}>{errors.contact}</p>}
+
               <input
                 type="email"
                 name="email"
+                id="email"
                 placeholder="Email"
-                value={formValues.email}
+                value={existingInput.email}
                 onChange={handleInputChange}
               />
               {errors.email && <p className={styles.error}>{errors.email}</p>}
+
+
               <div className={styles.passwordContainer}>
                 <input
                   type={visible ? "text" : "password"}
                   name="password"
+                  id="password"
                   placeholder="Password"
-                  value={formValues.password}
+                  value={existingInput.password}
                   onChange={handleInputChange}
                 />
                 <button type="button" onClick={setVisibility} className={styles.visibilityToggle}>
@@ -171,25 +212,31 @@ function Register() {
                 </button>
               </div>
               {errors.password && <p className={styles.error}>{errors.password}</p>}
+
               <div className={styles.passwordContainer}>
                 <input
                   type={visible ? "text" : "password"}
                   name="confirmpassword"
+                  id="confirmpassword"
                   placeholder="Confirm Password"
-                  value={formValues.confirmpassword}
+                  value={existingInput.confirmpassword}
                   onChange={handleInputChange}
                 />
+
                 <button type="button" onClick={setVisibility} className={styles.visibilityToggle}>
                   <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
                 </button>
               </div>
               {errors.confirmpassword && <p className={styles.error}>{errors.confirmpassword}</p>}
             </section>
-          )}
+
+          }
           <h4>By signing up, you agree to our terms and conditions.</h4>
           <div className={styles.reg}>
-            {walletForm && <input type="button" value="Back" onClick={() => setWalletForm(false)} />}
-            <input type="submit" value={walletForm ? "Register" : "Next"} />
+            {walletForm &&
+              <input type='button' value='Back' onClick={setWallet} />
+            }
+            <input type='submit' value={walletForm ? "Register" : "Next"} />
           </div>
         </form>
       </div>
