@@ -5,6 +5,7 @@ import TransactionOverview from "../../components/overviews/homeTransactions";
 import InventoryOverview from "../../components/overviews/homeInventory";
 import BudgetOverview from "../../components/overviews/homeBudget";
 import Footer from "../../partials/footer/footer";
+import HomeWallet from "../../components/overviews/homewallet"
 import Loading from "../../partials/loading/loading";
 import GetSession from "../../hooks/GetSession";
 
@@ -24,7 +25,7 @@ function Dashboard() {
 
             <section className={styles.firstSection}>
                 <TransactionOverview />
-                <BudgetOverview />
+                <HomeWallet />
             </section>
 
             <section className={styles.secondSection}>
