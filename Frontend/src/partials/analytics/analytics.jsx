@@ -3,7 +3,7 @@ import InventoryOverview from "../../components/overviews/homeInventory";
 import TransactionOverview from "../../components/overviews/homeTransactions";
 import PurchaseExpenseOverview from "../Total Amount/totalbarchart";
 import InventoryDisplay from "../inventory/inventory";
-import Records from './transaction';
+import Records from '../../partials/transactions/transactions';
 import styles from "./analytics.module.css";
 import Footer from '../footer/footer';
 
@@ -26,6 +26,11 @@ function Analytics() {
         <header className={styles.subHeader}>
           <h1>Financial Analytics</h1>
         </header>
+        
+        {/* New Purchase and Expense Chart */}
+        <section className={styles.purchaseExpenseChart}>
+          <PurchaseExpenseOverview />
+        </section>
 
         {/* Existing Transaction Chart */}
         <section className={styles.transactionchart}>
@@ -35,11 +40,6 @@ function Analytics() {
         {/* Existing Inventory Chart */}
         <section className={styles.inventorychart}>
           <InventoryOverview />
-        </section>
-
-        {/* New Purchase and Expense Chart */}
-        <section className={styles.purchaseExpenseChart}>
-          <PurchaseExpenseOverview />
         </section>
 
         {/* Footer */}
