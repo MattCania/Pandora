@@ -87,6 +87,19 @@
 	margin: 0 1em;
 }
 
+.purchaseExpenseChart {
+    margin: 20px 0;
+    flex: 1; /* Each section takes equal space, but will shrink or grow based on screen size */
+    max-width: 800px; /* Limit the max width of each sub-section */
+    /* max-width: 800px; Limit the max width of each sub-section */
+    display: flex;
+    width: 50em;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  
+
 /* Responsive adjustments using media queries */
 @media (max-width: 768px) {
     .transactionSection {
