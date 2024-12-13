@@ -256,10 +256,10 @@ const updateExpenses = async (req, res) => {
     tax,
     status
   } = req.body;
-
   try {
-    const currency = UserProfiles.findOne({where: userId, attributes: ['currency']})
-
+    const currency = await UserProfiles.findOne({where: userId, attributes: ['currency']})
+    const prevValues = await Expenses.findAll({where: {transactionId: transactionId}, attributes: ['tax', 'amount']})
+    console.log("Previous Values", prevValues)
     const [updateCount] = await Expenses.update(
       {
         account,
@@ -275,7 +275,9 @@ const updateExpenses = async (req, res) => {
       },
       { where: { transactionId  : transactionId } }
     );
-    if (currency.status !== 'Complete' && status === 'Completed'){
+    if (currency.status !== 'Complete' && status === 'Completed' && Number(prevValues[0].tax) !== Number(tax) && Number(prevValues[0].amount) !== Number(amount)){
+      console.log(`Previous Tax: ${prevValues[0].tax} and Current Tax: ${tax}`)
+      console.log(`Previous Amount: ${prevValues[0].amount} and Current Amount: ${amount}`)
       const wallet = await UserWallets.findOne({ where: {userId: userId}})
       const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
       const subtractWallet = await UserWallets.update(
@@ -303,44 +305,52 @@ const updatePurchases = async (req, res) => {
   const userId = req.session.userId
   const transactionId = req.params.transactionId;
   const {
-    orderNumber,
     account,
-    category,
     paymentType,
     transactionDate,
     description,
     amount,
-    credit,
-    debit,
     reccuring,
     vendorCustomer,
     invoiceNumber,
     tax,
-    balance,
+    status
   } = req.body;
-
   try {
-    const currency = UserProfiles.findOne({where: userId, attributes: ['currency']})
-    const [updateCount] = await Purchases.update(
+    const currency = await UserProfiles.findOne({where: userId, attributes: ['currency']})
+    const prevValues = await Purchases.findAll({where: {transactionId: transactionId}, attributes: ['tax', 'amount']})
+
+    const [updateCount] = await Expenses.update(
       {
-        orderNumber,
         account,
-        category,
         paymentType,
         transactionDate,
         description,
         amount,
-        credit,
-        debit,
         reccuring,
-        currency: currency.currency,
         vendorCustomer,
         invoiceNumber,
         tax,
-        balance,
+        status
       },
-      { where: { transactionId: transactionId } }
+      { where: { transactionId  : transactionId } }
     );
+    if (currency.status !== 'Complete' && status === 'Completed' && Number(prevValues[0].tax) !== Number(tax) && Number(prevValues[0].amount) !== Number(amount)){
+      console.log(`Previous Tax: ${prevValues[0].tax} and Current Tax: ${tax}`)
+      console.log(`Previous Amount: ${prevValues[0].amount} and Current Amount: ${amount}`)
+      const wallet = await UserWallets.findOne({ where: {userId: userId}})
+      const newAmount = wallet.wallet - ( Number(amount) + Number(tax) )
+      const subtractWallet = await UserWallets.update(
+        {
+          wallet: newAmount
+        },
+        {
+          where: {userId: userId}
+        }
+      )
+
+      if (!subtractWallet) throw new Error('Error Wallet Subtract')
+    }
 
     if (!updateCount) throw new Error("Error Updating Transaction");
 

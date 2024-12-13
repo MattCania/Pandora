@@ -65,7 +65,6 @@ const getSingleRecord = async (req, res) => {
 const createRecord = async (req, res) => {
   const userId = req.session.userId;
   const { recordType, recordName, userPermissions } = req.body;
-  console.log(userPermissions);
 
   try {
     const results = await TransactionRecords.create({
@@ -119,6 +118,26 @@ const updateRecord = async (req, res) => {
   const recordId = req.params.recordId;
 
   try {
+    
+    const recordCreator = await TransactionRecords.findOne({
+      where: {recordId: recordId},
+    })
+
+    if (!recordCreator) return res.status("Error Checking Records")
+
+    await RecordPermissions.destroy({
+      where: {
+        recordId: recordId,
+        permittedUser: {
+          [Sequelize.Op.ne]: recordCreator.creatorId
+        }
+          // accessLevel:{
+          //   [Sequelize.Op.gt]: 1,
+          // }
+      }
+    })
+
+
     const results = await TransactionRecords.update(
       {
         recordType: recordType,
@@ -225,9 +244,6 @@ const getExistingPermissions = async (req, res) => {
     if (!existingUsers || existingUsers.length === 0) {
       return res.status(404).json({ message: "Users Unfound" });
     }
-
-    console.log(existingUsers);
-
     // Fetch usernames associated with permittedUser
     const usernames = await Promise.all(
       existingUsers.map(async (user) => {
@@ -245,9 +261,6 @@ const getExistingPermissions = async (req, res) => {
         return userProfile.userName; // Return only the username
       })
     );
-
-    console.log(usernames);
-
     return res.status(200).json({
       message: "Successfully Fetched Data",
       usernames: usernames,

@@ -110,11 +110,11 @@ const walletSubtract = async (req, res) => {
 	const userId = req.session.userId;
 	const { amount, tax, status } = req.body;
 
-	console.log({
-		tax: tax,
-		amount: amount,
-		status:status
-	})
+	// console.log({
+	// 	tax: tax,
+	// 	amount: amount,
+	// 	status:status
+	// })
 	try {
 	  if (status !== 'Completed') {
 		return res.status(200).json({ message: 'Successfully checked if status is complete' });
@@ -128,10 +128,9 @@ const walletSubtract = async (req, res) => {
   
 	  const newWalletAmount = walletInfo.wallet - (amount + tax);
   
-	  // Corrected Sequelize update query
 	  const [updateResult] = await UserWallets.update(
-		{ wallet: newWalletAmount }, // values to update
-		{ where: { userId: userId } } // options with where clause
+		{ wallet: newWalletAmount },
+		{ where: { userId: userId } }
 	  );
   
 	  if (updateResult === 0) {
@@ -144,7 +143,6 @@ const walletSubtract = async (req, res) => {
 	  return res.status(error.status || 500).json({ error: error.message });
 	}
   };
-  
 
 module.exports = {
 	getWallet,
