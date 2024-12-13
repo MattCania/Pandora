@@ -110,10 +110,6 @@ function CreateRecords() {
 				throw new Error("Error during creation");
 			}
 			setShowConfirmed(true);
-			setTimeout(() => {
-				setShowConfirmed(false);
-				navigate('/home/records');
-			}, 3000);
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -153,7 +149,7 @@ function CreateRecords() {
 							/>
 
 							<select name="usernames" defaultValue="" id="usernames" onChange={handleAddUser}>
-								<option value="" disabled>Add User</option>
+								<option value="">Add User</option>
 								{usernames?.map((option, index) => (
 									user.session.username !== option.userName && !userPermissions[option.userName] && (
 										<option key={index} value={option.userName}>
@@ -192,7 +188,7 @@ function CreateRecords() {
 					{showConfirmed && (
 						<CreatedPrompt
 							subText="The record has been successfully created"
-							close={() => navigate('/home/records')}
+							close={() => {setShowConfirmed(false);navigate('/home/records')}}
 						/>
 					)}
 				</section>

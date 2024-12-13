@@ -11,7 +11,7 @@ function Register() {
   const [formValues, setFormValues] = useState({
     firstname: "", lastname: "", email: "", password: "",
     confirmpassword: "", username: "", contact: "",
-    organization: "", currency: "USD", country: "",
+    organization: "", currency: "USD",
     recurrance: "Monthly", income: ""
   });
 
@@ -37,9 +37,8 @@ function Register() {
     if (!formValues.contact || formValues.contact.length < 7 || formValues.contact.length > 15) newErrors.contact = "Invalid contact number.";
     if (walletForm) {
       if (!formValues.income) newErrors.income = "Income is required.";
-      else if (parseFloat(formValues.income) <= 0) newErrors.income = "Income must be greater than 0.";
+      else if (Number(formValues.income) <= 0) newErrors.income = "Income must be greater than 0.";
       if (!formValues.organization.trim()) newErrors.organization = "Organization is required.";
-      if (!formValues.country.trim()) newErrors.country = "Country is required.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -60,10 +59,13 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    // if (!validate()) return;
+
+    const formData = { ...formValues }
 
     try {
-      const response = await PostRequest('register', formValues);
+      const response = await PostRequest('register', formData);
+      console.log(response)
       if (!response) throw new Error("Registration failed.");
       navigate('/login');
     } catch (error) {

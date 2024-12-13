@@ -44,6 +44,20 @@ function EditTransactions() {
 			options: ["Revenue", "Expenses", "Equity", "Assets", "Liabilities"], // For dropdown
 		},
 		{
+			label: "Recurring",
+			type: "select",
+			id: "recurring",
+			name: "recurring",
+			options: ["Monthly", "Semi-Monthly", "Quarterly", "Annually"],
+		},
+		{
+			label: "Status",
+			type: 'select',
+			id: 'status',
+			name: 'status',
+			options: ['Completed', 'Pending', 'Incompleted', 'Cancelled']
+		},
+		{
 			label: "Payment Type",
 			type: "select",
 			id: "paymentType",
@@ -62,13 +76,6 @@ function EditTransactions() {
 			id: "amount",
 			name: "amount",
 			placeholder: "Enter Amount",
-		},
-		{
-			label: "Currency",
-			type: "text",
-			id: "currency",
-			name: "currency",
-			placeholder: "Enter Currency (e.g., USD)",
 		},
 		{
 			label: "Vendor/Customer",
@@ -98,13 +105,6 @@ function EditTransactions() {
 			name: "description",
 			placeholder: "Enter Description",
 		},
-		{
-			label: "Status",
-			type: 'select',
-			id: 'status',
-			name: 'status',
-			options: ['Completed', 'Pending', 'Incompleted', 'Cancelled']
-		}
 	];
 
 	const [formValues, setFormValues] = useState({
@@ -113,14 +113,14 @@ function EditTransactions() {
 		transactionDate: existingData.transactionDate || "",
 		description: existingData.description || "",
 		amount: existingData.amount || 0.00,
-		currency: existingData.currency || "",
+		recurring: existingData.recurring,
 		vendorCustomer: existingData.vendorCustomer || "",
 		invoiceNumber: existingData.invoiceNumber || "",
 		tax: existingData.tax || 0.00,
 		status: existingData.status || "Completed"
 	});
-
-
+	
+	
 	useEffect(() => {
 		setFormValues({
 			account: existingData.results.account,
@@ -130,7 +130,7 @@ function EditTransactions() {
 				: "",
 			description: existingData.results.description,
 			amount: existingData.results.amount,
-			currency: existingData.results.currency,
+			recurring: existingData.results.recurring,
 			vendorCustomer: existingData.results.vendorCustomer,
 			invoiceNumber: existingData.results.invoiceNumber,
 			tax: existingData.results.tax,
@@ -157,17 +157,14 @@ function EditTransactions() {
 		try {
 			if (
 				!formData.account || !formData.paymentType ||
-				!formData.transactionDate || !formData.description || formData.amount < 0 || !formData.currency ||
+				!formData.transactionDate || !formData.description || formData.amount < 0 || !formData.recurring ||
 				!formData.vendorCustomer || !formData.invoiceNumber
 			) throw new Error("All fields must be filled out.");
 
-			const response = await PostRequest(`update-expense/${transactionId}`, formData)
+			const response = await PostRequest(`update-${transaction}/${transactionId}`, formData)
 			if (!response) throw new Error("Error Creation of Transaction")
 			setShowEdited(true)
-			setTimeout(() => {
-				setShowEdited(false);
-				navigate(`/home/records/${transaction}/${transactionId}`);
-			}, 3000);			
+			// navigate(-1);
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -176,7 +173,7 @@ function EditTransactions() {
 
 	const onClose = () => {
 		fetchTransactionInfo()
-		navigate(`/home/records`);
+		navigate(-1);
 	}
 
 	return (
@@ -193,7 +190,7 @@ function EditTransactions() {
 			{showEdited && (
 				<ConfirmEdited
 				subText = "The transaction has been successfully edited!"
-				close = {() =>  navigate(`/home/records`)} />
+				close = {() =>  {navigate(-1); setShowEdited(false)}} />
 			)}	
 		</div>
 	)

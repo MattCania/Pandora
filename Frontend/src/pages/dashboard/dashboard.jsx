@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import styles from './dashboard.module.css';
 import { SessionContext } from "../home/home";
+import styles from './dashboard.module.css';
 import TransactionOverview from "../../components/overviews/homeTransactions";
 import InventoryOverview from "../../components/overviews/homeInventory";
 import BudgetOverview from "../../components/overviews/homeBudget";

@@ -7,7 +7,7 @@ import CreatedPrompt from "../../components/prompts/createdPrompt";
 function CreateTransactions() {
 	const navigate = useNavigate();
 	const { transaction, recordId } = useParams();
-	const [showCreated, setShowCreated] = useState(false);
+	const [showCreated, setShowCreated] = useState(false);d
 	const [errors, setErrors] = useState({}); // To track errors for fields
 
 	if (!transaction || !recordId) return <h1>Loading...</h1>;
@@ -19,6 +19,13 @@ function CreateTransactions() {
 			id: "account",
 			name: "account",
 			options: ["Revenue", "Expenses", "Equity", "Assets", "Liabilities"],
+		},
+		{
+			label: "Recurring",
+			type: "select",
+			id: "recurring",
+			name: "recurring",
+			options: ["Monthly", "Semi-Monthly", "Quarterly", "Annually"],
 		},
 		{
 			label: "Payment Type",
@@ -39,13 +46,6 @@ function CreateTransactions() {
 			id: "amount",
 			name: "amount",
 			placeholder: "Enter Amount",
-		},
-		{
-			label: "Currency",
-			type: "select",
-			id: "currency",
-			name: "currency",
-			options: ["PHP", "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "SGD", "HKD", "NZD", "ZAR"],
 		},
 		{
 			label: "Vendor/Customer",
@@ -90,7 +90,6 @@ function CreateTransactions() {
 		transactionDate: "",
 		description: "",
 		amount: "",
-		currency: "",
 		vendorCustomer: "",
 		invoiceNumber: "",
 		tax: 0,
@@ -106,7 +105,6 @@ function CreateTransactions() {
 		if (!formValues.amount || formValues.amount <= 0) newErrors.amount = "Amount must be greater than zero.";
 		if (!formValues.vendorCustomer) newErrors.vendorCustomer = "Vendor/Customer name is required.";
 		if (!formValues.invoiceNumber) newErrors.invoiceNumber = "Invoice number is required.";
-		if (!formValues.currency) newErrors.currency = "Currency is required.";
 		if (!formValues.status) newErrors.status = "Transaction status is required.";
 
 		setErrors(newErrors);
@@ -138,10 +136,6 @@ function CreateTransactions() {
 			const response = await PostRequest(`create-${transaction.slice(0, -1)}/${recordId}`, formData);
 			if (!response) throw new Error("Error in creating transaction");
 			setShowCreated(true);
-			setTimeout(() => {
-				setShowCreated(false);
-				navigate(`/home/records`);
-			}, 3000);
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -166,7 +160,7 @@ function CreateTransactions() {
 			{showCreated && (
 				<CreatedPrompt
 					subText="The transaction has been successfully created!"
-					close={() => navigate(`/home/records`)}
+					close = {() =>  {navigate(-1); setShowEdited(false)}}
 				/>
 			)}
 		</div>

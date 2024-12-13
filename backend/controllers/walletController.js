@@ -9,6 +9,14 @@ const fetchWalletInfo = async (userId) => {
 	return (walletInfo);
 };
 
+const processRecurringIncome = async (userId) => {
+	const walletInfo = await fetchWalletInfo(userId);
+	return UserWallets.update(
+	  { wallet: walletInfo.income },
+	  { where: { userId } }
+	);
+  };
+
 const getWallet = async (req ,res) => {
 	const userId = req.session.userId;
 
@@ -58,29 +66,34 @@ const updateWallet = async (req, res) => {
 
 }
 
+//Cron based
+const recurIncomeCron = async (userId) => {
+	try {
+	  const result = await processRecurringIncome(userId);
+	  console.log(`Cron job updated wallet for userId: ${userId}`, result);
+	} catch (error) {
+	  console.error(`Cron job failed for userId: ${userId}`, error);
+	}
+  };
+
+// HTTP Request based recurrance
 const recurIncome = async (req, res) => {
 	const userId = req.session.userId;
-
+  
 	try {
-		const walletInfo = fetchWalletInfo(userId)
-		const recurResponse = UserWallets.update({
-			where: { userId: userId },
-			wallet: walletInfo.income
-		})
-
-		if (!recurResponse) throw new Error({status: 400, message: 'Error Resetting Income'})
-
+	  const result = await processRecurringIncome(userId);
+	  if (!result) throw new AppError(400, 'Error Resetting Income');
+	  res.status(200).json({ message: 'Successfully Recurred Wallet' });
 	} catch (error) {
-		return res.status(error.status).json({error: error.message})
+	  res.status(error.status || 500).json({ error: error.message });
 	}
-
-}
+  };
 
 const walletAdd = async (req, res) => {
 	const userId = req.session.userId
 
 	try {
-		const walletInfo = fetchWalletInfo(userId)
+		const walletInfo = await fetchWalletInfo(userId)
 		
 		if (!walletInfo || walletInfo.length === 0) throw new Error({status: 400, message: 'Error fetching wallet information'})
 		
@@ -105,10 +118,9 @@ const walletSubtract = async (req, res) => {
 
 }
 
-
-
 module.exports = {
 	getWallet,
 	recurIncome,
+	recurIncomeCron,
 	updateWallet
 }

@@ -88,6 +88,16 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
+      recurring: {
+        type: DataTypes.ENUM(
+          'Monthly', 'Semi-Monthly', 'Annually', 'Quarterly'
+        ),
+        allowNull: false,
+        defaultValue: "Monthly",
+        validate: {
+          notEmpty: true,
+        },
+      },
       vendorCustomer: {
         type: DataTypes.STRING,
         allowNull: true,

@@ -5,7 +5,6 @@ const {
   Admins,
   UserWallets,
 } = require("../models");
-const e = require("express");
 
 // Thing got zero validations, more on models fix tho
 const handleRegister = async (req, res) => {
@@ -19,7 +18,6 @@ const handleRegister = async (req, res) => {
     contact,
     secondaryemail,
     organization,
-    country,
     currency,
     income,
     recurrance,
@@ -63,9 +61,8 @@ const handleRegister = async (req, res) => {
       currency: currency,
       secondaryEmail: secondaryemail || null,
       organization: organization || null,
-      country: country,
-      createdAt: null,
-      updatedAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     await Admins.create({

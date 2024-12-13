@@ -49,6 +49,8 @@ module.exports = {
       { recordId: 2, permittedUser: 2, accessLevel: 2 },
     ]);
 
+    const randomRecurrance = ['Monthly', 'Semi-Monthly', 'Annually', 'Quarterly']
+    const statuses = ['Completed', 'Pending', 'Incompleted', 'Cancelled']
     console.log("Seeding Transactions");
     // Insert Expenses
     const expenses = [];
@@ -61,6 +63,8 @@ module.exports = {
         description: `Expense Description ${i}`,
         amount: Math.floor(Math.random() * 1000 + 100) + 1,
         currency: "USD",
+        recurring: randomRecurrance[Math.floor(Math.random() * 3)],
+        status: statuses[Math.floor(Math.random() * 3)],
         vendorCustomer: `Vendor ${i}`,
         invoiceNumber: `INV${i.toString().padStart(3, "0")}`,
         tax: Math.floor(Math.random() * 100) + 1,
@@ -78,9 +82,11 @@ module.exports = {
         account: "Liabilities",
         paymentType: i % 3 === 0 ? "Credit Card" : "Cash",
         transactionDate: new Date(`2024-0${(i % 12) + 1}-01 10:00:00`),
-        description: `Expense Description ${i}`,
+        description: `Purchase Description ${i}`,
         amount: Math.floor(Math.random() * 1000 + 100) + 1,
         currency: "USD",
+        recurring: randomRecurrance[Math.floor(Math.random() * 3)],
+        status: statuses[Math.floor(Math.random() * 3)],
         vendorCustomer: `Vendor ${i}`,
         invoiceNumber: `INV${i.toString().padStart(3, "0")}`,
         tax: Math.floor(Math.random() * 100) + 1,

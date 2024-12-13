@@ -3,6 +3,7 @@ const {
   TransactionRecords,
   UserProfiles,
   Permissions,
+  UserWallets,
   Expenses,
   Purchases,
   Sequelize,
@@ -127,6 +128,7 @@ const getPurchaseTransaction = async (req, res) => {
 
 
 const createExpenses = async (req, res) => {
+  const userId = req.session.userId
   const recordId = req.params.recordId;
   const {
     account,
@@ -134,7 +136,6 @@ const createExpenses = async (req, res) => {
     transactionDate,
     description,
     amount,
-    currency,
     vendorCustomer,
     invoiceNumber,
     tax,
@@ -142,6 +143,8 @@ const createExpenses = async (req, res) => {
   } = req.body;
 
   try {
+    const currency = UserProfiles.findOne({where: userId, attributes: ['currency']})
+
     const creation = await Expenses.create({
       expenseId: recordId,
       account: account,
@@ -149,7 +152,7 @@ const createExpenses = async (req, res) => {
       transactionDate: transactionDate,
       description: description,
       amount: amount,
-      currency: currency,
+      currency: currency.currency,
       vendorCustomer: vendorCustomer,
       invoiceNumber: invoiceNumber,
       tax: tax || 0,
@@ -158,10 +161,24 @@ const createExpenses = async (req, res) => {
 
     if (!creation) throw new Error("Error Creating Transaction");
 
-    res.status(200).json({ message: "Successful Transaction Creation" });
+    if (status === 'Completed'){
+      const wallet = UserWallets.findOne({ where: {userId: userId}})
+      const subtractWallet = await UserWallets.update(
+        {
+          where: {userId}
+        },
+        {
+          wallet: wallet.wallet - amount
+        }
+      )
+
+      if (!subtractWallet.ok) throw new Error('Error Wallet Subtract')
+    }
+
+    return res.status(200).json({ message: "Successful Transaction Creation" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server Error", error: err.message });
+    return res.status(500).json({ message: "Server Error", error: err.message });
   }
 };
 
@@ -173,7 +190,6 @@ const createPurchases = async (req, res) => {
     transactionDate,
     description,
     amount,
-    currency,
     vendorCustomer,
     invoiceNumber,
     tax,
@@ -181,6 +197,7 @@ const createPurchases = async (req, res) => {
   } = req.body;
 
   try {
+    const currency = UserProfiles.findOne({where: userId, attributes: ['currency']})
     const creation = await Purchases.create({
       purchaseId: recordId,
       account: account,
@@ -188,23 +205,40 @@ const createPurchases = async (req, res) => {
       transactionDate: transactionDate,
       description: description,
       amount: amount,
-      currency: currency,
+      currency: currency.currency,
       vendorCustomer: vendorCustomer,
       invoiceNumber: invoiceNumber,
       tax: tax || 0,
       status: status || 'Completed'
     });
 
-    if (!creation) throw new Error("Error Creating Transaction");
+    if (!creation) throw new Error("Error Creating Transaction");``
 
-    res.status(200).json({ message: "Successful Transaction Creation" });
+    if (status === 'Completed'){
+
+      const wallet = UserWallets.findOne({ where: {userId: userId}})
+      console.log(wallet)
+      const subtractWallet = await UserWallets.update(
+        {
+          where: {userId}
+        },
+        {
+          wallet: wallet.wallet - amount
+        }
+      )
+
+      if (!subtractWallet.ok) throw new Error('Error Wallet Subtract')
+    }
+
+    return res.status(200).json({ message: "Successful Transaction Creation" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server Error", error: err.message });
+    return res.status(500).json({ message: "Server Error", error: err.message });
   }
 };
 
 const updateExpenses = async (req, res) => {
+  const userId = req.session.userId
   const transactionId = req.params.transactionId;
   const {
     orderNumber,
@@ -216,7 +250,6 @@ const updateExpenses = async (req, res) => {
     amount,
     credit,
     debit,
-    currency,
     vendorCustomer,
     invoiceNumber,
     tax,
@@ -224,6 +257,8 @@ const updateExpenses = async (req, res) => {
   } = req.body;
 
   try {
+    const currency = UserProfiles.findOne({where: userId, attributes: ['currency']})
+
     const [updateCount] = await Expenses.update(
       {
         orderNumber,
@@ -235,7 +270,7 @@ const updateExpenses = async (req, res) => {
         amount,
         credit,
         debit,
-        currency,
+        currency: currency.currency,
         vendorCustomer,
         invoiceNumber,
         tax,
@@ -254,6 +289,7 @@ const updateExpenses = async (req, res) => {
 };
 
 const updatePurchases = async (req, res) => {
+  const userId = req.session.userId
   const transactionId = req.params.transactionId;
   const {
     orderNumber,
@@ -265,7 +301,7 @@ const updatePurchases = async (req, res) => {
     amount,
     credit,
     debit,
-    currency,
+    reccuring,
     vendorCustomer,
     invoiceNumber,
     tax,
@@ -273,6 +309,7 @@ const updatePurchases = async (req, res) => {
   } = req.body;
 
   try {
+    const currency = UserProfiles.findOne({where: userId, attributes: ['currency']})
     const [updateCount] = await Purchases.update(
       {
         orderNumber,
@@ -284,7 +321,8 @@ const updatePurchases = async (req, res) => {
         amount,
         credit,
         debit,
-        currency,
+        reccuring,
+        currency: currency.currency,
         vendorCustomer,
         invoiceNumber,
         tax,

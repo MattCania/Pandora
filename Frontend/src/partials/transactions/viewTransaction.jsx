@@ -19,7 +19,7 @@ function ViewTransaction() {
 		amount: '',
 		transactionDate: '',
 		paymentType: '',
-		currency: '',
+		recurring: '',
 		invoiceNumber: '',
 		vendorCustomer: '',
 		tax: '',
@@ -104,8 +104,12 @@ function ViewTransaction() {
 						<input id="paymentType" type="text" value={transactionData.paymentType} disabled />
 					</div>
 					<div className={styles.formDivs}>
-						<label htmlFor="currency">Currency:</label>
-						<input id="currency" type="text" value={transactionData.currency} disabled />
+						<label htmlFor="recurring">Recurring:</label>
+						<input id="recurring" type="text" value={transactionData.recurring} disabled />
+					</div>
+					<div className={styles.formDivs}>
+						<label htmlFor="status">Status:</label>
+						<input id="status" type="text" value={transactionData.status} disabled />
 					</div>
 					<div className={styles.formDivs}>
 						<label htmlFor="invoiceNumber">Invoice Number:</label>

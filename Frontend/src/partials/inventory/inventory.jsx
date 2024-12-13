@@ -122,7 +122,6 @@ function Inventory() {
 							<div className={styles.cellmd}>Quantity</div>
 							<div className={styles.cell2xl}>Unit Price</div>
 							<div className={styles.cellFull}>Status</div>
-							<div className={styles.cell2xl}>Access Type</div>
 							<div className={styles.edit}>Edit</div>
 							<div className={styles.delete}>Delete</div>
 						</div>
@@ -144,7 +143,6 @@ function Inventory() {
 									<div className={styles.cellmd}>{data.quantity}</div>
 									<div className={styles.cell2xl}>{data.unitPrice}</div>
 									<div className={styles.cellFull}>{data.status}</div>
-									<div className={styles.cell2xl}>{data.permissions[0].userAccess.accessType}</div>
 									<div className={styles.edit}>
 										<Link
 											to={`edit/${data.inventoryId}`}

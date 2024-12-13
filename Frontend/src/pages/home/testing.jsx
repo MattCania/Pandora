@@ -10,8 +10,29 @@ import MoreSidebar from '../../partials/more/more'
 
 function Test() {
 
+	const [data, setData] = useState([])
+
+	const fetchPermissions = async () =>{
+		try {
+			
+			const permissions = await GetData('permitted-users/1')
+			if (!permissions) return
+			console.log(permissions)
+			setData(permissions)
+
+		} catch (error) {
+			console.error(error)
+			return
+			
+		}
+	}
+
+	useEffect(() => {
+		fetchPermissions()
+	}, [])
+
 	return (
-		<Wallet/>
+		<h1>Hello</h1>
 	)
 }
 
