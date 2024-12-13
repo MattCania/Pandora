@@ -15,7 +15,7 @@ const runCronJob = async () => {
     switch (wallet.recurrance) {
       case "Semi-Monthly":
         if (
-          (now.getDate() === 1 || now.getDate() === 13) &&
+          (now.getDate() === 1 || now.getDate() === 15) &&
           lastProcessed < new Date(now.getFullYear(), now.getMonth(), now.getDate())
         ) {
           await walletController.recurIncomeCron(wallet.userId);
