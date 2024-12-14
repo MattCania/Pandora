@@ -10,58 +10,87 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip,
 
 function TransactionOverview() {
   const user = useContext(SessionContext);
-  const [transactionData, setTransactionData] = useState([]);
-  const [transactions, setTransactions] = useState([])
+  const [expenses, setExpenses] = useState([]);
+  const [purchases, setPurchases] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
 
-  const fetchTransactions = async () => {
+  useEffect(() => {
+    if (!user) return
+    // console.log("User ID is fetched");
+    fetchExpenses(); // Call the function to fetch expenses
+    fetchPurchases(); // Call the function to fetch expenses
+  }, [user]);
+
+  // Fetch Expenses and organize them by month
+  const fetchExpenses = async () => {
     try {
-      if (!user) return;
-      const records = await GetData(`records/${user.session.userId}`);
-      if (!records) throw new Error("Records Null or Undefined");
-      console.log(records)
-      const allMonths = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-      ];
+      const getExp = await GetData(`user-expense/${user.session.userId}`);
+      if (!getExp) throw new Error("Records Null or Undefined");
 
-      const monthlyData = records.reduce((acc, record) => {
-        const month = new Date(record.createdAt).toLocaleString("default", { month: "short" });
+      // console.log(getExp);
+
+      // Organizing expenses by month
+      const allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const monthlyData = getExp.reduce((acc, record) => {
+        const month = new Date(record.transactionDate).toLocaleString("default", { month: "short" });
         if (!acc[month]) {
-          acc[month] = { purchases: 0, expenses: 0 };
+          acc[month] = 0; // initialize if month doesn't exist
         }
-        if (record.recordType === "Purchases") {
-          acc[month].purchases += 1;
-        } else if (record.recordType === "Expenses") {
-          acc[month].expenses += 1;
-        }
+        acc[month] += parseFloat(record.amount); // sum the amounts for each month
         return acc;
       }, {});
 
       const chartData = allMonths.map(month => ({
         month,
-        purchases: monthlyData[month]?.purchases || 0,
-        expenses: monthlyData[month]?.expenses || 0,
+        totalExpense: monthlyData[month] || 0, // default to 0 if no data for the month
       }));
 
-      setTransactionData(chartData);
+      setExpenses(chartData); // Set the expenses data
+      setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      console.error("Error fetching expenses:", error);
+      setLoading(false); // Set loading to false in case of an error
     }
   };
 
-  useEffect(() => {
-    fetchTransactions();
-  }, [user]);
+  const fetchPurchases = async () => {
+    try {
+      const getPur = await GetData(`user-purchase/${user.session.userId}`);
+      if (!getPur) throw new Error("Records Null or Undefined");
 
-  const chartLabels = transactionData.map(data => data.month);
-  const purchaseData = transactionData.map(data => data.purchases);
-  const expenseData = transactionData.map(data => data.expenses);
+      // console.log(getPur);
 
+      // Organizing expenses by month
+      const allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const monthlyData = getPur.reduce((acc, record) => {
+        const month = new Date(record.transactionDate).toLocaleString("default", { month: "short" });
+        if (!acc[month]) {
+          acc[month] = 0; // initialize if month doesn't exist
+        }
+        acc[month] += parseFloat(record.amount); // sum the amounts for each month
+        return acc;
+      }, {});
+
+      const chartData = allMonths.map(month => ({
+        month,
+        totalPurchase: monthlyData[month] || 0, // default to 0 if no data for the month
+      }));
+
+      setPurchases(chartData); // Set the expenses data
+      setLoading(false); // Set loading to false after data is fetched
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+      setLoading(false); // Set loading to false in case of an error
+    }
+  };
+
+  // Assuming purchases will be fetched similarly, for now, use mock data:
   const purchaseChartData = {
-    labels: chartLabels,
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
       {
         label: "Purchases",
-        data: purchaseData,
+        data: purchases.map(entry => entry.totalPurchase),// Use purchase data here
         borderColor: "#36a2eb",
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderWidth: 2,
@@ -72,11 +101,11 @@ function TransactionOverview() {
   };
 
   const expenseChartData = {
-    labels: chartLabels,
+    labels: expenses.map(entry => entry.month),
     datasets: [
       {
         label: "Expenses",
-        data: expenseData,
+        data: expenses.map(entry => entry.totalExpense),
         borderColor: "#ff6384",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderWidth: 2,
@@ -115,7 +144,7 @@ function TransactionOverview() {
       y: {
         title: {
           display: true,
-          text: "Records",
+          text: "Amount",
           font: { size: 14, weight: "bold" },
         },
         beginAtZero: true,
@@ -127,7 +156,12 @@ function TransactionOverview() {
   return (
     <section className={styles.Section}>
       <div className={styles.chartContainer}>
-        {transactionData.length > 0 ? (
+        {loading ? (
+          <div className={styles.loadingContainer}>
+            <p>Loading transaction data...</p>
+            <div className={styles.spinner}></div>
+          </div>
+        ) : (
           <>
             <div className={styles.subSection}>
               <SubHeader text="Purchases Records" subText="As of 2024" />
@@ -138,11 +172,6 @@ function TransactionOverview() {
               <Line data={expenseChartData} options={options} />
             </div>
           </>
-        ) : (
-          <div className={styles.loadingContainer}>
-            <p>Loading transaction data...</p>
-            <div className={styles.spinner}></div>
-          </div>
         )}
       </div>
     </section>

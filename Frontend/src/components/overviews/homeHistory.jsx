@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import SubHeader from './SubHeader'; 
+import React, { useState } from 'react'; 
 import styles from './overview.module.css'; 
+import SubHeader from './subheader';
 
 const WalletHistory = ({ user, transactions }) => {
     const [editMode, setEditMode] = useState(false);

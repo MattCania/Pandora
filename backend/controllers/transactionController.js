@@ -407,6 +407,105 @@ const deletePurchases = async (req, res) => {
   }
 };
 
+const userBasedExpense = async(req, res) => {
+  const userId = req.params.userId;
+  console.log(req.params.userId)
+  try {
+    // Gets all records that the user is permitted to use
+    const records = await TransactionRecords.findAll({
+      attributes: ['recordId'],
+      include: [
+        {
+          model: RecordPermissions,
+          as: "recordPermissions",
+          where: { permittedUser: userId },
+          accessType: {
+            [Sequelize.Op.gte]: 1,
+          },
+          include: [
+            {
+              model: Permissions,
+              as: "userAccess",
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!records) return res.status(404).json({ message: "No records found" });
+    console.log('Records', records)
+
+    const expenses = []
+
+    for (const record of records) {
+      const expenseDetails = await Expenses.findAll({
+        where: { expenseId: record.recordId },
+        attributes: ['amount', 'transactionDate']
+      });
+  
+      expenses.push(...expenseDetails);
+    }
+    
+    if (!expenses) throw new Error('expenses err')
+
+    return res.status(200).json(expenses)
+  
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: "Server Error", error: error.message });
+}
+}
+
+const userBasedPurchase = async(req, res) => {
+  const userId = req.params.userId;
+  console.log(req.params.userId)
+  try {
+    // Gets all records that the user is permitted to use
+    const records = await TransactionRecords.findAll({
+      attributes: ['recordId'],
+      include: [
+        {
+          model: RecordPermissions,
+          as: "recordPermissions",
+          where: { permittedUser: userId },
+          accessType: {
+            [Sequelize.Op.gte]: 1,
+          },
+          include: [
+            {
+              model: Permissions,
+              as: "userAccess",
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!records) return res.status(404).json({ message: "No records found" });
+    console.log('Records', records)
+
+    const purchases = []
+
+    for (const record of records) {
+      const purchaseDetails = await Purchases.findAll({
+        where: { purchaseId: record.recordId },
+        attributes: ['amount', 'transactionDate']
+      });
+  
+      purchases.push(...purchaseDetails);
+    }
+    
+    if (!purchases) throw new Error('expenses err')
+
+    return res.status(200).json(purchases)
+  
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: "Server Error", error: error.message });
+}
+}
+
+
 module.exports = {
   getExpenses,
   getPurchases,
@@ -418,4 +517,6 @@ module.exports = {
   updatePurchases,
   deleteExpenses,
   deletePurchases,
+  userBasedExpense,
+  userBasedPurchase
 };

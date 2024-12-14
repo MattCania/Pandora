@@ -7,6 +7,8 @@ const transactionController = require('../controllers/transactionController')
 
 router.get('/get-purchases/:recordId', transactionController.getPurchases)
 router.get('/get-expenses/:recordId', transactionController.getExpenses)
+router.get('/user-expense/:userId',transactionController.userBasedExpense)
+router.get('/user-purchase/:userId', transactionController.userBasedPurchase)
 router.get('/get-expenseTransaction/:transactionId', transactionController.getExpenseTransaction)
 router.get('/get-purchaseTransaction/:transactionId', transactionController.getPurchaseTransaction)
 router.post('/create-expense/:recordId', transactionController.createExpenses)
