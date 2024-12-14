@@ -36,9 +36,9 @@ function Dashboard() {
             </section>
 
             {/* New Paid and Unpaid Doughnut Chart */}
-            <section className={styles.paidUnpaidChart}>
+            {/* <section className={styles.paidUnpaidChart}>
                 <PaidUnpaidOverview />
-            </section>
+            </section> */}
 
             <section className={styles.footerSection}>
                 <Footer />

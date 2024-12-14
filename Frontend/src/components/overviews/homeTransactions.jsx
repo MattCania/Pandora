@@ -11,13 +11,14 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip,
 function TransactionOverview() {
   const user = useContext(SessionContext);
   const [transactionData, setTransactionData] = useState([]);
+  const [transactions, setTransactions] = useState([])
 
   const fetchTransactions = async () => {
     try {
       if (!user) return;
       const records = await GetData(`records/${user.session.userId}`);
       if (!records) throw new Error("Records Null or Undefined");
-
+      console.log(records)
       const allMonths = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ];

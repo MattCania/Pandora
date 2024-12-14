@@ -1,66 +1,68 @@
-import { faPlus, faCrown, faBell, faGear, faBars, faUser, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import React, { useContext, useEffect, useState } from "react";
+import { faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { SessionContext } from "../../pages/home/home";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './Header.module.css'
+import styles from './Header.module.css';
 import MoreSidebar from '../more/more';
 
-
-
 function Header() {
-	const [showSidebar, setSidebar] = useState(false);
-	const [orgDropdown, setorgDropdown] = useState(false);
+  const [showSidebar, setSidebar] = useState(false);
+  const sidebarRef = useRef(null);
 
-	const toggleOrganization = () => {
-		setorgDropdown(orgDropdown => !orgDropdown)
-	}
+  const toggleSidebar = () => {
+    setSidebar((prev) => !prev);
+  };
 
-	const toggleSidebar = () => {
-		setSidebar(showSidebar => !showSidebar)
-	}
+  const user = useContext(SessionContext);
 
-	const user = useContext(SessionContext)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebar(false);
+      }
+    };
 
-	if (!user) {
-		return <p>Loading user data...</p>;
-	}
+    if (showSidebar) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
 
-	
-	return (
-		<header className={styles.header}>
-			<Link to="create" className={styles.createButton}><FontAwesomeIcon icon={faPlus} /></Link>
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSidebar]);
 
-			<section className={styles.section}>
-				{/*<Link to='premium' className={styles.ad}>
-					<FontAwesomeIcon icon={faCrown} color="gold" />
-					Premium
-				</Link>*/}
+  if (!user) {
+    return <p>Loading user data...</p>;
+  }
 
-				{user.profile.organization &&
-					<div className={styles.organization}>
-						<p>
-						{user.profile.organization}
-						</p>
-					</div>
-				}
+  return (
+    <header className={styles.header}>
+      <Link to="create" className={styles.createButton}>
+        <FontAwesomeIcon icon={faPlus} />
+      </Link>
 
-				<div className={styles.options}>
-					{/*<button>
-						<FontAwesomeIcon icon={faBell} />
-					</button>*/}
-						<button onClick={toggleSidebar}>
-							<FontAwesomeIcon icon={faBars} />
-						</button>
-				</div>
-			</section>
-			{
-				showSidebar && <MoreSidebar/>
-			}
-		</header>
-	)
+      <section className={styles.section}>
+        {user.profile.organization && (
+          <div className={styles.organization}>
+            <p>{user.profile.organization}</p>
+          </div>
+        )}
 
+        <div className={styles.options}>
+          <button onClick={toggleSidebar}>
+            <FontAwesomeIcon icon={faBars} />
+          </button>
+        </div>
+      </section>
 
+      {showSidebar && (
+        <div ref={sidebarRef} className={styles.moreFixed}>
+          <MoreSidebar />
+        </div>
+      )}
+    </header>
+  );
 }
 
-export default Header
+export default Header;

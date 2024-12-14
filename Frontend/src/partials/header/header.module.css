@@ -8,6 +8,10 @@
 	background-color: var(--tertiary);
 }
 
+.moreFixed{
+	position: fixed;
+}
+
 .createButton{
 	display: flex;
 	justify-content: center;							

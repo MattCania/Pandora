@@ -44,6 +44,7 @@
 	font-size: 2em;
 	margin: 0;
 	transition: all 250ms;
+	background-color: var(--secondary);
 }
 
 .profileButton:hover{
@@ -95,7 +96,9 @@
 }
 
 .accountButtons a{
-	font-size: 1em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	font-size: 14px;
 	font-weight: bold;
 	text-decoration: none;
