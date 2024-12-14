@@ -4,7 +4,7 @@ import Loading from "../../partials/loading/loading";
 import style from './profileEdit.module.css';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faPen, faX } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import PutRequest from "../../hooks/PutRequest";
 import PostRequest from "../../hooks/PostRequest";
@@ -99,7 +99,7 @@ function ProfileEdit() {
                 </div>
                 <Link to="../profile">
                     <button className={style.edit}>
-                        <FontAwesomeIcon icon={faPen} />
+                        <FontAwesomeIcon icon={faX} />
                     </button>
                 </Link>
                 <form onSubmit={handleSubmit}>

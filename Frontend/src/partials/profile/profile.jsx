@@ -42,7 +42,9 @@ function Profile() {
                         <h3>{user.session.email}</h3>
                     </div>
                 </div>
-                <Link to="profileEdit"><button className={style.edit}> <FontAwesomeIcon icon={faPen} /> </button></Link>
+                <Link to="profileEdit" className={style.edit}> 
+                    <FontAwesomeIcon icon={faPen} />
+                </Link>
                 <div className={style.upperSection}>
                     <h2>Personal Information</h2>
                     <div className={style.field}>

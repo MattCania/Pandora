@@ -95,20 +95,24 @@
 }
 
 .edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     width: 40px;
     height: 40px;
-    margin-bottom: 1.5em;
-    margin-left: 3em;
+    margin-bottom: 1em;
+    margin-left: 1em;
     border-radius: 10px;
     border: none;
     outline: none;
     transition: all 250ms;
     color: var(--textlight);
+    background-color: var(--green);
 }
 
 .edit:hover{
-    background-color: var(--green);
+    background-color: var(--tertiary);
     transition: all 250ms;
     color: var(--textlight);
 }
