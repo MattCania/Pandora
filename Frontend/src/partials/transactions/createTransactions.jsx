@@ -3,6 +3,7 @@ import CreateInterface from "../../components/interface/createInterface";
 import { useState } from "react";
 import PostRequest from "../../hooks/PostRequest";
 import CreatedPrompt from "../../components/prompts/createdPrompt";
+import Loading from "../loading/loading"
 
 function CreateTransactions() {
 	const navigate = useNavigate();
@@ -10,7 +11,7 @@ function CreateTransactions() {
 	const [showCreated, setShowCreated] = useState(false);
 	const [errors, setErrors] = useState({}); // To track errors for fields
 
-	if (!transaction || !recordId) return <h1>Loading...</h1>;
+	if (!transaction || !recordId) return <Loading />;
 
 	const transactionInput = [
 		{
