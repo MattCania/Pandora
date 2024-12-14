@@ -169,3 +169,27 @@ select {
 	align-items: center;
 	width: 100%;
 }
+
+.errorPlaceholder::placeholder {
+	color: red;
+  }
+  
+  .errorSelect {
+	border: 1px solid red;
+	color: red;
+  }
+  
+  .errorInput {
+	border: 1px solid red;
+  }
+  
+  .errorText {
+	color: red;
+	font-size: 0.9rem;
+	margin-top: 4px;
+  }
+
+  textarea.errorInput {
+    border: 1px solid red;
+    color: red;
+}
